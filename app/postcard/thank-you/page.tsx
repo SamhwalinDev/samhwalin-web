@@ -39,7 +39,7 @@ export default function PostcardThankYouPage() {
 
   return (
     <Section spacing="lg">
-      <Container size="sm">
+      <Container size="narrow">
         <div className="text-center">
           <div className="w-20 h-20 bg-primary-extra-light rounded-full flex items-center justify-center mx-auto mb-6">
             <span className="text-4xl">💌</span>

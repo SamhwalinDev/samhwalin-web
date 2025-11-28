@@ -30,7 +30,7 @@ export default async function HomePage() {
 
       {/* 후원 섹션 */}
 <Section spacing="lg" className="bg-white">
-  <Container size="sm">
+  <Container size="narrow">
     <div className="max-w-md mx-auto">
       <div className="text-center mb-12">
         <h2 className="text-h1 text-gray-900 mb-4">

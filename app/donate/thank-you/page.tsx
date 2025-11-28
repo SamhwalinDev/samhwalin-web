@@ -38,7 +38,7 @@ export default function ThankYouPage() {
 
   return (
     <Section spacing="lg">
-      <Container size="sm">
+      <Container size="narrow">
         <div className="text-center">
           {/* 아이콘 */}
           <div className="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
