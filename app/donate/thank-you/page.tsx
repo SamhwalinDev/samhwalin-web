@@ -3,11 +3,11 @@
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowRight, Copy, Check } from 'lucide-react';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { Container, Section } from '@/components/layout';
 import { formatCurrency } from '@/lib/utils';
 
-export default function ThankYouPage() {
+function ThankYouContent() {
   const searchParams = useSearchParams();
   const name = searchParams.get('name') || '후원자';
   const amount = searchParams.get('amount') || '0';
@@ -40,24 +40,20 @@ export default function ThankYouPage() {
     <Section spacing="lg">
       <Container size="narrow">
         <div className="text-center">
-          {/* 아이콘 */}
           <div className="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <span className="text-4xl">🎉</span>
           </div>
 
-          {/* 제목 */}
           <h1 className="text-display text-gray-900 mb-4">
             감사합니다!
           </h1>
 
-          {/* 메시지 */}
           <p className="text-body-lg text-gray-600 mb-8">
             <strong>{name}</strong>님 덕분에<br />
             어르신들의 이야기가<br />
             더 많은 분들께 전해질 수 있어요.
           </p>
 
-          {/* 안내 박스 */}
           <div className="bg-gray-50 rounded-xl p-6 mb-8">
             <p className="text-body text-gray-700 mb-2">
               💛 <strong>{formatCurrency(parseInt(amount))}</strong> 후원 신청 완료
@@ -67,7 +63,6 @@ export default function ThankYouPage() {
             </p>
           </div>
 
-          {/* 버튼 */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Link
               href="/hwalseo"
@@ -84,13 +79,11 @@ export default function ThankYouPage() {
             </Link>
           </div>
 
-          {/* 공유 섹션 */}
           <div className="border-t border-gray-200 pt-8">
             <p className="text-body text-gray-600 mb-4">
               이 마음을 나눠주세요 💕
             </p>
             <div className="flex justify-center gap-4">
-              {/* 링크 복사 */}
               <button
                 onClick={handleCopyLink}
                 className="flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg font-medium hover:bg-gray-800 transition-colors"
@@ -99,7 +92,6 @@ export default function ThankYouPage() {
                 {copied ? '복사됨!' : '링크 복사'}
               </button>
 
-              {/* 인스타그램 */}
               <button
                 onClick={handleInstaShare}
                 className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#F77737] text-white rounded-lg font-medium hover:opacity-90 transition-opacity"
@@ -117,5 +109,13 @@ export default function ThankYouPage() {
         </div>
       </Container>
     </Section>
+  );
+}
+
+export default function ThankYouPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">로딩 중...</div>}>
+      <ThankYouContent />
+    </Suspense>
   );
 }

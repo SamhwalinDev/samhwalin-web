@@ -3,11 +3,11 @@
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowRight, Copy, Check } from 'lucide-react';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { Container, Section } from '@/components/layout';
 import { formatCurrency } from '@/lib/utils';
 
-export default function PostcardThankYouPage() {
+function PostcardThankYouContent() {
   const searchParams = useSearchParams();
   const name = searchParams.get('name') || '보내는 분';
   const elderName = searchParams.get('elder') || '어르신';
@@ -109,5 +109,13 @@ export default function PostcardThankYouPage() {
         </div>
       </Container>
     </Section>
+  );
+}
+
+export default function PostcardThankYouPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">로딩 중...</div>}>
+      <PostcardThankYouContent />
+    </Suspense>
   );
 }
