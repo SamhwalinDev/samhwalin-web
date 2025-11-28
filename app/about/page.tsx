@@ -270,7 +270,7 @@ export default async function AboutPage() {
 
       {/* CTA 섹션 */}
       <Section spacing="lg" className="bg-white">
-        <Container size="sm">
+        <Container size="narrow">
           <div className="text-center">
             <h2 className="text-h1 text-gray-900 mb-4">
               함께 해주세요
