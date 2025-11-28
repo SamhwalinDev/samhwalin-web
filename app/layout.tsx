@@ -1,0 +1,61 @@
+import type { Metadata } from 'next';
+import { Header, Footer } from '@/components/layout';
+import '@/styles/globals.css';
+
+export const metadata: Metadata = {
+  title: {
+    default: '삼활인 - 세대를 잇는 이야기',
+    template: '%s | 삼활인',
+  },
+  description: '삼활인은 유한한 삶을 기억하며 주어진 삶을 사랑하고 매일의 활력을 되찾는 지역과 세대 간 네트워킹 문화를 만들어갑니다.',
+  keywords: ['삼활인', '활서', '세대 교류', '어르신 인터뷰', '생애 기록', '소셜 임팩트'],
+  authors: [{ name: '삼활인' }],
+  creator: '삼활인',
+  openGraph: {
+    type: 'website',
+    locale: 'ko_KR',
+    url: 'https://samhwalin.org',
+    siteName: '삼활인',
+    title: '삼활인 - 세대를 잇는 이야기',
+    description: '어르신들의 삶을 기록하고, 세대를 연결합니다.',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: '삼활인',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '삼활인 - 세대를 잇는 이야기',
+    description: '어르신들의 삶을 기록하고, 세대를 연결합니다.',
+    images: ['/og-image.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="ko">
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <meta name="theme-color" content="#FFFEF9" />
+      </head>
+      <body className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-1">{children}</main>
+        <Footer />
+      </body>
+    </html>
+  );
+}
