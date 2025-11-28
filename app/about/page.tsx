@@ -106,7 +106,7 @@ export default async function AboutPage() {
           <div className="absolute inset-0 bg-black/50" />
         </div>
 
-        <Container size="md" className="relative z-10">
+        <Container size="default" className="relative z-10">
           <div className="text-center">
             <span className="inline-block px-4 py-2 bg-primary text-white rounded-full text-body-sm font-medium mb-6">
             어라이브 프로젝트
@@ -125,7 +125,7 @@ export default async function AboutPage() {
 
       {/* 철학 섹션 */}
       <Section spacing="lg" className="bg-white">
-        <Container size="md">
+        <Container size="default">
           <div className="text-center mb-12">
             <h2 className="text-h1 text-gray-900 mb-4">우리의 철학</h2>
             <p className="text-body-lg text-gray-600">
@@ -152,7 +152,7 @@ export default async function AboutPage() {
 
       {/* 활서란? 섹션 */}
       <Section spacing="lg" className="bg-gray-50">
-        <Container size="md">
+        <Container size="default">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {/* 왼쪽: 텍스트 */}
             <div className="flex flex-col">
@@ -201,7 +201,7 @@ export default async function AboutPage() {
 
       {/* 미션/비전 섹션 */}
       <Section spacing="lg" className="bg-white">
-        <Container size="md">
+        <Container size="default">
           <div className="text-center mb-12">
             <h2 className="text-h1 text-gray-900 mb-4">우리가 만들어가는 것</h2>
           </div>
@@ -243,7 +243,7 @@ export default async function AboutPage() {
 
       {/* 팀 소개 섹션 */}
       <Section spacing="lg" className="bg-gray-50">
-        <Container size="md">
+        <Container size="default">
           <div className="text-center mb-12">
             <span className="text-primary font-medium text-body-sm mb-2 block">Team</span>
             <h2 className="text-h1 text-gray-900 mb-4">팀 삼활인</h2>
