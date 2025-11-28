@@ -5,7 +5,7 @@ import { ArrowRight, Heart, Users, BookOpen, Sparkles } from 'lucide-react';
 import { Container, Section } from '@/components/layout';
 import { Button } from '@/components/ui';
 import { getHwalseoList } from '@/lib/notion';
-
+export const revalidate = 300; // 5분마다 (자주 안 바뀌니까)
 export const metadata: Metadata = {
   title: '어라이브 프로젝트 소개',
   description: '어라이브는 어르신들의 인생 이야기를 기록하고, 세대를 넘어 연결하는 프로젝트입니다.',

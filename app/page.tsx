@@ -1,7 +1,7 @@
 import { Container, Section } from '@/components/layout';
 import { HeroSection, MissionSection, HwalseoPreview, DonationProgress, DonationForm } from '@/components/features';
 import { getHwalseoList, getDonationStats } from '@/lib/notion';
-
+export const revalidate = 60;
 export default async function HomePage() {
   const hwalseoList = await getHwalseoList();
   const donationStats = await getDonationStats();
