@@ -1,14 +1,14 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import Image from 'next/image';
-import { ArrowRight, Heart, Users, BookOpen, Sparkles } from 'lucide-react';
+import { ArrowRight, Heart, Users, BookOpen, Sparkles, ChevronDown } from 'lucide-react';
 import { Container, Section } from '@/components/layout';
 import { Button } from '@/components/ui';
-import { getHwalseoList } from '@/lib/notion';
-export const revalidate = 300; // 5분마다 (자주 안 바뀌니까)
+
+export const revalidate = 300;
+
 export const metadata: Metadata = {
-  title: '어라이브 프로젝트 소개',
-  description: '어라이브는 어르신들의 인생 이야기를 기록하고, 세대를 넘어 연결하는 프로젝트입니다.',
+  title: '프로젝트 소개 | 삼활인',
+  description: '삼활인은 어르신들의 인생 이야기를 기록하고, 세대를 넘어 연결하는 프로젝트입니다.',
 };
 
 const values = [
@@ -85,42 +85,46 @@ const philosophy = [
   },
 ];
 
-export default async function AboutPage() {
-  const hwalseoList = await getHwalseoList();
-  const latestHwalseo = hwalseoList.length > 0 ? hwalseoList[0] : null;
-  const heroImage = latestHwalseo?.coverImage || '/images/hero-placeholder.jpg';
-
+export default function AboutPage() {
   return (
     <>
-      {/* 히어로 섹션 */}
-      <section className="relative min-h-[60vh] flex items-center">
-        {/* 배경 이미지 */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            src={heroImage}
-            alt="어라이브 프로젝트"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-black/50" />
+      {/* 히어로 섹션 - 브랜드 컬러 배경 */}
+      <section className="relative min-h-[70vh] flex items-center bg-gradient-to-br from-primary via-primary-dark to-gray-900">
+        {/* 장식 패턴 */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-20 left-10 w-32 h-32 border-2 border-white rounded-full" />
+          <div className="absolute bottom-20 right-10 w-48 h-48 border-2 border-white rounded-full" />
+          <div className="absolute top-1/2 left-1/3 w-24 h-24 border-2 border-white rounded-full" />
         </div>
 
         <Container size="default" className="relative z-10">
           <div className="text-center">
-            <span className="inline-block px-4 py-2 bg-primary text-white rounded-full text-body-sm font-medium mb-6">
-            어라이브 프로젝트
+            <span className="inline-block px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-full text-body-sm font-medium mb-6">
+              About Us
             </span>
             <h1 className="text-display text-white mb-6">
-              어르신의 삶이<br />
-              우리의 이야기가 됩니다
+              이야기로<br />
+              세대를 잇습니다
             </h1>
-            <p className="text-body-lg text-white/80 max-w-2xl mx-auto">
-              어라이브는 어르신들의 인생 이야기를 기록하고,<br />
-              세대를 넘어 연결하는 프로젝트입니다.
+            <p className="text-body-lg text-white/80 max-w-2xl mx-auto mb-8">
+              삼활인은 어르신들의 인생 이야기를 기록하고,<br />
+              청년 세대와 연결하는 비영리 프로젝트입니다.
             </p>
+            <div className="flex justify-center gap-4">
+              <Link href="/hwalseo">
+                <Button variant="secondary" size="lg" className="bg-white text-primary hover:bg-gray-100">
+                  활서 읽어보기
+                  <ArrowRight size={18} className="ml-2" />
+                </Button>
+              </Link>
+            </div>
           </div>
         </Container>
+
+        {/* 스크롤 유도 */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/60 animate-bounce">
+          <ChevronDown size={32} />
+        </div>
       </section>
 
       {/* 철학 섹션 */}
