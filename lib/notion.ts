@@ -35,7 +35,7 @@ export async function getHwalseoList(): Promise<HwalseoCard[]> {
       elderName: page.properties.ElderName?.rich_text?.[0]?.plain_text || '',
       theme: page.properties.Theme?.select?.name || '',
       excerpt: page.properties.Excerpt?.rich_text?.[0]?.plain_text || '',
-      coverImage: page.cover?.external?.url || page.cover?.file?.url || undefined,
+      coverImage: page.cover?.external?.url || page.cover?.file?.url || '',
       publishedAt: page.properties.PublishedAt?.date?.start || '',
     }));
   } catch (error) {
@@ -78,11 +78,11 @@ export async function getHwalseoBySlug(slug: string): Promise<Hwalseo | null> {
       slug: page.properties.Slug?.rich_text?.[0]?.plain_text || '',
       title: page.properties.Title?.title?.[0]?.plain_text || '',
       elderName: page.properties.ElderName?.rich_text?.[0]?.plain_text || '',
-      elderAge: page.properties.ElderAge?.number || undefined,
+      elderAge: page.properties.ElderAge?.number || '',
       theme: page.properties.Theme?.select?.name || '',
       excerpt: page.properties.Excerpt?.rich_text?.[0]?.plain_text || '',
       content: content,
-      coverImage: page.cover?.external?.url || page.cover?.file?.url || undefined,
+      coverImage: page.cover?.external?.url || page.cover?.file?.url || '',
       publishedAt: page.properties.PublishedAt?.date?.start || '',
       createdAt: page.created_time,
       updatedAt: page.last_edited_time,
@@ -184,7 +184,7 @@ export async function getRelatedHwalseos(
         elderName: page.properties.ElderName?.rich_text?.[0]?.plain_text || '',
         theme: page.properties.Theme?.select?.name || '',
         excerpt: page.properties.Excerpt?.rich_text?.[0]?.plain_text || '',
-        coverImage: page.cover?.external?.url || page.cover?.file?.url || undefined,
+        coverImage: page.cover?.external?.url || page.cover?.file?.url || '',
         publishedAt: page.properties.PublishedAt?.date?.start || '',
       }));
   } catch (error) {
