@@ -10,7 +10,7 @@ export interface Hwalseo {
   theme: string;            // 테마 (예: 전쟁의 기억, 인생의 지혜)
   excerpt: string;          // 요약
   content: string;          // 본문 (Markdown 또는 HTML)
-  coverImage?: string;      // 대표 이미지 URL
+  coverImage: string;      // 대표 이미지 URL
   publishedAt: string;      // 발행일
   createdAt: string;
   updatedAt: string;
@@ -26,7 +26,7 @@ export interface HwalseoCard {
   elderName: string;
   theme: string;
   excerpt: string;
-  coverImage?: string;
+  coverImage: string;
   publishedAt: string;
 }
 
