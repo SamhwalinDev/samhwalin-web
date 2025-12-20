@@ -1,5 +1,6 @@
 import { Client } from '@notionhq/client';
-import type { Hwalseo, HwalseoCard } from '@/types';
+import type { Hwalseo, HwalseoCard, Elder, ElderCard } from '@/types';
+import { getProxiedImageUrl } from './utils';
 
 const notion = new Client({
   auth: process.env.NOTION_API_KEY,
@@ -9,6 +10,8 @@ const databaseId = process.env.NOTION_HWALSEO_DATABASE_ID!;
 const donationDbId = process.env.NOTION_DONATION_DATABASE_ID!;
 const settingsDbId = process.env.NOTION_SETTINGS_DATABASE_ID!;
 const postcardDbId = process.env.NOTION_POSTCARD_DATABASE_ID!;
+const subscriberDbId = process.env.NOTION_SUBSCRIBE_DATABASE_ID!;
+const elderDbId = process.env.NOTION_ELDER_DATABASE_ID!;
 
 export async function getHwalseoList(): Promise<HwalseoCard[]> {
   try {
@@ -35,7 +38,7 @@ export async function getHwalseoList(): Promise<HwalseoCard[]> {
       elderName: page.properties.ElderName?.rich_text?.[0]?.plain_text || '',
       theme: page.properties.Theme?.select?.name || '',
       excerpt: page.properties.Excerpt?.rich_text?.[0]?.plain_text || '',
-      coverImage: page.cover?.external?.url || page.cover?.file?.url || '',
+      coverImage: getProxiedImageUrl(page.cover?.external?.url || page.cover?.file?.url || ''),
       publishedAt: page.properties.PublishedAt?.date?.start || '',
     }));
   } catch (error) {
@@ -71,7 +74,8 @@ export async function getHwalseoBySlug(slug: string): Promise<Hwalseo | null> {
     }
 
     const page: any = response.results[0];
-    const content = await getPageContent(page.id);
+    const coverImageUrl = page.cover?.external?.url || page.cover?.file?.url || '';
+    const content = await getPageContent(page.id, coverImageUrl);
 
     return {
       id: page.id,
@@ -82,7 +86,7 @@ export async function getHwalseoBySlug(slug: string): Promise<Hwalseo | null> {
       theme: page.properties.Theme?.select?.name || '',
       excerpt: page.properties.Excerpt?.rich_text?.[0]?.plain_text || '',
       content: content,
-      coverImage: page.cover?.external?.url || page.cover?.file?.url || '',
+      coverImage: getProxiedImageUrl(coverImageUrl),
       publishedAt: page.properties.PublishedAt?.date?.start || '',
       createdAt: page.created_time,
       updatedAt: page.last_edited_time,
@@ -93,14 +97,36 @@ export async function getHwalseoBySlug(slug: string): Promise<Hwalseo | null> {
   }
 }
 
-async function getPageContent(pageId: string): Promise<string> {
+async function getPageContent(pageId: string, coverImageUrl?: string): Promise<string> {
   try {
     const blocks = await notion.blocks.children.list({
       block_id: pageId,
       page_size: 100,
     });
 
-    return blocksToMarkdown(blocks.results);
+    // Filter out first image if it matches cover image (avoid duplicate display)
+    let filteredBlocks = blocks.results;
+    if (coverImageUrl && filteredBlocks.length > 0) {
+      const firstBlock = filteredBlocks[0] as any;
+      if (firstBlock.type === 'image') {
+        const firstImageUrl = firstBlock.image?.file?.url || firstBlock.image?.external?.url || '';
+        // Compare base URLs (without query params for Notion signed URLs)
+        // Extract just the path/filename for more robust comparison
+        const getImageKey = (url: string) => {
+          const base = url.split('?')[0];
+          // For S3/Notion URLs, extract the unique file identifier
+          const matches = base.match(/([a-f0-9-]{36}\/[^/]+)$/);
+          return matches ? matches[1] : base;
+        };
+        const coverKey = getImageKey(coverImageUrl);
+        const firstKey = getImageKey(firstImageUrl);
+        if (coverKey === firstKey) {
+          filteredBlocks = filteredBlocks.slice(1);
+        }
+      }
+    }
+
+    return blocksToMarkdown(filteredBlocks);
   } catch (error) {
     console.error('Error fetching page content:', error);
     return '';
@@ -130,7 +156,7 @@ function blocksToMarkdown(blocks: any[]): string {
         case 'divider':
           return '---';
         case 'image':
-          const imageUrl = block.image?.file?.url || block.image?.external?.url || '';
+          const imageUrl = getProxiedImageUrl(block.image?.file?.url || block.image?.external?.url || '');
           const caption = block.image?.caption?.[0]?.plain_text || '';
           // ||| 구분자 사용 (URL에 포함되지 않는 문자)
           return `[IMG]${imageUrl}[/IMG]${caption ? `[CAP]${caption}[/CAP]` : ''}`;
@@ -184,7 +210,7 @@ export async function getRelatedHwalseos(
         elderName: page.properties.ElderName?.rich_text?.[0]?.plain_text || '',
         theme: page.properties.Theme?.select?.name || '',
         excerpt: page.properties.Excerpt?.rich_text?.[0]?.plain_text || '',
-        coverImage: page.cover?.external?.url || page.cover?.file?.url || '',
+        coverImage: getProxiedImageUrl(page.cover?.external?.url || page.cover?.file?.url || ''),
         publishedAt: page.properties.PublishedAt?.date?.start || '',
       }));
   } catch (error) {
@@ -207,7 +233,7 @@ export async function getDonationStats() {
     });
 
     let totalAmount = 0;
-    let donorCount = 0;
+    const uniqueDonors = new Set<string>();
     let thisMonthCount = 0;
     let todayCount = 0;
     const recentDonors: { name: string; amount: number; message?: string }[] = [];
@@ -225,7 +251,7 @@ export async function getDonationStats() {
       const dateStr = page.properties.Date?.date?.start || '';
 
       totalAmount += amount;
-      donorCount += 1;
+      uniqueDonors.add(name);
 
       if (dateStr) {
         if (dateStr.startsWith(thisMonth)) {
@@ -240,6 +266,8 @@ export async function getDonationStats() {
         recentDonors.push({ name, amount, message });
       }
     });
+
+    const donorCount = uniqueDonors.size;
 
     // 목표 금액 가져오기
     const settingsResponse = await notion.databases.query({
@@ -375,7 +403,7 @@ export async function getHwalseoThemes(): Promise<string[]> {
     });
 
     const themeProperty = response.properties['Theme'];
-    
+
     if (themeProperty && themeProperty.type === 'select') {
       const options = themeProperty.select.options;
       return options.map((option: { name: string }) => option.name);
@@ -384,6 +412,291 @@ export async function getHwalseoThemes(): Promise<string[]> {
     return [];
   } catch (error) {
     console.error('Failed to fetch themes:', error);
+    return [];
+  }
+}
+
+// ============================================
+// 구독자 관련 함수
+// ============================================
+
+export async function checkSubscriberExists(email: string): Promise<boolean> {
+  try {
+    if (!subscriberDbId) {
+      console.error('NOTION_SUBSCRIBE_DATABASE_ID is not defined');
+      return false;
+    }
+
+    const response = await notion.databases.query({
+      database_id: subscriberDbId,
+      filter: {
+        property: 'Email',
+        title: {
+          equals: email,
+        },
+      },
+    });
+    return response.results.length > 0;
+  } catch (error) {
+    console.error('Error checking subscriber:', error);
+    return false;
+  }
+}
+
+export async function createSubscriber(data: {
+  email: string;
+  source: string;
+  elderId?: string;
+}): Promise<{ success: boolean; error?: string }> {
+  try {
+    console.log('Creating subscriber:', data.email);
+    console.log('Database ID:', subscriberDbId);
+
+    if (!subscriberDbId) {
+      console.error('NOTION_SUBSCRIBE_DATABASE_ID is not defined');
+      return { success: false, error: 'database_not_configured' };
+    }
+
+    // 중복 이메일 체크
+    const exists = await checkSubscriberExists(data.email);
+    if (exists) {
+      return { success: false, error: 'duplicate' };
+    }
+
+    const today = new Date();
+    const koreaTime = new Date(today.getTime() + 9 * 60 * 60 * 1000);
+    const dateStr = koreaTime.toISOString().split('T')[0];
+
+    // Build properties object
+    const properties: Record<string, unknown> = {
+      // Title property - Email
+      Email: {
+        title: [{ text: { content: data.email } }],
+      },
+      // Date property - SubscribeAt (exact name from Notion)
+      SubscribeAt: {
+        date: { start: dateStr },
+      },
+      // Rich_Text property - Source
+      Source: {
+        rich_text: [{ text: { content: data.source || 'website' } }],
+      },
+      // Select property - Status
+      Status: {
+        select: { name: '활성' },
+      },
+    };
+
+    // Add ElderId if provided
+    if (data.elderId) {
+      properties.ElderId = {
+        select: { name: data.elderId },
+      };
+    }
+
+    const response = await notion.pages.create({
+      parent: { database_id: subscriberDbId },
+      properties: properties as Parameters<typeof notion.pages.create>[0]['properties'],
+    });
+
+    console.log('Subscriber created:', response.id);
+    return { success: true };
+  } catch (error: any) {
+    console.error('Error creating subscriber:', error);
+    console.error('Error details:', error?.body || error?.message || error);
+    return { success: false, error: 'server_error' };
+  }
+}
+
+// ============================================
+// 어르신 관련 함수
+// ============================================
+
+export async function getElderList(): Promise<ElderCard[]> {
+  try {
+    const response = await notion.databases.query({
+      database_id: elderDbId,
+      filter: {
+        property: 'Status',
+        select: {
+          equals: 'Published',
+        },
+      },
+      sorts: [
+        {
+          property: 'Name',
+          direction: 'ascending',
+        },
+      ],
+    });
+
+    return response.results.map((page: any) => {
+      const hwalseoRelation = page.properties.Hwalseo?.relation || [];
+
+      // Debug: Log Photo property structure
+      const photoProperty = page.properties.Photo;
+      const photoUrl =
+        photoProperty?.files?.[0]?.file?.url ||
+        photoProperty?.files?.[0]?.external?.url ||
+        '';
+      if (process.env.NODE_ENV === 'development') {
+        console.log(
+          `[Elder] ${page.properties.Name?.title?.[0]?.plain_text}: Photo property:`,
+          JSON.stringify(photoProperty, null, 2)
+        );
+        console.log(`[Elder] Extracted photo URL: ${photoUrl}`);
+      }
+
+      return {
+        id: page.id,
+        name: page.properties.Name?.title?.[0]?.plain_text || '',
+        slug: page.id.replaceAll('-', ''),
+        photo: getProxiedImageUrl(photoUrl),
+        birthYear: page.properties.BirthYear?.number || undefined,
+        gender: page.properties.Gender?.select?.name || undefined,
+        region: page.properties.Region?.select?.name || undefined,
+        introduction:
+          page.properties.Introduction?.rich_text?.[0]?.plain_text || undefined,
+        hwalseoCount: hwalseoRelation.length,
+      };
+    });
+  } catch (error) {
+    console.error('Error fetching elder list:', error);
+    return [];
+  }
+}
+
+export async function getElderById(elderId: string): Promise<Elder | null> {
+  try {
+    const page = (await notion.pages.retrieve({ page_id: elderId })) as any;
+
+    // Check if published
+    if (page.properties.Status?.select?.name !== 'Published') {
+      return null;
+    }
+
+    const hwalseoRelation = page.properties.Hwalseo?.relation || [];
+
+    return {
+      id: page.id,
+      name: page.properties.Name?.title?.[0]?.plain_text || '',
+      slug: page.id.replaceAll('-', ''),
+      photo: getProxiedImageUrl(
+        page.properties.Photo?.files?.[0]?.file?.url ||
+          page.properties.Photo?.files?.[0]?.external?.url ||
+          ''
+      ),
+      birthYear: page.properties.BirthYear?.number || undefined,
+      gender: page.properties.Gender?.select?.name || undefined,
+      region: page.properties.Region?.select?.name || undefined,
+      introduction:
+        page.properties.Introduction?.rich_text?.[0]?.plain_text || undefined,
+      bio: page.properties.Bio?.rich_text?.[0]?.plain_text || undefined,
+      status: page.properties.Status?.select?.name || 'Draft',
+      hwalseoIds: hwalseoRelation.map((rel: any) => rel.id),
+    };
+  } catch (error) {
+    console.error('Error fetching elder by ID:', error);
+    return null;
+  }
+}
+
+export async function getElderByName(name: string): Promise<Elder | null> {
+  try {
+    const response = await notion.databases.query({
+      database_id: elderDbId,
+      filter: {
+        and: [
+          {
+            property: 'Name',
+            title: {
+              equals: name,
+            },
+          },
+          {
+            property: 'Status',
+            select: {
+              equals: 'Published',
+            },
+          },
+        ],
+      },
+    });
+
+    if (response.results.length === 0) {
+      return null;
+    }
+
+    const page = response.results[0] as any;
+    const hwalseoRelation = page.properties.Hwalseo?.relation || [];
+
+    return {
+      id: page.id,
+      name: page.properties.Name?.title?.[0]?.plain_text || '',
+      slug: page.id.replaceAll('-', ''),
+      photo: getProxiedImageUrl(
+        page.properties.Photo?.files?.[0]?.file?.url ||
+          page.properties.Photo?.files?.[0]?.external?.url ||
+          ''
+      ),
+      birthYear: page.properties.BirthYear?.number || undefined,
+      gender: page.properties.Gender?.select?.name || undefined,
+      region: page.properties.Region?.select?.name || undefined,
+      introduction:
+        page.properties.Introduction?.rich_text?.[0]?.plain_text || undefined,
+      bio: page.properties.Bio?.rich_text?.[0]?.plain_text || undefined,
+      status: page.properties.Status?.select?.name || 'Draft',
+      hwalseoIds: hwalseoRelation.map((rel: any) => rel.id),
+    };
+  } catch (error) {
+    console.error('Error fetching elder by name:', error);
+    return null;
+  }
+}
+
+export async function getHwalseoByElderId(elderId: string): Promise<HwalseoCard[]> {
+  try {
+    const response = await notion.databases.query({
+      database_id: databaseId,
+      filter: {
+        and: [
+          {
+            property: 'Status',
+            select: {
+              equals: 'Published',
+            },
+          },
+          {
+            property: 'Elder',
+            relation: {
+              contains: elderId,
+            },
+          },
+        ],
+      },
+      sorts: [
+        {
+          property: 'PublishedAt',
+          direction: 'descending',
+        },
+      ],
+    });
+
+    return response.results.map((page: any) => ({
+      id: page.id,
+      slug: page.properties.Slug?.rich_text?.[0]?.plain_text || '',
+      title: page.properties.Title?.title?.[0]?.plain_text || '',
+      elderName: page.properties.ElderName?.rich_text?.[0]?.plain_text || '',
+      elderId: page.properties.Elder?.relation?.[0]?.id || undefined,
+      theme: page.properties.Theme?.select?.name || '',
+      excerpt: page.properties.Excerpt?.rich_text?.[0]?.plain_text || '',
+      coverImage: getProxiedImageUrl(
+        page.cover?.external?.url || page.cover?.file?.url || ''
+      ),
+      publishedAt: page.properties.PublishedAt?.date?.start || '',
+    }));
+  } catch (error) {
+    console.error('Error fetching hwalseo by elder ID:', error);
     return [];
   }
 }
