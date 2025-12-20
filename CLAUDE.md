@@ -232,13 +232,20 @@ text:       #2D3748 (dark gray)
 
 ### Typography
 ```
+# UI Typography
 text-display:  2.5rem, 700 weight (hero titles)
 text-h1:       1.75rem, 600 weight
 text-h2:       1.25rem, 600 weight
+text-h3:       1.125rem, 600 weight
 text-body:     1.0625rem, 1.75 line-height
 text-body-sm:  0.9375rem
 text-caption:  0.875rem
 text-small:    0.75rem
+
+# Article Content Typography (for hwalseo detail pages)
+text-article-h1: 1.875rem (30px), 700 weight
+text-article-h2: 1.5rem (24px), 600 weight
+text-article-h3: 1.25rem (20px), 600 weight
 ```
 
 ### Layout
@@ -285,6 +292,53 @@ import { Container, Section } from '@/components/layout';
 - Korean language in UI copy and some code comments
 - Server Components by default; `'use client'` only when needed
 - UUID slugs without dashes for elder URLs
+
+## Notion Rich Text Rendering
+
+The system converts Notion rich text annotations to markdown, then parses that to HTML for rendering.
+
+### Flow
+1. **Notion API** returns rich text blocks with `annotations` (bold, italic, color, etc.)
+2. **`richTextToString()`** in `lib/notion.ts` converts annotations to markdown syntax:
+   - `annotations.bold` → `**text**`
+   - `annotations.italic` → `*text*`
+   - `annotations.code` → `` `text` ``
+   - `annotations.strikethrough` → `~~text~~`
+   - `annotations.underline` → `<u>text</u>`
+   - `annotations.color` → `[COLOR:name]text[/COLOR]`
+   - `annotations.color` (background) → `[HIGHLIGHT:name]text[/HIGHLIGHT]`
+   - `item.href` → `[text](url)`
+
+3. **`parseInlineFormatting()`** in `app/hwalseo/[slug]/page.tsx` converts markdown to HTML:
+   - Regex patterns transform markdown syntax to HTML tags
+   - Colors use CSS variables: `var(--notion-{color})` and `var(--notion-{color}-bg)`
+   - Returns React element with `dangerouslySetInnerHTML`
+
+### Notion Color CSS Variables
+Defined in `styles/globals.css`:
+```css
+/* Text colors */
+--notion-gray, --notion-brown, --notion-orange, --notion-yellow,
+--notion-green, --notion-blue, --notion-purple, --notion-pink, --notion-red
+
+/* Background colors (for highlights) */
+--notion-gray-bg, --notion-brown-bg, --notion-orange-bg, etc.
+```
+
+### Article Content Rendering
+The `ContentRenderer` component in `app/hwalseo/[slug]/page.tsx` handles:
+
+| Notion Block  | Markdown | Rendered HTML | Tailwind Class |
+|---------------|----------|---------------|----------------|
+| heading_1     | `# text` | `<h2>`        | `text-article-h1` |
+| heading_2     | `## text`| `<h3>`        | `text-article-h2` |
+| heading_3     | `### text`| `<h4>`       | `text-article-h3` |
+| paragraph     | text     | `<p>`         | `text-body-lg` |
+| quote         | `> text` | `<blockquote>`| `border-l-4 border-primary` |
+| bullet list   | `• text` | `<li>`        | `text-body-lg` |
+| image         | `[IMAGE:url CAPTION:text]` | `<figure>` | - |
+
+Note: Headings are shifted down one level (h1→h2, etc.) since the page title uses `<h1>`.
 
 ## Known Issues / TODOs
 

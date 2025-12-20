@@ -111,7 +111,7 @@ export function MobileTableOfContents({ content }: MobileTableOfContentsProps) {
                       key={idx}
                       className={cn(
                         isH1 && !isFirstH1 && 'mt-4 pt-3 border-t border-gray-100',
-                        isH2 && 'ml-0',
+                        isH2 && '',
                         isH3 && 'ml-5'
                       )}
                     >
@@ -119,8 +119,8 @@ export function MobileTableOfContents({ content }: MobileTableOfContentsProps) {
                         onClick={() => handleHeadingClick(heading.lineIndex)}
                         className={cn(
                           'w-full text-left flex items-center py-2 transition-colors break-keep',
-                          isH1 && 'font-semibold text-gray-900 hover:text-primary text-base',
-                          isH2 && 'font-medium text-gray-700 hover:text-primary pl-4 border-l-2 border-gray-200 active:border-primary text-[15px]',
+                          isH1 && 'font-bold text-gray-900 hover:text-primary text-base',
+                          isH2 && 'font-medium text-gray-600 hover:text-primary pl-4 border-l-2 border-gray-200 active:border-primary text-[15px]',
                           isH3 && 'text-gray-500 hover:text-gray-700 text-sm pl-4'
                         )}
                       >
