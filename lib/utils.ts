@@ -47,3 +47,27 @@ export function truncateText(text: string, maxLength: number): string {
   if (text.length <= maxLength) return text;
   return text.slice(0, maxLength).trim() + '...';
 }
+
+/**
+ * 외부 이미지 URL을 프록시 URL로 변환
+ * - Notion API 이미지: 약 1시간 후 만료되므로 프록시를 통해 캐싱
+ * - Unsplash 이미지: Next.js Image 도메인 제한 우회
+ */
+export function getProxiedImageUrl(url: string): string {
+  if (!url) return '';
+
+  // Already proxied
+  if (url.startsWith('/api/image')) return url;
+
+  // Proxy Notion images (expire) and Unsplash images (external domain)
+  if (
+    url.includes('notion.so') ||
+    url.includes('s3.us-west-2.amazonaws.com') ||
+    url.includes('prod-files-secure') ||
+    url.includes('unsplash.com')
+  ) {
+    return `/api/image?url=${encodeURIComponent(url)}`;
+  }
+
+  return url;
+}

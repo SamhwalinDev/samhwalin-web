@@ -4,3 +4,4 @@ export * from './Card';
 export * from './Input';
 export * from './Modal';
 export * from './ProgressBar';
+export * from './ProxiedImage';
