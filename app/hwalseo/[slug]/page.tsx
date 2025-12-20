@@ -1,3 +1,4 @@
+import React from 'react';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -9,6 +10,52 @@ import { ProxiedImage } from '@/components/ui';
 import { getHwalseoBySlug, getRelatedHwalseos, getElderByName } from '@/lib/notion';
 import { formatDate } from '@/lib/utils';
 import type { Elder } from '@/types';
+
+/**
+ * Parse inline markdown formatting and custom tags to React elements
+ * Handles: **bold**, *italic*, `code`, ~~strikethrough~~, <u>underline</u>,
+ * [links](url), [COLOR:name]text[/COLOR], [HIGHLIGHT:name]text[/HIGHLIGHT]
+ */
+function parseInlineFormatting(text: string): React.ReactNode {
+  const processMarkdown = (str: string): string => {
+    let result = str;
+
+    // Bold: **text**
+    result = result.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+    // Italic: *text* (not preceded by *)
+    result = result.replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, '<em>$1</em>');
+
+    // Code: `text`
+    result = result.replace(/`([^`]+)`/g, '<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono">$1</code>');
+
+    // Strikethrough: ~~text~~
+    result = result.replace(/~~(.+?)~~/g, '<del>$1</del>');
+
+    // Underline: <u>text</u> - already HTML, just keep it
+
+    // Links: [text](url)
+    result = result.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-primary hover:underline" target="_blank" rel="noopener noreferrer">$1</a>');
+
+    // Color: [COLOR:name]text[/COLOR]
+    result = result.replace(/\[COLOR:(\w+)\](.+?)\[\/COLOR\]/g, '<span style="color: var(--notion-$1)">$2</span>');
+
+    // Highlight: [HIGHLIGHT:name]text[/HIGHLIGHT]
+    result = result.replace(/\[HIGHLIGHT:(\w+)\](.+?)\[\/HIGHLIGHT\]/g, '<mark style="background-color: var(--notion-$1-bg); padding: 0.125rem 0.25rem; border-radius: 0.125rem;">$2</mark>');
+
+    return result;
+  };
+
+  const processedHtml = processMarkdown(text);
+
+  // If no formatting was applied, return plain text
+  if (processedHtml === text) {
+    return text;
+  }
+
+  // Return as HTML
+  return <span dangerouslySetInnerHTML={{ __html: processedHtml }} />;
+}
 
 export const revalidate = 3600;
 
@@ -65,49 +112,49 @@ function ContentRenderer({ content }: { content: string }) {
                 </div>
                 {caption && (
                   <figcaption className="text-center text-caption text-gray-500 mt-2">
-                    {caption}
+                    {parseInlineFormatting(caption)}
                   </figcaption>
                 )}
               </figure>
             );
           }
         }
-        // 대제목 (#)
+        // 대제목 (#) - Notion heading_1
         if (line.startsWith('# ') && !line.startsWith('## ')) {
           const text = line.replace('# ', '');
           return (
             <h2
               key={index}
               id={`heading-${index}`}
-              className="text-display-sm text-gray-900 mt-12 mb-6 scroll-mt-24 break-keep"
+              className="text-article-h1 text-gray-900 mt-12 mb-6 scroll-mt-24 break-keep"
             >
-              {text}
+              {parseInlineFormatting(text)}
             </h2>
           );
         }
-        // 제목 (##)
+        // 제목 (##) - Notion heading_2
         if (line.startsWith('## ')) {
           const text = line.replace('## ', '');
           return (
             <h3
               key={index}
               id={`heading-${index}`}
-              className="text-h1 text-gray-900 mt-10 mb-5 scroll-mt-24 break-keep"
+              className="text-article-h2 text-gray-900 mt-10 mb-5 scroll-mt-24 break-keep"
             >
-              {text}
+              {parseInlineFormatting(text)}
             </h3>
           );
         }
-        // 소제목 (###)
+        // 소제목 (###) - Notion heading_3
         if (line.startsWith('### ')) {
           const text = line.replace('### ', '');
           return (
             <h4
               key={index}
               id={`heading-${index}`}
-              className="text-h3 text-gray-900 mt-8 mb-4 scroll-mt-24 break-keep"
+              className="text-article-h3 text-gray-900 mt-8 mb-4 scroll-mt-24 break-keep"
             >
-              {text}
+              {parseInlineFormatting(text)}
             </h4>
           );
         }
@@ -118,7 +165,7 @@ function ContentRenderer({ content }: { content: string }) {
               key={index}
               className="border-l-4 border-primary pl-6 my-8 italic text-gray-600"
             >
-              {line.replace('> ', '')}
+              {parseInlineFormatting(line.replace('> ', ''))}
             </blockquote>
           );
         }
@@ -130,7 +177,7 @@ function ContentRenderer({ content }: { content: string }) {
         if (line.startsWith('• ')) {
           return (
             <li key={index} className="text-body-lg text-text leading-loose ml-4">
-              {line.replace('• ', '')}
+              {parseInlineFormatting(line.replace('• ', ''))}
             </li>
           );
         }
@@ -138,7 +185,7 @@ function ContentRenderer({ content }: { content: string }) {
         if (line.trim()) {
           return (
             <p key={index} className="text-body-lg text-text leading-loose mb-6">
-              {line}
+              {parseInlineFormatting(line)}
             </p>
           );
         }
@@ -182,7 +229,7 @@ function DesktopTableOfContents({ content }: { content: string }) {
     <nav className="hidden xl:block w-56 shrink-0">
       <div className="sticky top-24">
         <h4 className="text-sm font-semibold text-gray-900 mb-4">목차</h4>
-        <ul className="space-y-1.5 text-sm">
+        <ul className="space-y-0.5 text-sm">
           {headings.map((heading, idx) => {
             const isH1 = heading.level === 1;
             const isH2 = heading.level === 2;
@@ -193,22 +240,22 @@ function DesktopTableOfContents({ content }: { content: string }) {
               <li
                 key={idx}
                 className={`
-                  ${isH1 && !isFirstH1 ? 'mt-3' : ''}
-                  ${isH2 ? 'ml-3' : ''}
-                  ${isH3 ? 'ml-6' : ''}
+                  ${isH1 && !isFirstH1 ? 'mt-4 pt-3 border-t border-gray-100' : ''}
+                  ${isH3 ? 'ml-4' : ''}
                 `}
               >
                 <a
                   href={`#heading-${heading.lineIndex}`}
                   className={`
-                    block py-1 transition-colors line-clamp-2 break-keep
-                    ${isH1 ? 'font-medium text-gray-900 hover:text-primary' : ''}
-                    ${isH2 ? 'text-gray-600 hover:text-primary' : ''}
-                    ${isH3 ? 'text-gray-500 hover:text-primary' : ''}
+                    block py-1.5 transition-colors line-clamp-2 break-keep
+                    ${isH1 ? 'font-bold text-gray-900 hover:text-primary text-[15px]' : ''}
+                    ${isH2 ? 'font-medium text-gray-600 hover:text-primary pl-3 border-l-2 border-gray-200 hover:border-primary text-[14px]' : ''}
+                    ${isH3 ? 'text-gray-500 hover:text-gray-700 text-[13px] pl-3' : ''}
                   `}
                 >
-                  {isH1 && <span className="text-primary mr-1.5">●</span>}
-                  {isH2 && <span className="text-gray-400 mr-1.5">·</span>}
+                  {isH1 && <span className="text-primary mr-2">■</span>}
+                  {isH2 && <span className="text-gray-400 mr-1.5">›</span>}
+                  {isH3 && <span className="text-gray-300 mr-1.5">–</span>}
                   {heading.text}
                 </a>
               </li>

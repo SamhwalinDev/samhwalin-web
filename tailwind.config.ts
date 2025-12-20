@@ -60,6 +60,11 @@ const config: Config = {
       },
       fontSize: {
         'display': ['2.5rem', { lineHeight: '1.2', fontWeight: '700', letterSpacing: '-0.02em' }],
+        // Article content heading sizes
+        'article-h1': ['1.875rem', { lineHeight: '1.3', fontWeight: '700', letterSpacing: '-0.02em' }], // 30px
+        'article-h2': ['1.5rem', { lineHeight: '1.35', fontWeight: '600', letterSpacing: '-0.01em' }],  // 24px
+        'article-h3': ['1.25rem', { lineHeight: '1.4', fontWeight: '600' }],  // 20px
+        // UI heading sizes
         'h1': ['1.75rem', { lineHeight: '1.3', fontWeight: '600', letterSpacing: '-0.02em' }],
         'h2': ['1.25rem', { lineHeight: '1.4', fontWeight: '600' }],
         'h3': ['1.125rem', { lineHeight: '1.4', fontWeight: '600' }],

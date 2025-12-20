@@ -99,7 +99,7 @@ export function MobileTableOfContents({ content }: MobileTableOfContentsProps) {
 
             {/* Headings List */}
             <nav className="px-6 py-4 max-h-[60vh] overflow-y-auto">
-              <ul className="space-y-1">
+              <ul className="space-y-0.5">
                 {headings.map((heading, idx) => {
                   const isH1 = heading.level === 1;
                   const isH2 = heading.level === 2;
@@ -110,22 +110,23 @@ export function MobileTableOfContents({ content }: MobileTableOfContentsProps) {
                     <li
                       key={idx}
                       className={cn(
-                        isH1 && !isFirstH1 && 'mt-3',
-                        isH2 && 'ml-4',
-                        isH3 && 'ml-7'
+                        isH1 && !isFirstH1 && 'mt-4 pt-3 border-t border-gray-100',
+                        isH2 && '',
+                        isH3 && 'ml-5'
                       )}
                     >
                       <button
                         onClick={() => handleHeadingClick(heading.lineIndex)}
                         className={cn(
-                          'w-full text-left flex items-center gap-2 py-1.5 transition-colors break-keep',
-                          isH1 && 'font-semibold text-gray-900 hover:text-primary',
-                          isH2 && 'font-normal text-gray-600 hover:text-primary',
-                          isH3 && 'font-normal text-gray-500 hover:text-primary'
+                          'w-full text-left flex items-center py-2 transition-colors break-keep',
+                          isH1 && 'font-bold text-gray-900 hover:text-primary text-base',
+                          isH2 && 'font-medium text-gray-600 hover:text-primary pl-4 border-l-2 border-gray-200 active:border-primary text-[15px]',
+                          isH3 && 'text-gray-500 hover:text-gray-700 text-sm pl-4'
                         )}
                       >
-                        {isH1 && <span className="text-primary text-xs">●</span>}
-                        {isH2 && <span className="text-gray-400 text-xs">·</span>}
+                        {isH1 && <span className="text-primary mr-2.5 text-sm">■</span>}
+                        {isH2 && <span className="text-gray-400 mr-2">›</span>}
+                        {isH3 && <span className="text-gray-300 mr-2">–</span>}
                         {heading.text}
                       </button>
                     </li>
