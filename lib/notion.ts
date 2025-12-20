@@ -138,34 +138,65 @@ export async function getHwalseoBySlug(slug: string): Promise<Hwalseo | null> {
     if (response.results.length === 0) {
       const lastDashIndex = slug.lastIndexOf('-');
       if (lastDashIndex > 0) {
-        const shortId = slug.slice(lastDashIndex + 1);
+        const shortId = slug.slice(lastDashIndex + 1).toLowerCase();
+        const elderSlugFromUrl = slug.slice(0, lastDashIndex);
 
-        // 모든 Published 활서를 가져와서 생성된 슬러그와 매칭
-        const allHwalseo = await notion.databases.query({
-          database_id: databaseId,
-          filter: {
-            property: 'Status',
-            select: {
-              equals: 'Published',
+        // shortId가 4자인 경우에만 자동 생성된 슬러그로 판단
+        if (shortId.length === 4) {
+          // 먼저 Elder 슬러그로 어르신 찾기 (더 효율적)
+          const elderResponse = await notion.databases.query({
+            database_id: elderDbId,
+            filter: {
+              and: [
+                {
+                  property: 'Slug',
+                  rich_text: {
+                    equals: elderSlugFromUrl,
+                  },
+                },
+                {
+                  property: 'Status',
+                  select: {
+                    equals: 'Published',
+                  },
+                },
+              ],
             },
-          },
-        });
+          });
 
-        // 각 활서에 대해 생성된 슬러그 확인
-        for (const page of allHwalseo.results as any[]) {
-          const cleanId = page.id.replace(/-/g, '');
-          const pageShortId = cleanId.slice(-4).toLowerCase();
+          if (elderResponse.results.length > 0) {
+            const elderPage = elderResponse.results[0] as any;
+            const elderId = elderPage.id;
 
-          if (pageShortId === shortId) {
-            const elderId = page.properties.Elder?.relation?.[0]?.id;
-            if (elderId) {
-              const elderSlug = await getElderSlugById(elderId);
-              if (elderSlug) {
-                const generatedSlug = generateHwalseoSlug(elderSlug, page.id);
-                if (generatedSlug === slug) {
-                  response = { results: [page], has_more: false, type: 'page_or_database', page_or_database: {}, next_cursor: null, object: 'list' };
-                  break;
-                }
+            // 해당 어르신의 활서 목록 가져오기
+            const elderHwalseos = await notion.databases.query({
+              database_id: databaseId,
+              filter: {
+                and: [
+                  {
+                    property: 'Status',
+                    select: {
+                      equals: 'Published',
+                    },
+                  },
+                  {
+                    property: 'Elder',
+                    relation: {
+                      contains: elderId,
+                    },
+                  },
+                ],
+              },
+            });
+
+            // ID 끝 4자리가 일치하는 활서 찾기
+            for (const page of elderHwalseos.results as any[]) {
+              const cleanId = page.id.replace(/-/g, '');
+              const pageShortId = cleanId.slice(-4).toLowerCase();
+
+              if (pageShortId === shortId) {
+                response = { results: [page], has_more: false, type: 'page_or_database', page_or_database: {}, next_cursor: null, object: 'list' };
+                break;
               }
             }
           }
