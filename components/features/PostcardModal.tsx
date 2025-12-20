@@ -35,6 +35,8 @@ const EMAIL_TYPO_MAP: Record<string, string> = {
   'gamil.com': 'gmail.com',
   'gnail.com': 'gmail.com',
   'gmail.con': 'gmail.com',
+  'gmail.cm': 'gmail.com',
+  'gmail.comm': 'gmail.com',
   // Naver 오타
   'naver.net': 'naver.com',
   'naver.co': 'naver.com',
@@ -43,24 +45,33 @@ const EMAIL_TYPO_MAP: Record<string, string> = {
   'nave.com': 'naver.com',
   'naer.com': 'naver.com',
   'naver.cm': 'naver.com',
+  'naver.comm': 'naver.com',
+  'navr.com': 'naver.com',
+  'naevr.com': 'naver.com',
   // Daum 오타
   'daum.com': 'daum.net',
   'daum.co': 'daum.net',
   'daum.kr': 'daum.net',
   'daum.con': 'daum.net',
+  'daum.ne': 'daum.net',
+  'daum.nett': 'daum.net',
   // Hanmail 오타
   'hanmail.com': 'hanmail.net',
   'hanmail.co': 'hanmail.net',
   'hanmail.kr': 'hanmail.net',
   'hamail.net': 'hanmail.net',
+  'hanmail.ne': 'hanmail.net',
+  'hanmail.nett': 'hanmail.net',
   // Kakao 오타
   'kakao.net': 'kakao.com',
   'kakao.co': 'kakao.com',
   'kakao.kr': 'kakao.com',
+  'kakao.cm': 'kakao.com',
   // Nate 오타
   'nate.net': 'nate.com',
   'nate.co': 'nate.com',
   'nate.kr': 'nate.com',
+  'nate.ne': 'nate.com',
   // Yahoo 오타
   'yahoo.con': 'yahoo.com',
   'yahoo.co': 'yahoo.com',

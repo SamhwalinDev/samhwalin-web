@@ -8,9 +8,9 @@ export function DonationProgress({ current, goal, donorCount }: DonationProgress
   const percentage = Math.min((current / goal) * 100, 100);
 
   return (
-    <div className="bg-gray-50 rounded-xl p-6">
+    <div className="flex-1 flex flex-col justify-center">
       {/* 진행률 바 */}
-      <div className="mb-4">
+      <div className="mb-6">
         <div className="flex justify-between text-body-sm text-gray-600 mb-2">
           <span>{current.toLocaleString()}원</span>
           <span>목표 {goal.toLocaleString()}원</span>
