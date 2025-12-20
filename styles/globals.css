@@ -16,12 +16,34 @@
   --color-accent: #7A9B7E;
   --color-base: #FFFEF9;
   --color-text: #2D3748;
-  
+
+  /* Notion Colors (for rich text) */
+  --notion-gray: #787774;
+  --notion-brown: #9F6B53;
+  --notion-orange: #D9730D;
+  --notion-yellow: #CB912F;
+  --notion-green: #448361;
+  --notion-blue: #337EA9;
+  --notion-purple: #9065B0;
+  --notion-pink: #C14C8A;
+  --notion-red: #D44C47;
+
+  /* Notion Background Colors */
+  --notion-gray-bg: #F1F1EF;
+  --notion-brown-bg: #F4EEEE;
+  --notion-orange-bg: #FBECDD;
+  --notion-yellow-bg: #FBF3DB;
+  --notion-green-bg: #EDF3EC;
+  --notion-blue-bg: #E7F3F8;
+  --notion-purple-bg: #F6F3F9;
+  --notion-pink-bg: #FAF1F5;
+  --notion-red-bg: #FDEBEC;
+
   /* Shadows */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.1);
-  
+
   /* Transitions */
   --duration-fast: 150ms;
   --duration-normal: 200ms;

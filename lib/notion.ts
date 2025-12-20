@@ -288,7 +288,7 @@ function blocksToMarkdown(blocks: any[]): string {
         case 'paragraph':
           return richTextToString(block.paragraph.rich_text);
         case 'heading_1':
-          return `## ${richTextToString(block.heading_1.rich_text)}`;
+          return `# ${richTextToString(block.heading_1.rich_text)}`;
         case 'heading_2':
           return `## ${richTextToString(block.heading_2.rich_text)}`;
         case 'heading_3':
@@ -316,7 +316,46 @@ function blocksToMarkdown(blocks: any[]): string {
 
 function richTextToString(richText: any[]): string {
   if (!richText || richText.length === 0) return '';
-  return richText.map((text) => text.plain_text).join('');
+
+  return richText.map((item) => {
+    let text = item.plain_text || item.text?.content || '';
+    const annotations = item.annotations || {};
+
+    // Apply formatting in order (innermost first)
+    if (annotations.code) {
+      text = `\`${text}\``;
+    }
+    if (annotations.bold) {
+      text = `**${text}**`;
+    }
+    if (annotations.italic) {
+      text = `*${text}*`;
+    }
+    if (annotations.strikethrough) {
+      text = `~~${text}~~`;
+    }
+    if (annotations.underline) {
+      text = `<u>${text}</u>`;
+    }
+
+    // Handle links
+    if (item.href) {
+      text = `[${text}](${item.href})`;
+    }
+
+    // Handle colors (use custom markers that we'll process in ContentRenderer)
+    if (annotations.color && annotations.color !== 'default') {
+      const color = annotations.color;
+      if (color.includes('_background')) {
+        const bgColor = color.replace('_background', '');
+        text = `[HIGHLIGHT:${bgColor}]${text}[/HIGHLIGHT]`;
+      } else {
+        text = `[COLOR:${color}]${text}[/COLOR]`;
+      }
+    }
+
+    return text;
+  }).join('');
 }
 
 export async function getRelatedHwalseos(

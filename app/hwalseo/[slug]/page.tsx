@@ -1,3 +1,4 @@
+import React from 'react';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -34,6 +35,61 @@ export async function generateMetadata({
       images: hwalseo.coverImage ? [hwalseo.coverImage] : [],
     },
   };
+}
+
+// Parse inline formatting (bold, italic, code, links, colors, etc.)
+function parseInlineFormatting(text: string): React.ReactNode {
+  // Helper to process markdown formatting
+  const processMarkdown = (str: string): string => {
+    // Process bold **text**
+    const boldRegex = /\*\*(.+?)\*\*/g;
+    // Process italic *text*
+    const italicRegex = /\*([^*]+)\*/g;
+    // Process code `text`
+    const codeRegex = /`([^`]+)`/g;
+    // Process strikethrough ~~text~~
+    const strikeRegex = /~~(.+?)~~/g;
+    // Process underline <u>text</u>
+    const underlineRegex = /<u>(.+?)<\/u>/g;
+    // Process links [text](url)
+    const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+
+    // Replace all patterns with React elements
+    let result = str;
+
+    // For simplicity, we'll use dangerouslySetInnerHTML for inline formatting
+    // Convert markdown to HTML
+    result = result.replace(boldRegex, '<strong>$1</strong>');
+    result = result.replace(italicRegex, '<em>$1</em>');
+    result = result.replace(codeRegex, '<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono">$1</code>');
+    result = result.replace(strikeRegex, '<del>$1</del>');
+    result = result.replace(underlineRegex, '<u>$1</u>');
+    result = result.replace(linkRegex, '<a href="$2" class="text-primary hover:underline" target="_blank" rel="noopener noreferrer">$1</a>');
+
+    // Process color markers [COLOR:colorname]text[/COLOR]
+    result = result.replace(
+      /\[COLOR:(\w+)\](.+?)\[\/COLOR\]/g,
+      '<span style="color: var(--notion-$1)">$2</span>'
+    );
+
+    // Process highlight markers [HIGHLIGHT:colorname]text[/HIGHLIGHT]
+    result = result.replace(
+      /\[HIGHLIGHT:(\w+)\](.+?)\[\/HIGHLIGHT\]/g,
+      '<mark style="background-color: var(--notion-$1-bg); padding: 0.125rem 0.25rem; border-radius: 0.125rem;">$2</mark>'
+    );
+
+    return result;
+  };
+
+  const processedHtml = processMarkdown(text);
+
+  // If no HTML was added, return plain text
+  if (processedHtml === text) {
+    return text;
+  }
+
+  // Return as dangerouslySetInnerHTML span
+  return <span dangerouslySetInnerHTML={{ __html: processedHtml }} />;
 }
 
 function ContentRenderer({ content }: { content: string }) {
@@ -81,7 +137,7 @@ function ContentRenderer({ content }: { content: string }) {
               id={`heading-${index}`}
               className="text-display-sm text-gray-900 mt-12 mb-6 scroll-mt-24 break-keep"
             >
-              {text}
+              {parseInlineFormatting(text)}
             </h2>
           );
         }
@@ -94,7 +150,7 @@ function ContentRenderer({ content }: { content: string }) {
               id={`heading-${index}`}
               className="text-h1 text-gray-900 mt-10 mb-5 scroll-mt-24 break-keep"
             >
-              {text}
+              {parseInlineFormatting(text)}
             </h3>
           );
         }
@@ -107,7 +163,7 @@ function ContentRenderer({ content }: { content: string }) {
               id={`heading-${index}`}
               className="text-h3 text-gray-900 mt-8 mb-4 scroll-mt-24 break-keep"
             >
-              {text}
+              {parseInlineFormatting(text)}
             </h4>
           );
         }
@@ -118,7 +174,7 @@ function ContentRenderer({ content }: { content: string }) {
               key={index}
               className="border-l-4 border-primary pl-6 my-8 italic text-gray-600"
             >
-              {line.replace('> ', '')}
+              {parseInlineFormatting(line.replace('> ', ''))}
             </blockquote>
           );
         }
@@ -130,7 +186,7 @@ function ContentRenderer({ content }: { content: string }) {
         if (line.startsWith('• ')) {
           return (
             <li key={index} className="text-body-lg text-text leading-loose ml-4">
-              {line.replace('• ', '')}
+              {parseInlineFormatting(line.replace('• ', ''))}
             </li>
           );
         }
@@ -138,7 +194,7 @@ function ContentRenderer({ content }: { content: string }) {
         if (line.trim()) {
           return (
             <p key={index} className="text-body-lg text-text leading-loose mb-6">
-              {line}
+              {parseInlineFormatting(line)}
             </p>
           );
         }
@@ -182,7 +238,7 @@ function DesktopTableOfContents({ content }: { content: string }) {
     <nav className="hidden xl:block w-56 shrink-0">
       <div className="sticky top-24">
         <h4 className="text-sm font-semibold text-gray-900 mb-4">목차</h4>
-        <ul className="space-y-1.5 text-sm">
+        <ul className="space-y-0.5 text-sm">
           {headings.map((heading, idx) => {
             const isH1 = heading.level === 1;
             const isH2 = heading.level === 2;
@@ -193,22 +249,23 @@ function DesktopTableOfContents({ content }: { content: string }) {
               <li
                 key={idx}
                 className={`
-                  ${isH1 && !isFirstH1 ? 'mt-3' : ''}
-                  ${isH2 ? 'ml-3' : ''}
-                  ${isH3 ? 'ml-6' : ''}
+                  ${isH1 && !isFirstH1 ? 'mt-4 pt-3 border-t border-gray-100' : ''}
+                  ${isH2 ? 'ml-0' : ''}
+                  ${isH3 ? 'ml-4' : ''}
                 `}
               >
                 <a
                   href={`#heading-${heading.lineIndex}`}
                   className={`
-                    block py-1 transition-colors line-clamp-2 break-keep
-                    ${isH1 ? 'font-medium text-gray-900 hover:text-primary' : ''}
-                    ${isH2 ? 'text-gray-600 hover:text-primary' : ''}
-                    ${isH3 ? 'text-gray-500 hover:text-primary' : ''}
+                    block py-1.5 transition-colors line-clamp-2 break-keep
+                    ${isH1 ? 'font-semibold text-gray-900 hover:text-primary text-[15px]' : ''}
+                    ${isH2 ? 'font-medium text-gray-700 hover:text-primary pl-3 border-l-2 border-gray-200 hover:border-primary' : ''}
+                    ${isH3 ? 'text-gray-500 hover:text-gray-700 text-[13px] pl-3' : ''}
                   `}
                 >
-                  {isH1 && <span className="text-primary mr-1.5">●</span>}
-                  {isH2 && <span className="text-gray-400 mr-1.5">·</span>}
+                  {isH1 && <span className="text-primary mr-2">■</span>}
+                  {isH2 && <span className="text-gray-400 mr-1.5">›</span>}
+                  {isH3 && <span className="text-gray-300 mr-1.5">–</span>}
                   {heading.text}
                 </a>
               </li>
