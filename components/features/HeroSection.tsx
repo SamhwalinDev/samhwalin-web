@@ -52,13 +52,25 @@ export function HeroSection({ latestHwalseo }: HeroSectionProps) {
           )}
 
           <h1 className="text-display-lg text-white mb-6 leading-tight">
-            어르신의 삶이<br />
-            우리의 이야기가 됩니다
+            {latestHwalseo ? (
+              latestHwalseo.title
+            ) : (
+              <>
+                어르신의 삶이<br />
+                우리의 이야기가 됩니다
+              </>
+            )}
           </h1>
-          
+
           <p className="text-body-lg text-white/80 mb-8 leading-relaxed">
-            삼활인은 어르신들의 인생 이야기를 기록하고,<br />
-            세대를 넘어 연결하는 프로젝트입니다.
+            {latestHwalseo ? (
+              latestHwalseo.excerpt
+            ) : (
+              <>
+                삼활인은 어르신들의 인생 이야기를 기록하고,<br />
+                세대를 넘어 연결하는 프로젝트입니다.
+              </>
+            )}
           </p>
 
           {/* CTA 버튼 */}

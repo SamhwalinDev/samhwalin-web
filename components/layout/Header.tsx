@@ -9,6 +9,7 @@ import { Container } from './Container';
 import { cn } from '@/lib/utils';
 
 const NAV_LINKS = [
+  { label: '프로필', href: '/elders' },
   { label: '활서', href: '/hwalseo' },
   { label: '프로젝트 소개', href: '/about' },
   { label: '후원하기', href: '/donate' },
@@ -27,15 +28,15 @@ export function Header({ variant = 'default' }: HeaderProps) {
       <Container>
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <Image 
-              src="/logo.png" 
-              alt="어라이브 로고" 
-              width={32} 
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/images/logo-alive-header.png"
+              alt="어라이브 로고"
+              width={120}
               height={32}
-              className="w-8 h-8"
+              className="h-8 w-auto"
+              priority
             />
-            <span className="text-h3 font-semibold text-gray-900">어라이브</span>
           </Link>
 
           {/* Desktop Navigation */}

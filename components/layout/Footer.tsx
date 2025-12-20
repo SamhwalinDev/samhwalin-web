@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Mail, Instagram, Youtube } from 'lucide-react';
 import { NAV_LINKS } from '@/types';
+import { EmailSubscribeForm } from '@/components/features/EmailSubscribeForm';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -82,8 +83,21 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Copyright */}
+        {/* Newsletter Subscription */}
         <div className="mt-12 pt-8 border-t border-gray-200">
+          <div className="max-w-md mx-auto text-center">
+            <h4 className="text-body font-semibold text-gray-900 mb-2">
+              새로운 이야기를 받아보세요
+            </h4>
+            <p className="text-body-sm text-gray-600 mb-4">
+              새로운 활서가 발행되면 이메일로 알려드릴게요.
+            </p>
+            <EmailSubscribeForm source="footer" />
+          </div>
+        </div>
+
+        {/* Copyright */}
+        <div className="mt-8 pt-8 border-t border-gray-200">
           <p className="text-small text-gray-500 text-center">
             © {currentYear} 삼활인. All rights reserved.
           </p>
