@@ -221,14 +221,88 @@ import { ProxiedImage } from '@/components/ui';
 
 ## Design System
 
-### Colors (Tailwind tokens)
+### Color System
+
+All colors are defined as semantic design tokens in `tailwind.config.ts`.
+
+#### Brand Colors
 ```
-primary:    #F49249 (warm orange)
-secondary:  #7B7FA8 (soft blue-gray)
-accent:     #7A9B7E (sage green)
-base:       #FFFEF9 (warm white)
-text:       #2D3748 (dark gray)
+# Primary (Orange) - CTAs, highlights, brand identity
+primary:             #F49249
+primary-light:       #F5A364
+primary-dark:        #E07A2E
+primary-extra-light: #FCE0CC
+
+# Secondary (Purple-Gray) - Info, secondary actions
+secondary:             #7B7FA8
+secondary-light:       #9FA3C7
+secondary-dark:        #5B5F8F
+secondary-extra-light: #E8E9F3
+
+# Accent (Green) - Success, positive states
+accent:             #7A9B7E
+accent-light:       #9BB89F
+accent-dark:        #5A7A5E
+accent-extra-light: #E8F2E9
 ```
+
+#### Background Colors
+```
+background:       #FFFFFE  (main page background)
+background-light: #FFFFFE  (same as default)
+background-dark:  #F6F6FE  (darker variant)
+base:             #FFFFFE  (legacy alias)
+```
+
+#### Text Colors
+```
+text:          #2D3748           (body text)
+text-disabled: rgba(45,55,72,0.4) (disabled state)
+```
+
+#### Semantic Status Colors
+```
+success: #7A9B7E  (same as accent)
+warning: #F4B449
+error:   #E85D5D
+info:    #7B7FA8  (same as secondary)
+```
+
+#### Gray Semantic Tokens
+These replace raw Tailwind gray utilities for consistent theming:
+```
+muted:            #F9FAFB  (gray-50)  - section backgrounds, cards
+muted-foreground: #6B7280  (gray-500) - secondary text, captions
+border:           #E5E7EB  (gray-200) - borders, dividers
+foreground:       #111827  (gray-900) - headings, primary text
+```
+
+#### Color Usage Guidelines
+
+| Use Case | Token | Example |
+|----------|-------|---------|
+| Page background | `bg-base` or `bg-background` | Main layout |
+| Section background | `bg-muted` | Alternating sections |
+| Card background | `bg-muted` or `bg-white` | Cards, containers |
+| Primary text | `text-foreground` | Headings, important text |
+| Secondary text | `text-muted-foreground` | Descriptions, captions |
+| Borders | `border-border` | Card borders, dividers |
+| CTA buttons | `bg-primary text-white` | Action buttons |
+| Icon backgrounds | `bg-primary-extra-light` | Icon containers |
+
+#### Gray Utility Migration (Completed 2024-12)
+
+The following Tailwind gray utilities have been migrated to semantic tokens:
+- `text-gray-900` → `text-foreground`
+- `text-gray-600`, `text-gray-500` → `text-muted-foreground`
+- `bg-gray-50` → `bg-muted`
+- `border-gray-200` → `border-border`
+
+Keep as-is (intentional raw values):
+- `gray-100` - subtle backgrounds in dark contexts
+- `gray-300` - disabled borders
+- `gray-400` - placeholder/disabled text
+- `gray-700`, `gray-800`, `gray-900` - dark theme sections
 
 ### Typography
 ```
@@ -345,3 +419,12 @@ Note: Headings are shifted down one level (h1→h2, etc.) since the page title u
 - Notion S3 URLs require careful URL encoding/decoding
 - Long URLs (>2000 chars) need POST method for proxy
 - Image comparison in getPageContent uses path matching to avoid duplicates
+
+## Recent Changes
+
+### 2024-12-22: Color System Unification
+- **Background color**: Changed from `#FFFEF9` to `#FFFFFE` for cleaner whites
+- **Gray semantic tokens**: Migrated 31 files from raw Tailwind gray utilities to semantic tokens
+  - Step 1-3: Core pages (home, hwalseo, elders)
+  - Step 4: Remaining components (features, ui, layout, about, donate, postcard)
+- **Design tokens**: All colors now defined in `tailwind.config.ts` for consistent theming
