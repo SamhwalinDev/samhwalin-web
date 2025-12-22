@@ -105,7 +105,7 @@ export function HwalseoFilter({ hwalseoList, themes }: HwalseoFilterProps) {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="제목, 어르신 이름, 내용으로 검색"
+            placeholder="제목, 이름, 내용으로 검색"
             className={cn(
               'w-full pl-11 pr-10 py-3 rounded-full border border-gray-300',
               'text-body-sm placeholder:text-gray-400',

@@ -85,7 +85,7 @@ export function ElderFilter({ elders, regions }: ElderFilterProps) {
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
           <input
             type="text"
-            placeholder="어르신 이름으로 검색..."
+            placeholder="이름으로 검색..."
             value={searchQuery}
             onChange={(e) => handleSearchChange(e.target.value)}
             className="w-full pl-12 pr-4 py-3 bg-gray-100 border border-transparent rounded-full text-body focus:bg-white focus:border-gray-300 focus:outline-none transition-colors"
