@@ -242,27 +242,27 @@ export function PostcardModal({ isOpen, onClose, elderName, hwalseoSlug = '' }: 
                 onChange={(e) => handleEmailChange(e.target.value)}
                 className={cn(
                   "w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent",
-                  (emailError || emailSuggestion) ? "border-yellow-500" : "border-gray-300"
+                  (emailError || emailSuggestion) ? "border-warning" : "border-gray-300"
                 )}
                 placeholder="example@email.com"
               />
               {/* 오타 제안 */}
               {emailSuggestion && (
-                <div className="mt-2 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                  <p className="text-body-sm text-yellow-800">
+                <div className="mt-2 p-3 bg-warning/10 border border-warning/30 rounded-lg">
+                  <p className="text-body-sm text-warning">
                     혹시 <strong>{emailSuggestion}</strong> 을(를) 말씀하신 건가요?
                   </p>
                   <button
                     type="button"
                     onClick={handleAcceptSuggestion}
-                    className="mt-2 text-body-sm font-medium text-yellow-700 hover:text-yellow-900 underline"
+                    className="mt-2 text-body-sm font-medium text-warning hover:text-primary-dark underline"
                   >
                     네, 수정할게요
                   </button>
                 </div>
               )}
               {emailError && (
-                <p className="text-small text-red-500 mt-1">{emailError}</p>
+                <p className="text-small text-error mt-1">{emailError}</p>
               )}
             </div>
 
@@ -321,8 +321,8 @@ export function PostcardModal({ isOpen, onClose, elderName, hwalseoSlug = '' }: 
           </form>
         ) : (
           <div className="p-6 text-center">
-            <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <CreditCard size={32} className="text-yellow-600" />
+            <div className="w-16 h-16 bg-primary-extra-light rounded-full flex items-center justify-center mx-auto mb-4">
+              <CreditCard size={32} className="text-primary" />
             </div>
             <h3 className="text-h3 text-gray-900 mb-2">
               엽서가 저장되었습니다!

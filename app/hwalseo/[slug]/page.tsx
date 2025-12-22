@@ -83,61 +83,6 @@ export async function generateMetadata({
   };
 }
 
-// Parse inline formatting (bold, italic, code, links, colors, etc.)
-function parseInlineFormatting(text: string): React.ReactNode {
-  // Helper to process markdown formatting
-  const processMarkdown = (str: string): string => {
-    // Process bold **text**
-    const boldRegex = /\*\*(.+?)\*\*/g;
-    // Process italic *text*
-    const italicRegex = /\*([^*]+)\*/g;
-    // Process code `text`
-    const codeRegex = /`([^`]+)`/g;
-    // Process strikethrough ~~text~~
-    const strikeRegex = /~~(.+?)~~/g;
-    // Process underline <u>text</u>
-    const underlineRegex = /<u>(.+?)<\/u>/g;
-    // Process links [text](url)
-    const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
-
-    // Replace all patterns with React elements
-    let result = str;
-
-    // For simplicity, we'll use dangerouslySetInnerHTML for inline formatting
-    // Convert markdown to HTML
-    result = result.replace(boldRegex, '<strong>$1</strong>');
-    result = result.replace(italicRegex, '<em>$1</em>');
-    result = result.replace(codeRegex, '<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono">$1</code>');
-    result = result.replace(strikeRegex, '<del>$1</del>');
-    result = result.replace(underlineRegex, '<u>$1</u>');
-    result = result.replace(linkRegex, '<a href="$2" class="text-primary hover:underline" target="_blank" rel="noopener noreferrer">$1</a>');
-
-    // Process color markers [COLOR:colorname]text[/COLOR]
-    result = result.replace(
-      /\[COLOR:(\w+)\](.+?)\[\/COLOR\]/g,
-      '<span style="color: var(--notion-$1)">$2</span>'
-    );
-
-    // Process highlight markers [HIGHLIGHT:colorname]text[/HIGHLIGHT]
-    result = result.replace(
-      /\[HIGHLIGHT:(\w+)\](.+?)\[\/HIGHLIGHT\]/g,
-      '<mark style="background-color: var(--notion-$1-bg); padding: 0.125rem 0.25rem; border-radius: 0.125rem;">$2</mark>'
-    );
-
-    return result;
-  };
-
-  const processedHtml = processMarkdown(text);
-
-  // If no HTML was added, return plain text
-  if (processedHtml === text) {
-    return text;
-  }
-
-  // Return as dangerouslySetInnerHTML span
-  return <span dangerouslySetInnerHTML={{ __html: processedHtml }} />;
-}
-
 function ContentRenderer({ content }: { content: string }) {
   const lines = content.split('\n');
 

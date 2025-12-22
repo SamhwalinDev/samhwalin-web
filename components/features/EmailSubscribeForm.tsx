@@ -58,21 +58,21 @@ export function EmailSubscribeForm({
     switch (formState) {
       case 'success':
         return (
-          <span className="flex items-center gap-1.5 text-green-600">
+          <span className="flex items-center gap-1.5 text-success">
             <CheckCircle size={16} />
             구독 신청이 완료되었습니다!
           </span>
         );
       case 'duplicate':
         return (
-          <span className="flex items-center gap-1.5 text-amber-600">
+          <span className="flex items-center gap-1.5 text-warning">
             <AlertCircle size={16} />
             이미 구독 중인 이메일입니다.
           </span>
         );
       case 'error':
         return (
-          <span className="flex items-center gap-1.5 text-red-600">
+          <span className="flex items-center gap-1.5 text-error">
             <AlertCircle size={16} />
             오류가 발생했습니다. 다시 시도해주세요.
           </span>

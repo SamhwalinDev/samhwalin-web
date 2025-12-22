@@ -113,7 +113,7 @@ export default function AboutPage() {
           {/* Title */}
           <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white mb-6 tracking-wide font-light">
             Arrive, Alive!{' '}
-            <span className="text-amber-400">no longer Alone.</span>
+            <span className="text-primary">no longer Alone.</span>
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl text-white/70 mb-12 font-light leading-relaxed">
@@ -149,7 +149,7 @@ export default function AboutPage() {
       <section className="bg-white py-20">
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-12">
-            <span className="inline-block px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm font-medium mb-4">
+            <span className="inline-block px-3 py-1 bg-primary-extra-light text-primary-dark rounded-full text-sm font-medium mb-4">
               비영리 프로젝트
             </span>
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
@@ -162,7 +162,7 @@ export default function AboutPage() {
 
           <div className="grid md:grid-cols-2 gap-6 mb-16">
             <div className="bg-gray-50 rounded-2xl p-8 text-center">
-              <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+              <div className="w-12 h-12 bg-primary-extra-light rounded-xl flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">🌱</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">alive</h3>
@@ -173,7 +173,7 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="bg-gray-50 rounded-2xl p-8 text-center">
-              <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+              <div className="w-12 h-12 bg-primary-extra-light rounded-xl flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">✉️</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">arrive</h3>
@@ -189,7 +189,7 @@ export default function AboutPage() {
           <div className="border-t border-gray-200 pt-12">
             <div className="grid md:grid-cols-2 gap-8">
               <div>
-                <p className="text-sm font-medium text-amber-600 mb-2">VISION</p>
+                <p className="text-sm font-medium text-primary-dark mb-2">VISION</p>
                 <p className="text-xl md:text-2xl font-medium text-gray-900">
                   우리의 이웃 어른들께
                   <br />
@@ -197,7 +197,7 @@ export default function AboutPage() {
                 </p>
               </div>
               <div>
-                <p className="text-sm font-medium text-amber-600 mb-2">MISSION</p>
+                <p className="text-sm font-medium text-primary-dark mb-2">MISSION</p>
                 <p className="text-xl md:text-2xl font-medium text-gray-900">
                   인생의 황혼에 다다른 이들의 삶을 기록하여 공동체에 기억되게
                   합니다.
@@ -209,7 +209,7 @@ export default function AboutPage() {
       </section>
 
       {/* 활서란? 섹션 */}
-      <section className="bg-amber-50 py-20">
+      <section className="bg-primary-extra-light py-20">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
@@ -229,10 +229,10 @@ export default function AboutPage() {
                 key={item.step}
                 className="bg-white rounded-2xl p-6 text-center shadow-sm"
               >
-                <div className="w-14 h-14 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-14 h-14 bg-primary-extra-light rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl">{item.icon}</span>
                 </div>
-                <p className="text-sm text-amber-600 font-medium mb-1">
+                <p className="text-sm text-primary-dark font-medium mb-1">
                   {item.step}
                 </p>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
@@ -249,7 +249,7 @@ export default function AboutPage() {
       <section className="bg-gray-900 text-white py-20">
         <Container>
           <div className="text-center mb-16">
-            <h2 className="text-2xl md:text-3xl font-bold text-amber-400 mb-3">
+            <h2 className="text-2xl md:text-3xl font-bold text-primary mb-3">
               우리의 철학
             </h2>
             <p className="text-gray-400">
@@ -262,13 +262,13 @@ export default function AboutPage() {
               <div key={item.latin}>
                 <div className="flex flex-col md:flex-row gap-6 md:gap-8 py-8">
                   <div className="md:w-1/3">
-                    <p className="text-3xl font-bold text-amber-500 mb-2">
+                    <p className="text-3xl font-bold text-primary mb-2">
                       {item.number}
                     </p>
                     <h3 className="text-xl font-semibold text-white mb-1">
                       {item.latin}
                     </h3>
-                    <p className="text-amber-400/70">{item.korean}</p>
+                    <p className="text-primary/70">{item.korean}</p>
                   </div>
                   <div className="md:w-2/3">
                     <p className="text-gray-300 leading-relaxed">
@@ -289,7 +289,7 @@ export default function AboutPage() {
       <section className="bg-white py-20">
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-12">
-            <span className="inline-block px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm font-medium mb-4">
+            <span className="inline-block px-3 py-1 bg-primary-extra-light text-primary-dark rounded-full text-sm font-medium mb-4">
               운영팀
             </span>
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
@@ -310,7 +310,7 @@ export default function AboutPage() {
                 <h3 className="text-lg font-semibold text-gray-900 mb-1">
                   {member.name}
                 </h3>
-                <p className="text-sm text-amber-600 font-medium mb-1">
+                <p className="text-sm text-primary-dark font-medium mb-1">
                   {member.role}
                 </p>
                 <p className="text-sm text-gray-500">{member.description}</p>
@@ -363,7 +363,7 @@ export default function AboutPage() {
             </Link>
             <Link
               href="/donate"
-              className="px-8 py-4 bg-amber-500 text-white rounded-lg font-medium hover:bg-amber-600 transition-colors"
+              className="px-8 py-4 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors"
             >
               후원하기
             </Link>

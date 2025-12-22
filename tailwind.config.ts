@@ -10,30 +10,40 @@ const config: Config = {
     extend: {
       // Colors
       colors: {
-        // Primary (따뜻한 오렌지)
+        // Primary (Orange)
         primary: {
           DEFAULT: '#F49249',
           light: '#F5A364',
           dark: '#E07A2E',
           'extra-light': '#FCE0CC',
         },
-        // Secondary (소프트 블루그레이)
+        // Secondary (Purple-Gray)
         secondary: {
           DEFAULT: '#7B7FA8',
           light: '#9FA3C7',
           dark: '#5B5F8F',
           'extra-light': '#E8E9F3',
         },
-        // Accent (세이지 그린)
+        // Accent (Green)
         accent: {
           DEFAULT: '#7A9B7E',
           light: '#9BB89F',
           dark: '#5A7A5E',
           'extra-light': '#E8F2E9',
         },
-        // Base & Neutrals
+        // Background
+        background: {
+          DEFAULT: '#FFFEF9',
+          light: '#FFFFFE',
+          dark: '#F6F6FE',
+        },
+        // Text
+        text: {
+          DEFAULT: '#2D3748',
+          disabled: 'rgba(45, 55, 72, 0.4)',
+        },
+        // Legacy alias (for backward compatibility)
         base: '#FFFEF9',
-        text: '#2D3748',
         // Semantic
         success: '#7A9B7E',
         warning: '#F4B449',

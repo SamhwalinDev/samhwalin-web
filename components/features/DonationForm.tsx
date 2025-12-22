@@ -88,7 +88,7 @@ export function DonationForm({ className }: DonationFormProps) {
   if (step === 'payment') {
     return (
       <div className={cn('text-center py-8', className)}>
-        <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 bg-primary-extra-light rounded-full flex items-center justify-center mx-auto mb-4">
           <span className="text-3xl">💛</span>
         </div>
         <h3 className="text-h3 text-gray-900 mb-2">
