@@ -33,7 +33,7 @@ const config: Config = {
         },
         // Background
         background: {
-          DEFAULT: '#FFFEF9',
+          DEFAULT: '#FFFFFE',
           light: '#FFFFFE',
           dark: '#F6F6FE',
         },
@@ -43,12 +43,19 @@ const config: Config = {
           disabled: 'rgba(45, 55, 72, 0.4)',
         },
         // Legacy alias (for backward compatibility)
-        base: '#FFFEF9',
-        // Semantic
+        base: '#FFFFFE',
+        // Semantic status colors
         success: '#7A9B7E',
         warning: '#F4B449',
         error: '#E85D5D',
         info: '#7B7FA8',
+        // Semantic gray tokens
+        muted: {
+          DEFAULT: '#F9FAFB',  // gray-50 - section backgrounds
+          foreground: '#6B7280', // gray-500 - secondary text
+        },
+        border: '#E5E7EB',  // gray-200 - default borders
+        foreground: '#111827', // gray-900 - headings, primary text
       },
 
       // Typography

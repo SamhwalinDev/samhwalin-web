@@ -111,7 +111,7 @@ function ContentRenderer({ content }: { content: string }) {
                   />
                 </div>
                 {caption && (
-                  <figcaption className="text-center text-caption text-gray-500 mt-2">
+                  <figcaption className="text-center text-caption text-muted-foreground mt-2">
                     {parseInlineFormatting(caption)}
                   </figcaption>
                 )}
@@ -126,7 +126,7 @@ function ContentRenderer({ content }: { content: string }) {
             <h2
               key={index}
               id={`heading-${index}`}
-              className="text-article-h1 text-gray-900 mt-12 mb-6 scroll-mt-24 break-keep"
+              className="text-article-h1 text-foreground mt-12 mb-6 scroll-mt-24 break-keep"
             >
               {parseInlineFormatting(text)}
             </h2>
@@ -139,7 +139,7 @@ function ContentRenderer({ content }: { content: string }) {
             <h3
               key={index}
               id={`heading-${index}`}
-              className="text-article-h2 text-gray-900 mt-10 mb-5 scroll-mt-24 break-keep"
+              className="text-article-h2 text-foreground mt-10 mb-5 scroll-mt-24 break-keep"
             >
               {parseInlineFormatting(text)}
             </h3>
@@ -152,7 +152,7 @@ function ContentRenderer({ content }: { content: string }) {
             <h4
               key={index}
               id={`heading-${index}`}
-              className="text-article-h3 text-gray-900 mt-8 mb-4 scroll-mt-24 break-keep"
+              className="text-article-h3 text-foreground mt-8 mb-4 scroll-mt-24 break-keep"
             >
               {parseInlineFormatting(text)}
             </h4>
@@ -163,7 +163,7 @@ function ContentRenderer({ content }: { content: string }) {
           return (
             <blockquote
               key={index}
-              className="border-l-4 border-primary pl-6 my-8 italic text-gray-600"
+              className="border-l-4 border-primary pl-6 my-8 italic text-muted-foreground"
             >
               {parseInlineFormatting(line.replace('> ', ''))}
             </blockquote>
@@ -171,7 +171,7 @@ function ContentRenderer({ content }: { content: string }) {
         }
         // 구분선
         if (line === '---') {
-          return <hr key={index} className="my-8 border-gray-200" />;
+          return <hr key={index} className="my-8 border-border" />;
         }
         // 목록
         if (line.startsWith('• ')) {
@@ -228,7 +228,7 @@ function DesktopTableOfContents({ content }: { content: string }) {
   return (
     <nav className="hidden xl:block w-56 shrink-0">
       <div className="sticky top-24">
-        <h4 className="text-sm font-semibold text-gray-900 mb-4">목차</h4>
+        <h4 className="text-sm font-semibold text-foreground mb-4">목차</h4>
         <ul className="space-y-0.5 text-sm">
           {headings.map((heading, idx) => {
             const isH1 = heading.level === 1;
@@ -248,9 +248,9 @@ function DesktopTableOfContents({ content }: { content: string }) {
                   href={`#heading-${heading.lineIndex}`}
                   className={`
                     block py-1.5 transition-colors line-clamp-2 break-keep
-                    ${isH1 ? 'font-bold text-gray-900 hover:text-primary text-[15px]' : ''}
-                    ${isH2 ? 'font-medium text-gray-600 hover:text-primary pl-3 border-l-2 border-gray-200 hover:border-primary text-[14px]' : ''}
-                    ${isH3 ? 'text-gray-500 hover:text-gray-700 text-[13px] pl-3' : ''}
+                    ${isH1 ? 'font-bold text-foreground hover:text-primary text-[15px]' : ''}
+                    ${isH2 ? 'font-medium text-muted-foreground hover:text-primary pl-3 border-l-2 border-border hover:border-primary text-[14px]' : ''}
+                    ${isH3 ? 'text-muted-foreground hover:text-foreground text-[13px] pl-3' : ''}
                   `}
                 >
                   {isH1 && <span className="text-primary mr-2">■</span>}
@@ -283,7 +283,7 @@ function ElderProfile({
 
   return (
     <Link href={linkHref} className="xl:hidden block">
-      <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 p-6 bg-gray-50 rounded-xl mb-10 hover:bg-gray-100 transition-colors">
+      <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 p-6 bg-muted rounded-xl mb-10 hover:bg-gray-100 transition-colors">
         {/* 어르신 사진 */}
         {elder?.photo ? (
           <div className="relative w-32 h-32 sm:w-40 sm:h-40 mx-auto sm:mx-0 rounded-xl overflow-hidden bg-gray-200 shrink-0">
@@ -302,11 +302,11 @@ function ElderProfile({
 
         {/* 약력 */}
         <div className="flex-1">
-          <h3 className="text-h2 text-gray-900 mb-1 text-center sm:text-left break-keep">
+          <h3 className="text-h2 text-foreground mb-1 text-center sm:text-left break-keep">
             {elder?.name || elderName}
           </h3>
           {age && (
-            <p className="text-body-sm text-gray-500 mb-4 text-center sm:text-left">
+            <p className="text-body-sm text-muted-foreground mb-4 text-center sm:text-left">
               {elder?.birthYear}년생 ({age}세)
             </p>
           )}
@@ -321,7 +321,7 @@ function ElderProfile({
                 .split('\n')
                 .slice(0, 3)
                 .map((line, idx) => (
-                  <p key={idx} className="text-body-sm text-gray-600 break-keep">
+                  <p key={idx} className="text-body-sm text-muted-foreground break-keep">
                     {line}
                   </p>
                 ))}
@@ -353,11 +353,11 @@ export default async function HwalseoDetailPage({
 
   return (
     <>
-      <Section spacing="sm" className="border-b border-gray-200">
+      <Section spacing="sm" className="border-b border-border">
         <Container>
           <Link
             href="/hwalseo"
-            className="inline-flex items-center gap-2 text-body-sm text-gray-500 hover:text-gray-900 transition-colors mb-6"
+            className="inline-flex items-center gap-2 text-body-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
           >
             <ArrowLeft size={16} />
             활서 목록
@@ -365,8 +365,8 @@ export default async function HwalseoDetailPage({
 
           <div className="max-w-content">
             <span className="tag mb-3">{hwalseo.theme}</span>
-            <h1 className="text-display text-gray-900 mb-4">{hwalseo.title}</h1>
-            <p className="text-body-lg text-gray-600 mb-6">
+            <h1 className="text-display text-foreground mb-4">{hwalseo.title}</h1>
+            <p className="text-body-lg text-muted-foreground mb-6">
               {hwalseo.elderName}
               {hwalseo.elderAge ? ` (${hwalseo.elderAge}세)` : ''}
             </p>
@@ -386,7 +386,7 @@ export default async function HwalseoDetailPage({
                 {elder ? (
                   <Link
                     href={`/elders/${elder.slug}`}
-                    className="block bg-white border border-gray-200 shadow-sm rounded-xl p-5 hover:shadow-md hover:border-gray-300 transition-all"
+                    className="block bg-white border border-border shadow-sm rounded-xl p-5 hover:shadow-md hover:border-gray-300 transition-all"
                   >
                     {/* 프로필 사진 */}
                     {elder.photo ? (
@@ -403,17 +403,17 @@ export default async function HwalseoDetailPage({
                         {elder.gender === '여성' ? '👵' : '👴'}
                       </div>
                     )}
-                    <h4 className="text-h3 text-gray-900 text-center mb-1 break-keep">
+                    <h4 className="text-h3 text-foreground text-center mb-1 break-keep">
                       {elder.name}
                     </h4>
                     {elder.birthYear && (
-                      <p className="text-caption text-gray-500 text-center mb-3">
+                      <p className="text-caption text-muted-foreground text-center mb-3">
                         {elder.birthYear}년생
                       </p>
                     )}
                     {/* 약력 */}
                     {elder.bio && (
-                      <div className="text-small text-gray-600 text-left mb-3 space-y-1 border-t border-gray-100 pt-3">
+                      <div className="text-small text-muted-foreground text-left mb-3 space-y-1 border-t border-gray-100 pt-3">
                         {elder.bio
                           .split('\n')
                           .slice(0, 3)
@@ -431,12 +431,12 @@ export default async function HwalseoDetailPage({
                 ) : (
                   <Link
                     href={`/hwalseo?elder=${encodeURIComponent(hwalseo.elderName)}`}
-                    className="block bg-white border border-gray-200 shadow-sm rounded-xl p-5 hover:shadow-md hover:border-gray-300 transition-all"
+                    className="block bg-white border border-border shadow-sm rounded-xl p-5 hover:shadow-md hover:border-gray-300 transition-all"
                   >
                     <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center text-3xl">
                       👴
                     </div>
-                    <h4 className="text-h3 text-gray-900 text-center mb-1 break-keep">
+                    <h4 className="text-h3 text-foreground text-center mb-1 break-keep">
                       {hwalseo.elderName}
                     </h4>
                     <p className="text-small text-gray-400 text-center mt-3">
@@ -468,7 +468,7 @@ export default async function HwalseoDetailPage({
       {relatedHwalseos.length > 0 && (
         <Section background="gray" spacing="default">
           <Container>
-            <h2 className="text-h1 text-gray-900 mb-8 text-center">다른 활서</h2>
+            <h2 className="text-h1 text-foreground mb-8 text-center">다른 활서</h2>
             <div className="grid sm:grid-cols-2 gap-8 max-w-3xl mx-auto">
               {relatedHwalseos.map((related) => (
                 <HwalseoCard key={related.id} hwalseo={related} />

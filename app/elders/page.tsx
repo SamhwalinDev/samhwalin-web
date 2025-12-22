@@ -36,8 +36,8 @@ export default async function EldersPage({ searchParams }: EldersPageProps) {
       <Container>
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-display text-gray-900 mb-4">어르신들</h1>
-          <p className="text-body-lg text-gray-600">
+          <h1 className="text-display text-foreground mb-4">어르신들</h1>
+          <p className="text-body-lg text-muted-foreground">
             삼활인이 만난 어르신들의 이야기를 소개합니다.
           </p>
         </div>
@@ -56,7 +56,7 @@ export default async function EldersPage({ searchParams }: EldersPageProps) {
                 className={`px-4 py-2 rounded-full text-body-sm transition-colors ${
                   selectedRegion === region
                     ? 'bg-primary text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    : 'bg-gray-100 text-muted-foreground hover:bg-gray-200'
                 }`}
               >
                 {region}
@@ -74,7 +74,7 @@ export default async function EldersPage({ searchParams }: EldersPageProps) {
           </div>
         ) : (
           <div className="text-center py-12">
-            <p className="text-body text-gray-500">
+            <p className="text-body text-muted-foreground">
               {selectedRegion === '전체'
                 ? '아직 등록된 어르신이 없습니다.'
                 : `${selectedRegion} 지역에 등록된 어르신이 없습니다.`}

@@ -34,10 +34,10 @@ export function ElderCard({ elder }: ElderCardProps) {
         {/* Content */}
         <div className="flex flex-col flex-1 p-4">
           {/* Name and Age */}
-          <h3 className="text-h4 text-gray-900 mb-1">
+          <h3 className="text-h4 text-foreground mb-1">
             {elder.name}
             {age && (
-              <span className="text-body-sm text-gray-500 font-normal ml-2">
+              <span className="text-body-sm text-muted-foreground font-normal ml-2">
                 ({age}세)
               </span>
             )}
@@ -45,12 +45,12 @@ export function ElderCard({ elder }: ElderCardProps) {
 
           {/* Region */}
           {elder.region && (
-            <p className="text-small text-gray-500 mb-2">{elder.region}</p>
+            <p className="text-small text-muted-foreground mb-2">{elder.region}</p>
           )}
 
           {/* Introduction */}
           {elder.introduction && (
-            <p className="text-body-sm text-gray-600 line-clamp-2 mb-3">
+            <p className="text-body-sm text-muted-foreground line-clamp-2 mb-3">
               {elder.introduction}
             </p>
           )}

@@ -46,7 +46,7 @@ export function HwalseoCard({ hwalseo }: HwalseoCardProps) {
           </span>
 
           {/* 제목 - 고정 높이, 2줄 제한 */}
-          <h3 className="text-h4 text-gray-900 mb-2 line-clamp-2 min-h-[3.5rem]">
+          <h3 className="text-h4 text-foreground mb-2 line-clamp-2 min-h-[3.5rem]">
             {hwalseo.title}
           </h3>
 
@@ -56,7 +56,7 @@ export function HwalseoCard({ hwalseo }: HwalseoCardProps) {
           </p>
 
           {/* 요약 - 고정 높이, 2줄 제한 */}
-          <p className="text-body-sm text-gray-500 line-clamp-2 min-h-[2.5rem]">
+          <p className="text-body-sm text-muted-foreground line-clamp-2 min-h-[2.5rem]">
             {hwalseo.excerpt}
           </p>
 

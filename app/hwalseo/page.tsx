@@ -17,8 +17,8 @@ export default async function HwalseoPage() {
       <Container>
         {/* 헤더 */}
         <div className="text-center mb-12">
-          <h1 className="text-display text-gray-900 mb-4">활서</h1>
-          <p className="text-body-lg text-gray-600">
+          <h1 className="text-display text-foreground mb-4">활서</h1>
+          <p className="text-body-lg text-muted-foreground">
             어르신들의 삶이 담긴 이야기를 만나보세요.
           </p>
         </div>

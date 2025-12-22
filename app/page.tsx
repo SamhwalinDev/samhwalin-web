@@ -29,8 +29,8 @@ export default async function HomePage() {
         <Section spacing="lg" background="gray">
           <Container>
             <div className="text-center mb-8">
-              <h2 className="text-h1 text-gray-900 mb-2">어르신을 만나보세요</h2>
-              <p className="text-body text-gray-600">
+              <h2 className="text-h1 text-foreground mb-2">어르신을 만나보세요</h2>
+              <p className="text-body text-muted-foreground">
                 삼활인이 기록한 어르신들의 이야기
               </p>
             </div>
@@ -60,7 +60,7 @@ export default async function HomePage() {
                 {/* Info */}
                 <div className="flex-1 p-6">
                   <div className="flex items-center gap-2 mb-2">
-                    <h3 className="text-h2 text-gray-900">{featuredElder.name}</h3>
+                    <h3 className="text-h2 text-foreground">{featuredElder.name}</h3>
                     {featuredElder.region && (
                       <span className="text-body-sm text-gray-500">
                         · {featuredElder.region}
@@ -69,7 +69,7 @@ export default async function HomePage() {
                   </div>
 
                   {featuredElder.introduction && (
-                    <p className="text-body text-gray-600 mb-4 line-clamp-2">
+                    <p className="text-body text-muted-foreground mb-4 line-clamp-2">
                       {featuredElder.introduction}
                     </p>
                   )}
@@ -104,7 +104,7 @@ export default async function HomePage() {
       </Section>
 
       {/* 미션 섹션 */}
-      <Section spacing="lg" className="bg-gray-50">
+      <Section spacing="lg" className="bg-muted">
         <Container>
           <MissionSection />
         </Container>
@@ -115,13 +115,13 @@ export default async function HomePage() {
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
             {/* 왼쪽: 후원 현황 카드 */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 lg:p-8 flex flex-col">
+            <div className="bg-white border border-border rounded-2xl p-6 lg:p-8 flex flex-col">
               {/* 헤더 텍스트 */}
               <div className="mb-8">
-                <h2 className="text-h2 text-gray-900 mb-3">
+                <h2 className="text-h2 text-foreground mb-3">
                   함께 만들어가요
                 </h2>
-                <p className="text-body text-gray-600">
+                <p className="text-body text-muted-foreground">
                   여러분의 후원이 어르신들의
                   <br className="sm:hidden" />
                   {' '}이야기를 세상에 전합니다.
@@ -147,7 +147,7 @@ export default async function HomePage() {
             </div>
 
             {/* 오른쪽: 후원 폼 */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 lg:p-8">
+            <div className="bg-white border border-border rounded-2xl p-6 lg:p-8">
               <DonationForm />
             </div>
           </div>
@@ -162,10 +162,10 @@ export default async function HomePage() {
             <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-6">
               <span className="text-3xl">📬</span>
             </div>
-            <h2 className="text-h1 text-gray-900 mb-3">
+            <h2 className="text-h1 text-foreground mb-3">
               새 활서가 올라오면 알려드릴까요?
             </h2>
-            <p className="text-body text-gray-600 mb-8">
+            <p className="text-body text-muted-foreground mb-8">
               이메일을 남겨주시면 새로운 어르신의 이야기가 올라올 때 알려드립니다.
             </p>
             <EmailSubscribeForm source="homepage" className="max-w-md mx-auto" />

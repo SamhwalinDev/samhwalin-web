@@ -62,11 +62,11 @@ export default async function ElderDetailPage({
   return (
     <>
       {/* Back Navigation */}
-      <Section spacing="sm" className="border-b border-gray-200">
+      <Section spacing="sm" className="border-b border-border">
         <Container>
           <Link
             href="/elders"
-            className="inline-flex items-center gap-2 text-body-sm text-gray-500 hover:text-gray-900 transition-colors"
+            className="inline-flex items-center gap-2 text-body-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft size={16} />
             어르신 목록
@@ -100,17 +100,17 @@ export default async function ElderDetailPage({
               {/* Info */}
               <div className="flex-1 min-w-0 text-center md:text-left">
                 {/* Name and Age on same line */}
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
                   <span className="whitespace-nowrap">{elder.name}</span>
                   {age && (
-                    <span className="text-2xl md:text-3xl text-gray-500 font-normal ml-2 whitespace-nowrap">
+                    <span className="text-2xl md:text-3xl text-muted-foreground font-normal ml-2 whitespace-nowrap">
                       ({age}세)
                     </span>
                   )}
                 </h1>
 
                 {elder.region && (
-                  <p className="text-lg text-gray-500 mb-4">{elder.region}</p>
+                  <p className="text-lg text-muted-foreground mb-4">{elder.region}</p>
                 )}
 
                 {/* Introduction - as a styled quote */}
@@ -122,7 +122,7 @@ export default async function ElderDetailPage({
 
                 {/* Bio */}
                 {elder.bio && (
-                  <div className="text-base text-gray-600 leading-relaxed space-y-2">
+                  <div className="text-base text-muted-foreground leading-relaxed space-y-2">
                     {elder.bio.split('\n').map((line, idx) => (
                       <p key={idx}>{line}</p>
                     ))}
@@ -137,7 +137,7 @@ export default async function ElderDetailPage({
       {/* Hwalseo List */}
       <Section spacing="lg" background="gray">
         <Container>
-          <h2 className="text-h1 text-gray-900 mb-8 text-center">
+          <h2 className="text-h1 text-foreground mb-8 text-center">
             {elder.name}님의 활서
           </h2>
 
@@ -149,7 +149,7 @@ export default async function ElderDetailPage({
             </div>
           ) : (
             <div className="text-center py-12">
-              <p className="text-body text-gray-500">
+              <p className="text-body text-muted-foreground">
                 아직 등록된 활서가 없습니다.
               </p>
             </div>
