@@ -76,14 +76,14 @@ export function DonationProgress({ current, goal, donorCount, className }: Donat
   };
 
   return (
-    <div className={cn('p-5 bg-white rounded-lg border border-gray-200', className)}>
+    <div className={cn('p-5 bg-white rounded-lg border border-border', className)}>
       <ProgressBar value={current} max={goal} label="이번 달 후원 목표" />
       <div className="flex justify-between items-center mt-3">
-        <span className="text-caption text-gray-500">
+        <span className="text-caption text-muted-foreground">
           {formatCurrency(current)} / {formatCurrency(goal)}
         </span>
         {donorCount !== undefined && (
-          <span className="text-caption text-gray-500">
+          <span className="text-caption text-muted-foreground">
             {donorCount}명이 함께하고 있습니다
           </span>
         )}

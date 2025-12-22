@@ -28,10 +28,10 @@ const values = [
 export function MissionSection() {
   return (
     <div className="text-center">
-      <h2 className="text-h1 text-gray-900 mb-4">
+      <h2 className="text-h1 text-foreground mb-4">
         삼활인이 하는 일
       </h2>
-      <p className="text-body-lg text-gray-600 mb-12 max-w-2xl mx-auto">
+      <p className="text-body-lg text-muted-foreground mb-12 max-w-2xl mx-auto">
         유한한 삶을 기억하며, 주어진 삶을 사랑하고,<br />
         매일의 활력을 되찾는 문화를 만들어갑니다.
       </p>
@@ -45,8 +45,8 @@ export function MissionSection() {
             <div className="w-12 h-12 bg-primary-extra-light rounded-full flex items-center justify-center mx-auto mb-4">
               <value.icon size={24} className="text-primary" />
             </div>
-            <h3 className="text-h4 text-gray-900 mb-2">{value.title}</h3>
-            <p className="text-body-sm text-gray-600">{value.description}</p>
+            <h3 className="text-h4 text-foreground mb-2">{value.title}</h3>
+            <p className="text-body-sm text-muted-foreground">{value.description}</p>
           </div>
         ))}
       </div>

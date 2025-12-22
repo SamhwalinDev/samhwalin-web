@@ -87,10 +87,10 @@ export function MobileTableOfContents({ content }: MobileTableOfContentsProps) {
 
             {/* Header */}
             <div className="flex items-center justify-between px-6 pb-4 border-b border-gray-100">
-              <h3 className="text-h3 text-gray-900">목차</h3>
+              <h3 className="text-h3 text-foreground">목차</h3>
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-2 -mr-2 text-gray-500 hover:text-gray-900 transition-colors"
+                className="p-2 -mr-2 text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="닫기"
               >
                 <X size={24} />
@@ -119,9 +119,9 @@ export function MobileTableOfContents({ content }: MobileTableOfContentsProps) {
                         onClick={() => handleHeadingClick(heading.lineIndex)}
                         className={cn(
                           'w-full text-left flex items-center py-2 transition-colors break-keep',
-                          isH1 && 'font-bold text-gray-900 hover:text-primary text-base',
-                          isH2 && 'font-medium text-gray-600 hover:text-primary pl-4 border-l-2 border-gray-200 active:border-primary text-[15px]',
-                          isH3 && 'text-gray-500 hover:text-gray-700 text-sm pl-4'
+                          isH1 && 'font-bold text-foreground hover:text-primary text-base',
+                          isH2 && 'font-medium text-muted-foreground hover:text-primary pl-4 border-l-2 border-border active:border-primary text-[15px]',
+                          isH3 && 'text-muted-foreground hover:text-gray-700 text-sm pl-4'
                         )}
                       >
                         {isH1 && <span className="text-primary mr-2.5 text-sm">■</span>}

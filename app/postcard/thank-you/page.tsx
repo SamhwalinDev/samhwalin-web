@@ -45,20 +45,20 @@ function PostcardThankYouContent() {
             <span className="text-4xl">💌</span>
           </div>
 
-          <h1 className="text-display text-gray-900 mb-4">
+          <h1 className="text-display text-foreground mb-4">
             엽서가 전달됩니다!
           </h1>
 
-          <p className="text-body-lg text-gray-600 mb-8">
+          <p className="text-body-lg text-muted-foreground mb-8">
             <strong>{name}</strong>님의 따뜻한 마음이<br />
             <strong>{elderName}</strong>님께 전해질 거예요.
           </p>
 
-          <div className="bg-gray-50 rounded-xl p-6 mb-8">
+          <div className="bg-muted rounded-xl p-6 mb-8">
             <p className="text-body text-gray-700 mb-2">
               💌 <strong>{formatCurrency(parseInt(amount))}</strong> 엽서 신청 완료
             </p>
-            <p className="text-body-sm text-gray-500">
+            <p className="text-body-sm text-muted-foreground">
               카카오페이 송금 확인 후 영업일 기준 3일 내 발송됩니다.
             </p>
           </div>
@@ -73,14 +73,14 @@ function PostcardThankYouContent() {
             </Link>
             <Link
               href="/"
-              className="inline-flex items-center justify-center gap-2 whitespace-nowrap bg-white text-gray-900 border border-gray-300 px-8 py-4 rounded-md font-semibold hover:bg-gray-50 transition-colors"
+              className="inline-flex items-center justify-center gap-2 whitespace-nowrap bg-white text-foreground border border-gray-300 px-8 py-4 rounded-md font-semibold hover:bg-muted transition-colors"
             >
               홈으로
             </Link>
           </div>
 
-          <div className="border-t border-gray-200 pt-8">
-            <p className="text-body text-gray-600 mb-4">
+          <div className="border-t border-border pt-8">
+            <p className="text-body text-muted-foreground mb-4">
               이 마음을 나눠주세요 💕
             </p>
             <div className="flex justify-center gap-4">
@@ -102,7 +102,7 @@ function PostcardThankYouContent() {
                 인스타그램
               </button>
             </div>
-            <p className="text-caption text-gray-500 mt-4">
+            <p className="text-caption text-muted-foreground mt-4">
               복사한 링크를 카카오톡이나 SNS에 공유해주세요!
             </p>
           </div>

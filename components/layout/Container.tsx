@@ -48,7 +48,7 @@ const Section = forwardRef<HTMLElement, SectionProps>(
 
     const backgrounds = {
       default: 'bg-base',
-      gray: 'bg-gray-50',
+      gray: 'bg-muted',
       white: 'bg-white',
     };
 

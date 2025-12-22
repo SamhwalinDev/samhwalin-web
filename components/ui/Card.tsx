@@ -83,7 +83,7 @@ const CardTitle = forwardRef<HTMLHeadingElement, HTMLAttributes<HTMLHeadingEleme
     return (
       <h3
         ref={ref}
-        className={cn('text-h2 text-gray-900 mb-2', className)}
+        className={cn('text-h2 text-foreground mb-2', className)}
         {...props}
       >
         {children}
@@ -100,7 +100,7 @@ const CardDescription = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLPara
     return (
       <p
         ref={ref}
-        className={cn('text-body-sm text-gray-600 line-clamp-2', className)}
+        className={cn('text-body-sm text-muted-foreground line-clamp-2', className)}
         {...props}
       >
         {children}

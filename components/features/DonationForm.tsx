@@ -91,16 +91,16 @@ export function DonationForm({ className }: DonationFormProps) {
         <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
           <span className="text-3xl">💛</span>
         </div>
-        <h3 className="text-h3 text-gray-900 mb-2">
+        <h3 className="text-h3 text-foreground mb-2">
           후원 신청이 완료되었습니다!
         </h3>
-        <p className="text-body text-gray-600 mb-6">
+        <p className="text-body text-muted-foreground mb-6">
           카카오페이로 <strong>{formatCurrency(finalAmount)}</strong>을 송금해주시면<br />
           후원 처리가 완료됩니다.
         </p>
-        <div className="bg-gray-50 rounded-lg p-4 mb-6">
-          <p className="text-body-sm text-gray-600 mb-1">송금 시 입금자명</p>
-          <p className="text-body font-medium text-gray-900">{name}</p>
+        <div className="bg-muted rounded-lg p-4 mb-6">
+          <p className="text-body-sm text-muted-foreground mb-1">송금 시 입금자명</p>
+          <p className="text-body font-medium text-foreground">{name}</p>
         </div>
         <Button
           onClick={handlePayment}
@@ -123,7 +123,7 @@ export function DonationForm({ className }: DonationFormProps) {
     return (
       <form onSubmit={handleSubmit} className={cn('space-y-6', className)}>
         <div className="text-center mb-6">
-          <p className="text-body text-gray-600">
+          <p className="text-body text-muted-foreground">
             {donationType === 'recurring' ? '월 ' : ''}{formatCurrency(finalAmount)} 후원
           </p>
         </div>
@@ -173,7 +173,7 @@ export function DonationForm({ className }: DonationFormProps) {
   return (
     <div className={cn('space-y-8', className)}>
       {/* 후원 유형 탭 */}
-      <div className="flex border-b border-gray-200">
+      <div className="flex border-b border-border">
         <button
           type="button"
           onClick={() => setDonationType('recurring')}
@@ -181,8 +181,8 @@ export function DonationForm({ className }: DonationFormProps) {
             'flex-1 py-3 text-body-sm font-medium transition-colors',
             'border-b-2 -mb-px',
             donationType === 'recurring'
-              ? 'text-gray-900 border-gray-900'
-              : 'text-gray-500 border-transparent hover:text-gray-700'
+              ? 'text-foreground border-foreground'
+              : 'text-muted-foreground border-transparent hover:text-gray-700'
           )}
         >
           정기 후원
@@ -194,8 +194,8 @@ export function DonationForm({ className }: DonationFormProps) {
             'flex-1 py-3 text-body-sm font-medium transition-colors',
             'border-b-2 -mb-px',
             donationType === 'oneTime'
-              ? 'text-gray-900 border-gray-900'
-              : 'text-gray-500 border-transparent hover:text-gray-700'
+              ? 'text-foreground border-foreground'
+              : 'text-muted-foreground border-transparent hover:text-gray-700'
           )}
         >
           일시 후원
@@ -204,7 +204,7 @@ export function DonationForm({ className }: DonationFormProps) {
 
       {/* 금액 선택 */}
       <div className="space-y-4">
-        <h3 className="text-body font-semibold text-gray-900">
+        <h3 className="text-body font-semibold text-foreground">
           후원 금액을 선택해주세요
         </h3>
 
@@ -285,14 +285,14 @@ function AmountButton({ option, isSelected, onClick, showPopular }: AmountButton
         'border rounded-lg shadow-sm',
         'transition-all duration-fast ease-out',
         isSelected
-          ? 'border-2 border-gray-900 shadow-md'
-          : 'border-gray-200 hover:border-gray-300 hover:shadow-md'
+          ? 'border-2 border-foreground shadow-md'
+          : 'border-border hover:border-gray-300 hover:shadow-md'
       )}
     >
       {showPopular && (
         <PopularBadge className="absolute -top-2 right-3" />
       )}
-      <span className="text-body font-semibold text-gray-900">
+      <span className="text-body font-semibold text-foreground">
         {option.label}
       </span>
       <span className="text-small text-gray-500">

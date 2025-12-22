@@ -132,8 +132,8 @@ export function HwalseoFilter({ hwalseoList, themes }: HwalseoFilterProps) {
             className={cn(
               'px-4 py-2 rounded-full text-body-sm font-medium transition-colors',
               selectedTheme === null
-                ? 'bg-gray-900 text-white'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                ? 'bg-foreground text-white'
+                : 'bg-gray-100 text-muted-foreground hover:bg-gray-200'
             )}
           >
             전체
@@ -145,8 +145,8 @@ export function HwalseoFilter({ hwalseoList, themes }: HwalseoFilterProps) {
               className={cn(
                 'px-4 py-2 rounded-full text-body-sm font-medium transition-colors',
                 selectedTheme === theme
-                  ? 'bg-gray-900 text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  ? 'bg-foreground text-white'
+                  : 'bg-gray-100 text-muted-foreground hover:bg-gray-200'
               )}
             >
               {theme}
@@ -164,7 +164,7 @@ export function HwalseoFilter({ hwalseoList, themes }: HwalseoFilterProps) {
         </div>
       ) : (
         <div className="text-center py-12">
-          <p className="text-body text-gray-500">검색 결과가 없습니다.</p>
+          <p className="text-body text-muted-foreground">검색 결과가 없습니다.</p>
           {hasActiveFilters && (
             <button
               onClick={clearFilters}

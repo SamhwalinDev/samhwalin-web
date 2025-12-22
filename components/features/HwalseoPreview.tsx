@@ -22,7 +22,7 @@ export function HwalseoPreview({ hwalseoList }: HwalseoPreviewProps) {
   if (hwalseoList.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-body text-gray-500">아직 활서가 없습니다.</p>
+        <p className="text-body text-muted-foreground">아직 활서가 없습니다.</p>
       </div>
     );
   }
@@ -30,7 +30,7 @@ export function HwalseoPreview({ hwalseoList }: HwalseoPreviewProps) {
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
-        <h2 className="text-h1 text-gray-900">최신 활서</h2>
+        <h2 className="text-h1 text-foreground">최신 활서</h2>
         <Link href="/hwalseo">
           <Button variant="ghost" size="sm" className="group">
             전체 보기
