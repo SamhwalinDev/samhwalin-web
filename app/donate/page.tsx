@@ -29,10 +29,10 @@ export default async function DonatePage() {
                 👴
               </div>
             </div>
-            <h1 className="text-h1 text-gray-900 mb-4">
+            <h1 className="text-h1 text-foreground mb-4">
               어르신들의 이야기를<br />함께 기록해주세요
             </h1>
-            <p className="text-body text-gray-600 mb-6">
+            <p className="text-body text-muted-foreground mb-6">
               86세 강장환 할아버지는 6.25 전쟁을 직접 겪으셨습니다.
               할아버지의 이야기가 사라지기 전에 기록으로 남기고 싶습니다.
             </p>

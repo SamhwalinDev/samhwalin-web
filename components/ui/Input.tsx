@@ -42,7 +42,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           <p className="mt-1 text-small text-error">{error}</p>
         )}
         {helperText && !error && (
-          <p className="mt-1 text-small text-gray-500">{helperText}</p>
+          <p className="mt-1 text-small text-muted-foreground">{helperText}</p>
         )}
       </div>
     );
@@ -93,7 +93,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           <p className="mt-1 text-small text-error">{error}</p>
         )}
         {helperText && !error && (
-          <p className="mt-1 text-small text-gray-500">{helperText}</p>
+          <p className="mt-1 text-small text-muted-foreground">{helperText}</p>
         )}
       </div>
     );

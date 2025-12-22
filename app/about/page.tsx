@@ -138,7 +138,7 @@ export default function AboutPage() {
           {/* Button */}
           <Link
             href="/hwalseo"
-            className="inline-block mt-12 px-8 py-4 bg-white text-gray-900 rounded-lg font-medium hover:bg-gray-100 transition-colors"
+            className="inline-block mt-12 px-8 py-4 bg-white text-foreground rounded-lg font-medium hover:bg-gray-100 transition-colors"
           >
             활서 읽어보기 →
           </Link>
@@ -152,32 +152,32 @@ export default function AboutPage() {
             <span className="inline-block px-3 py-1 bg-primary-extra-light text-primary-dark rounded-full text-sm font-medium mb-4">
               비영리 프로젝트
             </span>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
               al&apos;ive 프로젝트
             </h2>
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               alive + arrive의 중의적 의미를 담았습니다.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6 mb-16">
-            <div className="bg-gray-50 rounded-2xl p-8 text-center">
+            <div className="bg-muted rounded-2xl p-8 text-center">
               <div className="w-12 h-12 bg-primary-extra-light rounded-xl flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">🌱</span>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">alive</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-semibold text-foreground mb-2">alive</h3>
+              <p className="text-muted-foreground">
                 살아있음을 기록합니다.
                 <br />
                 어르신들의 삶이 생생하게 남습니다.
               </p>
             </div>
-            <div className="bg-gray-50 rounded-2xl p-8 text-center">
+            <div className="bg-muted rounded-2xl p-8 text-center">
               <div className="w-12 h-12 bg-primary-extra-light rounded-xl flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">✉️</span>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">arrive</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-semibold text-foreground mb-2">arrive</h3>
+              <p className="text-muted-foreground">
                 다음 세대에게 도착합니다.
                 <br />
                 이야기가 시간을 넘어 전해집니다.
@@ -186,11 +186,11 @@ export default function AboutPage() {
           </div>
 
           {/* Vision/Mission */}
-          <div className="border-t border-gray-200 pt-12">
+          <div className="border-t border-border pt-12">
             <div className="grid md:grid-cols-2 gap-8">
               <div>
                 <p className="text-sm font-medium text-primary-dark mb-2">VISION</p>
-                <p className="text-xl md:text-2xl font-medium text-gray-900">
+                <p className="text-xl md:text-2xl font-medium text-foreground">
                   우리의 이웃 어른들께
                   <br />
                   활력을 선물합니다.
@@ -198,7 +198,7 @@ export default function AboutPage() {
               </div>
               <div>
                 <p className="text-sm font-medium text-primary-dark mb-2">MISSION</p>
-                <p className="text-xl md:text-2xl font-medium text-gray-900">
+                <p className="text-xl md:text-2xl font-medium text-foreground">
                   인생의 황혼에 다다른 이들의 삶을 기록하여 공동체에 기억되게
                   합니다.
                 </p>
@@ -212,13 +212,13 @@ export default function AboutPage() {
       <section className="bg-primary-extra-light py-20">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
               활서(活書)란?{' '}
-              <span className="text-base text-gray-500 font-normal">
+              <span className="text-base text-muted-foreground font-normal">
                 살 활(活) + 글 서(書)
               </span>
             </h2>
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               어르신들의 살아있는 이야기를 담은 기록입니다.
             </p>
           </div>
@@ -235,10 +235,10 @@ export default function AboutPage() {
                 <p className="text-sm text-primary-dark font-medium mb-1">
                   {item.step}
                 </p>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                <h3 className="text-lg font-semibold text-foreground mb-2">
                   {item.title}
                 </h3>
-                <p className="text-sm text-gray-600">{item.description}</p>
+                <p className="text-sm text-muted-foreground">{item.description}</p>
               </div>
             ))}
           </div>
@@ -292,17 +292,17 @@ export default function AboutPage() {
             <span className="inline-block px-3 py-1 bg-primary-extra-light text-primary-dark rounded-full text-sm font-medium mb-4">
               운영팀
             </span>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
               삼활인 三活人
             </h2>
-            <p className="text-gray-600">세 가지 가치를 추구하는 사람들</p>
+            <p className="text-muted-foreground">세 가지 가치를 추구하는 사람들</p>
           </div>
 
           <div className="flex justify-center gap-6 mb-8">
             {team.map((member) => (
               <div
                 key={member.name}
-                className="bg-gray-50 rounded-2xl p-6 text-center w-48"
+                className="bg-muted rounded-2xl p-6 text-center w-48"
               >
                 <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-3xl text-gray-400">👤</span>
@@ -313,7 +313,7 @@ export default function AboutPage() {
                 <p className="text-sm text-primary-dark font-medium mb-1">
                   {member.role}
                 </p>
-                <p className="text-sm text-gray-500">{member.description}</p>
+                <p className="text-sm text-muted-foreground">{member.description}</p>
               </div>
             ))}
           </div>
@@ -357,7 +357,7 @@ export default function AboutPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/hwalseo"
-              className="px-8 py-4 bg-white text-gray-900 rounded-lg font-medium hover:bg-gray-100 transition-colors"
+              className="px-8 py-4 bg-white text-foreground rounded-lg font-medium hover:bg-gray-100 transition-colors"
             >
               활서 읽으러 가기
             </Link>

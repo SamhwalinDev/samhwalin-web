@@ -18,15 +18,15 @@ export function SocialProof({
   
   if (variant === 'inline') {
     return (
-      <div className={cn('flex justify-center gap-6 text-body-sm text-gray-500', className)}>
+      <div className={cn('flex justify-center gap-6 text-body-sm text-muted-foreground', className)}>
         {hwalseoCount > 0 && (
-          <span>📖 기록된 이야기 <strong className="text-gray-900">{hwalseoCount}개</strong></span>
+          <span>📖 기록된 이야기 <strong className="text-foreground">{hwalseoCount}개</strong></span>
         )}
         {donorCount > 0 && (
-          <span>💛 이번 달 후원자 <strong className="text-gray-900">{donorCount}명</strong></span>
+          <span>💛 이번 달 후원자 <strong className="text-foreground">{donorCount}명</strong></span>
         )}
         {todayCount > 0 && (
-          <span>🔥 오늘 <strong className="text-gray-900">{todayCount}명</strong> 참여</span>
+          <span>🔥 오늘 <strong className="text-foreground">{todayCount}명</strong> 참여</span>
         )}
       </div>
     );
@@ -36,11 +36,11 @@ export function SocialProof({
     <div className={cn('flex justify-center gap-12 py-8', className)}>
       <div className="text-center">
         <p className="text-display text-primary">{hwalseoCount}</p>
-        <p className="text-body text-gray-600">기록된 이야기</p>
+        <p className="text-body text-muted-foreground">기록된 이야기</p>
       </div>
       <div className="text-center">
         <p className="text-display text-primary">{donorCount}</p>
-        <p className="text-body text-gray-600">후원자</p>
+        <p className="text-body text-muted-foreground">후원자</p>
       </div>
     </div>
   );

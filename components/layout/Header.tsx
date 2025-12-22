@@ -24,7 +24,7 @@ export function Header({ variant = 'default' }: HeaderProps) {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
+    <header className="sticky top-0 z-50 bg-white border-b border-border">
       <Container>
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -49,8 +49,8 @@ export function Header({ variant = 'default' }: HeaderProps) {
                   className={cn(
                     'text-body-sm font-medium transition-colors',
                     pathname === link.href
-                      ? 'text-gray-900'
-                      : 'text-gray-600 hover:text-gray-900'
+                      ? 'text-foreground'
+                      : 'text-muted-foreground hover:text-foreground'
                   )}
                 >
                   {link.label}
@@ -62,7 +62,7 @@ export function Header({ variant = 'default' }: HeaderProps) {
           {/* Mobile Menu Button */}
           {variant === 'default' && (
             <button
-              className="md:hidden p-2 text-gray-600 hover:text-gray-900"
+              className="md:hidden p-2 text-muted-foreground hover:text-foreground"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="메뉴 열기"
             >
@@ -81,8 +81,8 @@ export function Header({ variant = 'default' }: HeaderProps) {
                 className={cn(
                   'block py-3 text-body font-medium transition-colors',
                   pathname === link.href
-                    ? 'text-gray-900'
-                    : 'text-gray-600 hover:text-gray-900'
+                    ? 'text-foreground'
+                    : 'text-muted-foreground hover:text-foreground'
                 )}
                 onClick={() => setIsMenuOpen(false)}
               >

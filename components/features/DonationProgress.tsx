@@ -11,7 +11,7 @@ export function DonationProgress({ current, goal, donorCount }: DonationProgress
     <div className="flex-1 flex flex-col justify-center">
       {/* 진행률 바 */}
       <div className="mb-6">
-        <div className="flex justify-between text-body-sm text-gray-600 mb-2">
+        <div className="flex justify-between text-body-sm text-muted-foreground mb-2">
           <span>{current.toLocaleString()}원</span>
           <span>목표 {goal.toLocaleString()}원</span>
         </div>
@@ -26,12 +26,12 @@ export function DonationProgress({ current, goal, donorCount }: DonationProgress
       {/* 통계 */}
       <div className="flex justify-center gap-8 text-center">
         <div>
-          <p className="text-h3 text-gray-900">{donorCount}명</p>
-          <p className="text-body-sm text-gray-500">후원자</p>
+          <p className="text-h3 text-foreground">{donorCount}명</p>
+          <p className="text-body-sm text-muted-foreground">후원자</p>
         </div>
         <div>
           <p className="text-h3 text-primary">{percentage.toFixed(0)}%</p>
-          <p className="text-body-sm text-gray-500">달성</p>
+          <p className="text-body-sm text-muted-foreground">달성</p>
         </div>
       </div>
     </div>

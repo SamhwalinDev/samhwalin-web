@@ -71,16 +71,16 @@ export function Modal({
         >
           {/* Header */}
           {(title || showCloseButton) && (
-            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+            <div className="flex items-center justify-between p-6 border-b border-border">
               {title && (
-                <h2 id="modal-title" className="text-h2 text-gray-900">
+                <h2 id="modal-title" className="text-h2 text-foreground">
                   {title}
                 </h2>
               )}
               {showCloseButton && (
                 <button
                   onClick={onClose}
-                  className="p-2 -mr-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
+                  className="p-2 -mr-2 text-gray-400 hover:text-muted-foreground hover:bg-gray-100 rounded-md transition-colors"
                   aria-label="닫기"
                 >
                   <X size={20} />
@@ -121,7 +121,7 @@ export function ConfirmModal({
 }: ConfirmModalProps) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title} size="sm">
-      <p className="text-body-sm text-gray-600 mb-6">{message}</p>
+      <p className="text-body-sm text-muted-foreground mb-6">{message}</p>
       <div className="flex gap-3">
         <button
           onClick={onClose}

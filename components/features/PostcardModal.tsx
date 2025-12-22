@@ -201,15 +201,15 @@ export function PostcardModal({ isOpen, onClose, elderName, hwalseoSlug = '' }: 
       {/* Modal */}
       <div className="relative bg-white rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200">
-          <h2 className="text-h3 text-gray-900">
+        <div className="flex items-center justify-between p-4 border-b border-border">
+          <h2 className="text-h3 text-foreground">
             {step === 'form' ? `${elderName}님께 엽서 보내기` : '결제하기'}
           </h2>
           <button 
             onClick={handleClose}
             className="p-2 hover:bg-gray-100 rounded-full transition-colors"
           >
-            <X size={20} className="text-gray-500" />
+            <X size={20} className="text-muted-foreground" />
           </button>
         </div>
 
@@ -303,7 +303,7 @@ export function PostcardModal({ isOpen, onClose, elderName, hwalseoSlug = '' }: 
                   </button>
                 ))}
               </div>
-              <p className="text-caption text-gray-500 mt-2">
+              <p className="text-caption text-muted-foreground mt-2">
                 엽서 제작 및 배송비로 사용됩니다.
               </p>
             </div>
@@ -324,16 +324,16 @@ export function PostcardModal({ isOpen, onClose, elderName, hwalseoSlug = '' }: 
             <div className="w-16 h-16 bg-primary-extra-light rounded-full flex items-center justify-center mx-auto mb-4">
               <CreditCard size={32} className="text-primary" />
             </div>
-            <h3 className="text-h3 text-gray-900 mb-2">
+            <h3 className="text-h3 text-foreground mb-2">
               엽서가 저장되었습니다!
             </h3>
-            <p className="text-body text-gray-600 mb-6">
+            <p className="text-body text-muted-foreground mb-6">
               카카오페이로 <strong>{formData.amount.toLocaleString()}원</strong>을 송금해주시면<br />
               {elderName}님께 엽서를 전달해드립니다.
             </p>
-            <div className="bg-gray-50 rounded-lg p-4 mb-6">
-              <p className="text-body-sm text-gray-600 mb-1">송금 시 입금자명</p>
-              <p className="text-body font-medium text-gray-900">{formData.name}</p>
+            <div className="bg-muted rounded-lg p-4 mb-6">
+              <p className="text-body-sm text-muted-foreground mb-1">송금 시 입금자명</p>
+              <p className="text-body font-medium text-foreground">{formData.name}</p>
             </div>
             <Button
               onClick={handlePayment}
@@ -343,7 +343,7 @@ export function PostcardModal({ isOpen, onClose, elderName, hwalseoSlug = '' }: 
             >
               카카오페이로 결제하기
             </Button>
-            <p className="text-caption text-gray-500 mt-4">
+            <p className="text-caption text-muted-foreground mt-4">
               결제 확인 후 영업일 기준 3일 내 발송됩니다.
             </p>
           </div>
