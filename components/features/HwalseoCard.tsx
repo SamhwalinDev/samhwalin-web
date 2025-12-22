@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { formatTitleParts } from '@/lib/utils';
 
 interface HwalseoItem {
   id: string;
@@ -47,7 +48,12 @@ export function HwalseoCard({ hwalseo }: HwalseoCardProps) {
 
           {/* 제목 - 고정 높이, 2줄 제한 */}
           <h3 className="text-h4 text-foreground mb-2 line-clamp-2 min-h-[3.5rem]">
-            {hwalseo.title}
+            {formatTitleParts(hwalseo.title).map((part, i, arr) => (
+              <span key={i}>
+                {part}
+                {i < arr.length - 1 && <br />}
+              </span>
+            ))}
           </h3>
 
           {/* 어르신 이름 */}

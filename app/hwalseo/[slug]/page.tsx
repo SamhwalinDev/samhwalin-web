@@ -8,7 +8,7 @@ import { Container, Section } from '@/components/layout';
 import { HwalseoCard, HwalseoCta, MobileTableOfContents } from '@/components/features';
 import { ProxiedImage } from '@/components/ui';
 import { getHwalseoBySlug, getRelatedHwalseos, getElderByName } from '@/lib/notion';
-import { formatDate } from '@/lib/utils';
+import { formatDate, formatTitleParts } from '@/lib/utils';
 import type { Elder } from '@/types';
 
 /**
@@ -365,7 +365,14 @@ export default async function HwalseoDetailPage({
 
           <div className="max-w-content">
             <span className="tag mb-3">{hwalseo.theme}</span>
-            <h1 className="text-display text-foreground mb-4">{hwalseo.title}</h1>
+            <h1 className="text-display text-foreground mb-4">
+              {formatTitleParts(hwalseo.title).map((part, i, arr) => (
+                <span key={i}>
+                  {part}
+                  {i < arr.length - 1 && <br />}
+                </span>
+              ))}
+            </h1>
             <p className="text-body-lg text-muted-foreground mb-6">
               {hwalseo.elderName}
               {hwalseo.elderAge ? ` (${hwalseo.elderAge}세)` : ''}

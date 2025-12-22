@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import { Container } from '@/components/layout';
 import { Button } from '@/components/ui';
+import { formatTitleParts } from '@/lib/utils';
 
 interface HwalseoItem {
   id: string;
@@ -53,7 +54,12 @@ export function HeroSection({ latestHwalseo }: HeroSectionProps) {
 
           <h1 className="text-display-lg text-white mb-6 leading-tight">
             {latestHwalseo ? (
-              latestHwalseo.title
+              formatTitleParts(latestHwalseo.title).map((part, i, arr) => (
+                <span key={i}>
+                  {part}
+                  {i < arr.length - 1 && <br />}
+                </span>
+              ))
             ) : (
               <>
                 어르신의 삶이<br />

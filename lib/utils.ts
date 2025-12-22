@@ -49,6 +49,15 @@ export function truncateText(text: string, maxLength: number): string {
 }
 
 /**
+ * 제목에서 // 를 줄바꿈으로 변환
+ * Notion에서 제목에 //를 입력하면 줄바꿈으로 표시됨
+ * @returns 줄바꿈으로 분리된 문자열 배열
+ */
+export function formatTitleParts(title: string): string[] {
+  return title.split('//').map((part) => part.trim());
+}
+
+/**
  * 외부 이미지 URL을 프록시 URL로 변환
  * - Notion API 이미지: 약 1시간 후 만료되므로 프록시를 통해 캐싱
  * - Unsplash 이미지: Next.js Image 도메인 제한 우회
