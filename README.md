@@ -194,3 +194,5 @@ import { Modal } from '@/components/ui';
 ---
 
 Made with ❤️ by 삼활인 팀
+
+Last Updated: 2024-12-24
