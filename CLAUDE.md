@@ -11,6 +11,58 @@ Key features:
 - **엽서 (Postcards)**: Send thank-you postcards to elders after reading their stories
 - **뉴스레터 (Newsletter)**: Email subscription for updates
 
+## Git Workflow
+
+### Branch Rules
+- **NEVER commit directly to main branch**
+- Main branch is protected and requires PR to merge
+
+### Before Starting Work
+1. Check current branch: `git branch`
+2. If on main, create a new branch:
+```bash
+git checkout main
+git pull origin main
+git checkout -b <branch-type>/<description>
+```
+
+### Branch Naming Convention
+- `feature/기능명` - New features
+- `fix/버그명` - Bug fixes
+- `docs/문서명` - Documentation
+- `refactor/대상` - Code refactoring
+- `style/대상` - UI/styling changes
+
+### Commit Convention
+- `feat:` - New feature
+- `fix:` - Bug fix
+- `docs:` - Documentation
+- `style:` - Styling/UI
+- `refactor:` - Code refactoring
+- `chore:` - Config, build, etc.
+
+### After Completing Work
+1. Stage changes: `git add .`
+2. **ASK USER** before committing: "작업이 완료되었습니다. 커밋할까요?"
+3. If approved, commit with descriptive message
+4. Push to remote: `git push origin <branch-name>`
+5. Provide PR creation URL to user
+
+### Example Workflow
+```bash
+# Start
+git checkout main && git pull origin main
+git checkout -b feature/elder-filter
+
+# Work...
+
+# End (after user approval)
+git add .
+git commit -m "feat: Elder 필터 기능 추가"
+git push origin feature/elder-filter
+# → PR URL: https://github.com/SamhwalinDev/samhwalin-web/compare/feature/elder-filter
+```
+
 ## Tech Stack
 
 - **Framework**: Next.js 14.1 (App Router with Server Components)
