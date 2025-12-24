@@ -375,7 +375,7 @@ export default async function HwalseoDetailPage({
             </h1>
             <p className="text-body-lg text-muted-foreground mb-6">
               {hwalseo.elderName}
-              {hwalseo.elderAge ? ` (${hwalseo.elderAge}세)` : ''}
+              {elder?.birthYear ? ` (${new Date().getFullYear() - elder.birthYear}세)` : ''}
             </p>
             <time className="text-caption text-gray-400">
               {formatDate(hwalseo.publishedAt)}

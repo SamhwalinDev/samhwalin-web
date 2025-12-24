@@ -211,7 +211,6 @@ export async function getHwalseoBySlug(slug: string): Promise<Hwalseo | null> {
       slug: storedSlug || slug,
       title: page.properties.Title?.title?.[0]?.plain_text || '',
       elderName: page.properties.ElderName?.rich_text?.[0]?.plain_text || '',
-      elderAge: page.properties.ElderAge?.number || '',
       elderId: page.properties.Elder?.relation?.[0]?.id,
       theme: page.properties.Theme?.select?.name || '',
       excerpt: page.properties.Excerpt?.rich_text?.[0]?.plain_text || '',
