@@ -22,29 +22,46 @@ function generateHwalseoSlug(elderSlug: string, hwalseoId: string): string {
   return `${elderSlug}-${shortId}`;
 }
 
-// Elder slug 캐시 (Elder ID -> slug 매핑)
-const elderSlugCache = new Map<string, string>();
+// Elder 데이터 캐시 (Elder ID -> { name, slug } 매핑)
+const elderDataCache = new Map<string, { name: string; slug: string }>();
+
+/**
+ * Elder ID로 데이터 조회 (캐시 활용)
+ */
+async function getElderDataById(elderId: string): Promise<{ name: string; slug: string } | null> {
+  if (elderDataCache.has(elderId)) {
+    return elderDataCache.get(elderId)!;
+  }
+
+  try {
+    const page = (await notion.pages.retrieve({ page_id: elderId })) as any;
+    const name = page.properties.Name?.title?.[0]?.plain_text || '';
+    const slug = page.properties.Slug?.rich_text?.[0]?.plain_text ||
+                 page.id.replaceAll('-', '').slice(0, 8);
+
+    const data = { name, slug };
+    elderDataCache.set(elderId, data);
+    return data;
+  } catch (error) {
+    console.error('Error fetching elder data:', error);
+    return null;
+  }
+}
 
 /**
  * Elder ID로 slug 조회 (캐시 활용)
  */
 async function getElderSlugById(elderId: string): Promise<string | null> {
-  // 캐시 확인
-  if (elderSlugCache.has(elderId)) {
-    return elderSlugCache.get(elderId)!;
-  }
+  const data = await getElderDataById(elderId);
+  return data?.slug || null;
+}
 
-  try {
-    const page = (await notion.pages.retrieve({ page_id: elderId })) as any;
-    // Notion에 저장된 Slug가 있으면 사용, 없으면 ID 기반으로 생성
-    const slug = page.properties.Slug?.rich_text?.[0]?.plain_text ||
-                 page.id.replaceAll('-', '').slice(0, 8);
-    elderSlugCache.set(elderId, slug);
-    return slug;
-  } catch (error) {
-    console.error('Error fetching elder slug:', error);
-    return null;
-  }
+/**
+ * Elder ID로 이름 조회 (캐시 활용)
+ */
+async function getElderNameById(elderId: string): Promise<string> {
+  const data = await getElderDataById(elderId);
+  return data?.name || '';
 }
 const donationDbId = process.env.NOTION_DONATION_DATABASE_ID!;
 const settingsDbId = process.env.NOTION_SETTINGS_DATABASE_ID!;
@@ -97,11 +114,14 @@ export async function getHwalseoList(): Promise<HwalseoCard[]> {
           }
         }
 
+        // Elder 이름은 relation에서 가져옴 (캐시 활용)
+        const elderName = elderId ? await getElderNameById(elderId) : '';
+
         return {
           id: page.id,
           slug,
           title: page.properties.Title?.title?.[0]?.plain_text || '',
-          elderName: page.properties.ElderName?.rich_text?.[0]?.plain_text || '',
+          elderName,
           elderId,
           theme: page.properties.Theme?.select?.name || '',
           excerpt: page.properties.Excerpt?.rich_text?.[0]?.plain_text || '',
@@ -205,13 +225,17 @@ export async function getHwalseoBySlug(slug: string): Promise<Hwalseo | null> {
 
     // slug 결정: 저장된 값 또는 요청된 slug 사용
     const storedSlug = page.properties.Slug?.rich_text?.[0]?.plain_text || '';
+    const elderId = page.properties.Elder?.relation?.[0]?.id;
+
+    // Elder 이름은 relation에서 가져옴 (캐시 활용)
+    const elderName = elderId ? await getElderNameById(elderId) : '';
 
     return {
       id: page.id,
       slug: storedSlug || slug,
       title: page.properties.Title?.title?.[0]?.plain_text || '',
-      elderName: page.properties.ElderName?.rich_text?.[0]?.plain_text || '',
-      elderId: page.properties.Elder?.relation?.[0]?.id,
+      elderName,
+      elderId,
       theme: page.properties.Theme?.select?.name || '',
       excerpt: page.properties.Excerpt?.rich_text?.[0]?.plain_text || '',
       content: content,
@@ -389,11 +413,14 @@ export async function getRelatedHwalseos(
           slug = page.id.replaceAll('-', '').slice(0, 8);
         }
 
+        // Elder 이름은 relation에서 가져옴 (캐시 활용)
+        const elderName = elderId ? await getElderNameById(elderId) : '';
+
         return {
           id: page.id,
           slug,
           title: page.properties.Title?.title?.[0]?.plain_text || '',
-          elderName: page.properties.ElderName?.rich_text?.[0]?.plain_text || '',
+          elderName,
           elderId,
           theme: page.properties.Theme?.select?.name || '',
           excerpt: page.properties.Excerpt?.rich_text?.[0]?.plain_text || '',
@@ -847,8 +874,8 @@ export async function getElderByName(name: string): Promise<Elder | null> {
 
 export async function getHwalseoByElderId(elderId: string): Promise<HwalseoCard[]> {
   try {
-    // Elder의 slug를 먼저 가져오기 (자동 slug 생성에 필요)
-    const elderSlug = await getElderSlugById(elderId);
+    // Elder 데이터를 먼저 가져오기 (slug와 name 모두 필요)
+    const elderData = await getElderDataById(elderId);
 
     const response = await notion.databases.query({
       database_id: databaseId,
@@ -880,8 +907,8 @@ export async function getHwalseoByElderId(elderId: string): Promise<HwalseoCard[
       const storedSlug = page.properties.Slug?.rich_text?.[0]?.plain_text || '';
 
       let slug = storedSlug;
-      if (!slug && elderSlug) {
-        slug = generateHwalseoSlug(elderSlug, page.id);
+      if (!slug && elderData?.slug) {
+        slug = generateHwalseoSlug(elderData.slug, page.id);
       }
       if (!slug) {
         slug = page.id.replaceAll('-', '').slice(0, 8);
@@ -891,7 +918,7 @@ export async function getHwalseoByElderId(elderId: string): Promise<HwalseoCard[
         id: page.id,
         slug,
         title: page.properties.Title?.title?.[0]?.plain_text || '',
-        elderName: page.properties.ElderName?.rich_text?.[0]?.plain_text || '',
+        elderName: elderData?.name || '',
         elderId: page.properties.Elder?.relation?.[0]?.id || undefined,
         theme: page.properties.Theme?.select?.name || '',
         excerpt: page.properties.Excerpt?.rich_text?.[0]?.plain_text || '',

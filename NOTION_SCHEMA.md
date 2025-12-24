@@ -70,6 +70,8 @@ NOTION_HWALSEO_DATABASE_ID
 | (content) | page blocks | | `content` | 본문 (Markdown 변환) |
 
 > **Note**: `ElderAge` property는 더 이상 사용되지 않습니다. 나이는 `Elder.birthYear`에서 동적으로 계산됩니다.
+>
+> **Note**: `ElderName` property는 더 이상 사용되지 않습니다. 이름은 `Elder` relation에서 동적으로 가져옵니다.
 
 ### Theme 옵션 (select)
 
