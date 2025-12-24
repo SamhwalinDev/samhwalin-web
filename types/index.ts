@@ -38,7 +38,6 @@ export interface Hwalseo {
   slug: string;
   title: string;
   elderName: string;        // 어르신 이름 (레거시, elderId 사용 권장)
-  elderAge?: number;        // 어르신 나이 (레거시)
   elderId?: string;         // 어르신 DB 참조
   elder?: Elder;            // 어르신 데이터 (상세 조회 시)
   theme: string;            // 테마 (예: 전쟁의 기억, 인생의 지혜)

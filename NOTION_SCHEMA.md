@@ -61,7 +61,6 @@ NOTION_HWALSEO_DATABASE_ID
 | Title | `title` | ✅ | `title` | 활서 제목 |
 | Slug | `rich_text` | | `slug` | URL 슬러그 (없으면 자동 생성) |
 | ElderName | `rich_text` | ✅ | `elderName` | 어르신 이름 (레거시) |
-| ElderAge | `number` | | `elderAge` | 어르신 나이 (레거시) |
 | Elder | `relation` | | `elderId` | 어르신 DB 참조 (Elder DB) |
 | Theme | `select` | ✅ | `theme` | 테마 카테고리 |
 | Excerpt | `rich_text` | ✅ | `excerpt` | 요약문 |
@@ -69,6 +68,8 @@ NOTION_HWALSEO_DATABASE_ID
 | PublishedAt | `date` | ✅ | `publishedAt` | 발행일 |
 | (cover) | page cover | ✅ | `coverImage` | 커버 이미지 |
 | (content) | page blocks | | `content` | 본문 (Markdown 변환) |
+
+> **Note**: `ElderAge` property는 더 이상 사용되지 않습니다. 나이는 `Elder.birthYear`에서 동적으로 계산됩니다.
 
 ### Theme 옵션 (select)
 
