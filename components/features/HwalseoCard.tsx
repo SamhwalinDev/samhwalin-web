@@ -47,8 +47,13 @@ export function HwalseoCard({ hwalseo }: HwalseoCardProps) {
 
           {/* 제목 - 고정 높이, 2줄 제한 */}
           <h3
-            className="text-h4 text-foreground mb-2 line-clamp-2 min-h-[3.5rem]"
-            style={{ whiteSpace: 'pre-line' }}
+            className="text-h4 text-foreground mb-2 min-h-[3.5rem] overflow-hidden"
+            style={{
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              whiteSpace: 'pre-line'
+            }}
           >
             {hwalseo.title.replaceAll('//', '\n')}
           </h3>
