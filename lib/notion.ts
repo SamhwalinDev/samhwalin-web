@@ -14,12 +14,15 @@ const databaseId = process.env.NOTION_HWALSEO_DATABASE_ID!;
 
 /**
  * Hwalseo ID와 Elder slug로 자동 slug 생성
- * 형식: {elder-slug}-{hwalseo-id-last-4}
+ * - Elder slug가 있으면: {elder-slug}-{hwalseo-id-last-4}
+ * - Elder slug가 없으면: {hwalseo-id-first-8} (fallback)
  */
-function generateHwalseoSlug(elderSlug: string, hwalseoId: string): string {
+function buildHwalseoSlug(elderSlug: string | null | undefined, hwalseoId: string): string {
   const cleanId = hwalseoId.replaceAll('-', '');
-  const shortId = cleanId.slice(-4).toLowerCase();
-  return `${elderSlug}-${shortId}`;
+  if (elderSlug) {
+    return `${elderSlug}-${cleanId.slice(-4).toLowerCase()}`;
+  }
+  return cleanId.slice(0, 8);
 }
 
 // Elder 데이터 캐시 (Elder ID -> { name, slug } 매핑)
@@ -112,9 +115,7 @@ export async function getHwalseoList(): Promise<HwalseoCard[]> {
         const elderData = elderId ? await getElderDataById(elderId) : null;
 
         // slug는 항상 자동 생성 (Elder가 없으면 ID fallback)
-        const slug = elderData?.slug
-          ? generateHwalseoSlug(elderData.slug, page.id)
-          : page.id.replaceAll('-', '').slice(0, 8);
+        const slug = buildHwalseoSlug(elderData?.slug, page.id);
 
         // Elder 이름
         const elderName = elderData?.name || '';
@@ -211,7 +212,7 @@ export async function getHwalseoBySlug(slug: string): Promise<Hwalseo | null> {
 
     // slug는 항상 자동 생성
     const generatedSlug = elderData?.slug
-      ? generateHwalseoSlug(elderData.slug, page.id)
+      ? buildHwalseoSlug(elderData.slug, page.id)
       : slug;
 
     return {
@@ -389,9 +390,7 @@ export async function getRelatedHwalseos(
         const elderData = elderId ? await getElderDataById(elderId) : null;
 
         // slug는 항상 자동 생성
-        const slug = elderData?.slug
-          ? generateHwalseoSlug(elderData.slug, page.id)
-          : page.id.replaceAll('-', '').slice(0, 8);
+        const slug = buildHwalseoSlug(elderData?.slug, page.id);
 
         return {
           id: page.id,
@@ -888,9 +887,7 @@ export async function getHwalseoByElderId(elderId: string): Promise<HwalseoCard[
 
     return response.results.map((page: any) => {
       // slug는 항상 자동 생성
-      const slug = elderData?.slug
-        ? generateHwalseoSlug(elderData.slug, page.id)
-        : page.id.replaceAll('-', '').slice(0, 8);
+      const slug = buildHwalseoSlug(elderData?.slug, page.id);
 
       return {
         id: page.id,
