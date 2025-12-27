@@ -76,6 +76,35 @@ function buildHwalseoSlug(elderSlug: string | null | undefined, hwalseoId: strin
 // Elder 데이터 캐시 (Elder ID -> { name, slug } 매핑)
 const elderDataCache = new Map<string, { name: string; slug: string }>();
 
+// ============================================
+// HwalseoCard 매핑 헬퍼
+// ============================================
+
+/**
+ * Notion 페이지를 HwalseoCard로 변환하는 헬퍼 함수
+ * @param page - Notion 페이지 객체
+ * @param elderData - Elder 데이터 (이름, slug)
+ */
+function pageToHwalseoCard(
+  page: NotionPageWithProperties,
+  elderData: { name: string; slug: string } | null
+): HwalseoCard {
+  const elderId = page.properties.Elder?.relation?.[0]?.id;
+  const slug = buildHwalseoSlug(elderData?.slug, page.id);
+
+  return {
+    id: page.id,
+    slug,
+    title: page.properties.Title?.title?.[0]?.plain_text || '',
+    elderName: elderData?.name || '',
+    elderId,
+    theme: page.properties.Theme?.select?.name || '',
+    excerpt: page.properties.Excerpt?.rich_text?.[0]?.plain_text || '',
+    coverImage: getProxiedImageUrl(page.cover?.external?.url || page.cover?.file?.url || ''),
+    publishedAt: page.properties.PublishedAt?.date?.start || '',
+  };
+}
+
 /**
  * Elder ID로 데이터 조회 (캐시 활용)
  */
@@ -99,42 +128,59 @@ async function getElderDataById(elderId: string): Promise<{ name: string; slug: 
   }
 }
 
+/**
+ * 여러 Elder ID를 배치로 조회 (N+1 쿼리 최적화)
+ * 캐시에 있는 데이터는 재사용하고, 없는 것만 조회
+ */
+async function batchGetElderData(
+  elderIds: string[]
+): Promise<Map<string, { name: string; slug: string }>> {
+  const result = new Map<string, { name: string; slug: string }>();
+  const uncachedIds: string[] = [];
+
+  // 1. 캐시에서 먼저 조회
+  for (const id of elderIds) {
+    if (elderDataCache.has(id)) {
+      result.set(id, elderDataCache.get(id)!);
+    } else {
+      uncachedIds.push(id);
+    }
+  }
+
+  // 2. 캐시에 없는 것만 병렬로 조회
+  if (uncachedIds.length > 0) {
+    const fetched = await Promise.all(
+      uncachedIds.map(async (id) => {
+        try {
+          const page = (await notion.pages.retrieve({ page_id: id })) as NotionPageWithProperties;
+          const name = page.properties.Name?.title?.[0]?.plain_text || '';
+          const slug = page.properties.Slug?.rich_text?.[0]?.plain_text ||
+                       page.id.replaceAll('-', '').slice(0, 8);
+          return { id, data: { name, slug } };
+        } catch (error) {
+          console.error(`Error fetching elder ${id}:`, error);
+          return { id, data: null };
+        }
+      })
+    );
+
+    // 3. 결과를 캐시와 result에 저장
+    for (const { id, data } of fetched) {
+      if (data) {
+        elderDataCache.set(id, data);
+        result.set(id, data);
+      }
+    }
+  }
+
+  return result;
+}
+
 const donationDbId = process.env.NOTION_DONATION_DATABASE_ID!;
 const settingsDbId = process.env.NOTION_SETTINGS_DATABASE_ID!;
 const postcardDbId = process.env.NOTION_POSTCARD_DATABASE_ID!;
 const subscriberDbId = process.env.NOTION_SUBSCRIBE_DATABASE_ID!;
 const elderDbId = process.env.NOTION_ELDER_DATABASE_ID!;
-
-/**
- * Elder ID로 Published 상태인 Hwalseo 개수 조회
- */
-async function getPublishedHwalseoCountByElder(elderId: string): Promise<number> {
-  try {
-    const response = await notion.databases.query({
-      database_id: databaseId,
-      filter: {
-        and: [
-          {
-            property: 'Elder',
-            relation: {
-              contains: elderId,
-            },
-          },
-          {
-            property: 'Status',
-            select: {
-              equals: 'Published',
-            },
-          },
-        ],
-      },
-    });
-    return response.results.length;
-  } catch (error) {
-    console.error('Error fetching published hwalseo count:', error);
-    return 0;
-  }
-}
 
 export async function getHwalseoList(): Promise<HwalseoCard[]> {
   try {
@@ -154,36 +200,26 @@ export async function getHwalseoList(): Promise<HwalseoCard[]> {
       ],
     });
 
-    // 각 Hwalseo에 대해 slug 자동 생성 (Elder 기반)
-    const hwalseoCards = await Promise.all(
-      response.results.map(async (result) => {
-        const page = result as NotionPageWithProperties;
-        const elderId = page.properties.Elder?.relation?.[0]?.id;
+    const pages = response.results as NotionPageWithProperties[];
 
-        // Elder 데이터 가져오기 (slug와 name 모두 필요)
-        const elderData = elderId ? await getElderDataById(elderId) : null;
-
-        // slug는 항상 자동 생성 (Elder가 없으면 ID fallback)
-        const slug = buildHwalseoSlug(elderData?.slug, page.id);
-
-        // Elder 이름
-        const elderName = elderData?.name || '';
-
-        return {
-          id: page.id,
-          slug,
-          title: page.properties.Title?.title?.[0]?.plain_text || '',
-          elderName,
-          elderId,
-          theme: page.properties.Theme?.select?.name || '',
-          excerpt: page.properties.Excerpt?.rich_text?.[0]?.plain_text || '',
-          coverImage: getProxiedImageUrl(page.cover?.external?.url || page.cover?.file?.url || ''),
-          publishedAt: page.properties.PublishedAt?.date?.start || '',
-        };
-      })
+    // 1. 모든 고유한 Elder ID 수집
+    const elderIds = Array.from(
+      new Set(
+        pages
+          .map((page) => page.properties.Elder?.relation?.[0]?.id)
+          .filter((id): id is string => !!id)
+      )
     );
 
-    return hwalseoCards;
+    // 2. Elder 데이터 배치 조회 (N+1 → 1+1 쿼리로 최적화)
+    const elderDataMap = await batchGetElderData(elderIds);
+
+    // 3. 메모리에서 Elder 데이터를 매핑하여 HwalseoCard 생성
+    return pages.map((page) => {
+      const elderId = page.properties.Elder?.relation?.[0]?.id;
+      const elderData = elderId ? elderDataMap.get(elderId) || null : null;
+      return pageToHwalseoCard(page, elderData);
+    });
   } catch (error) {
     console.error('Error fetching hwalseo list:', error);
     return [];
@@ -286,13 +322,23 @@ export async function getHwalseoBySlug(slug: string): Promise<Hwalseo | null> {
 
 async function getPageContent(pageId: string, coverImageUrl?: string): Promise<string> {
   try {
-    const blocks = await notion.blocks.children.list({
-      block_id: pageId,
-      page_size: 100,
-    });
+    // 커서 기반 페이지네이션으로 모든 블록 조회 (100개 이상 페이지 지원)
+    const allBlocks: NotionBlock[] = [];
+    let cursor: string | null = null;
+
+    do {
+      const response = await notion.blocks.children.list({
+        block_id: pageId,
+        page_size: 100,
+        ...(cursor ? { start_cursor: cursor } : {}),
+      });
+
+      allBlocks.push(...(response.results as NotionBlock[]));
+      cursor = response.has_more ? response.next_cursor : null;
+    } while (cursor);
 
     // Filter out first image if it matches cover image (avoid duplicate display)
-    let filteredBlocks = blocks.results as NotionBlock[];
+    let filteredBlocks = allBlocks;
     if (coverImageUrl && filteredBlocks.length > 0) {
       const firstBlock = filteredBlocks[0];
       if (firstBlock.type === 'image') {
@@ -429,37 +475,28 @@ export async function getRelatedHwalseos(
       page_size: limit + 1,
     });
 
-    const filtered = response.results
-      .filter((result) => result.id !== currentId)
+    const pages = (response.results as NotionPageWithProperties[])
+      .filter((page) => page.id !== currentId)
       .slice(0, limit);
 
-    // 각 Hwalseo에 대해 slug 자동 생성
-    const hwalseoCards = await Promise.all(
-      filtered.map(async (result) => {
-        const page = result as NotionPageWithProperties;
-        const elderId = page.properties.Elder?.relation?.[0]?.id;
-
-        // Elder 데이터 가져오기 (slug와 name 모두 필요)
-        const elderData = elderId ? await getElderDataById(elderId) : null;
-
-        // slug는 항상 자동 생성
-        const slug = buildHwalseoSlug(elderData?.slug, page.id);
-
-        return {
-          id: page.id,
-          slug,
-          title: page.properties.Title?.title?.[0]?.plain_text || '',
-          elderName: elderData?.name || '',
-          elderId,
-          theme: page.properties.Theme?.select?.name || '',
-          excerpt: page.properties.Excerpt?.rich_text?.[0]?.plain_text || '',
-          coverImage: getProxiedImageUrl(page.cover?.external?.url || page.cover?.file?.url || ''),
-          publishedAt: page.properties.PublishedAt?.date?.start || '',
-        };
-      })
+    // 1. 모든 고유한 Elder ID 수집
+    const elderIds = Array.from(
+      new Set(
+        pages
+          .map((page) => page.properties.Elder?.relation?.[0]?.id)
+          .filter((id): id is string => !!id)
+      )
     );
 
-    return hwalseoCards;
+    // 2. Elder 데이터 배치 조회
+    const elderDataMap = await batchGetElderData(elderIds);
+
+    // 3. 메모리에서 Elder 데이터를 매핑하여 HwalseoCard 생성
+    return pages.map((page) => {
+      const elderId = page.properties.Elder?.relation?.[0]?.id;
+      const elderData = elderId ? elderDataMap.get(elderId) || null : null;
+      return pageToHwalseoCard(page, elderData);
+    });
   } catch (error) {
     console.error('Error fetching related hwalseos:', error);
     return [];
@@ -763,59 +800,66 @@ export async function createSubscriber(data: {
 
 export async function getElderList(): Promise<ElderCard[]> {
   try {
-    const response = await notion.databases.query({
-      database_id: elderDbId,
-      filter: {
-        property: 'Status',
-        select: {
-          equals: 'Published',
+    // 1. Elder 목록과 Published Hwalseo 목록을 병렬로 조회 (N+1 → 2 쿼리로 최적화)
+    const [elderResponse, hwalseoResponse] = await Promise.all([
+      notion.databases.query({
+        database_id: elderDbId,
+        filter: {
+          property: 'Status',
+          select: {
+            equals: 'Published',
+          },
         },
-      },
-      sorts: [
-        {
-          property: 'Name',
-          direction: 'ascending',
+        sorts: [
+          {
+            property: 'Name',
+            direction: 'ascending',
+          },
+        ],
+      }),
+      notion.databases.query({
+        database_id: databaseId,
+        filter: {
+          property: 'Status',
+          select: {
+            equals: 'Published',
+          },
         },
-      ],
+      }),
+    ]);
+
+    // 2. Elder별 Hwalseo 카운트를 메모리에서 계산
+    const hwalseoCountByElder = new Map<string, number>();
+    for (const result of hwalseoResponse.results) {
+      const page = result as NotionPageWithProperties;
+      const elderId = page.properties.Elder?.relation?.[0]?.id;
+      if (elderId) {
+        hwalseoCountByElder.set(elderId, (hwalseoCountByElder.get(elderId) || 0) + 1);
+      }
+    }
+
+    // 3. Elder 데이터 매핑
+    return elderResponse.results.map((result) => {
+      const page = result as NotionPageWithProperties;
+      const photoProperty = page.properties.Photo;
+      const photoUrl =
+        photoProperty?.files?.[0]?.file?.url ||
+        photoProperty?.files?.[0]?.external?.url ||
+        '';
+
+      return {
+        id: page.id,
+        name: page.properties.Name?.title?.[0]?.plain_text || '',
+        slug: page.id.replaceAll('-', ''),
+        photo: getProxiedImageUrl(photoUrl),
+        birthYear: page.properties.BirthYear?.number || undefined,
+        gender: page.properties.Gender?.select?.name || undefined,
+        region: page.properties.Region?.select?.name || undefined,
+        introduction:
+          page.properties.Introduction?.rich_text?.[0]?.plain_text || undefined,
+        hwalseoCount: hwalseoCountByElder.get(page.id) || 0,
+      };
     });
-
-    // Use Promise.all to fetch published hwalseo counts in parallel
-    const elders = await Promise.all(
-      response.results.map(async (result) => {
-        const page = result as NotionPageWithProperties;
-        // Debug: Log Photo property structure
-        const photoProperty = page.properties.Photo;
-        const photoUrl =
-          photoProperty?.files?.[0]?.file?.url ||
-          photoProperty?.files?.[0]?.external?.url ||
-          '';
-        if (process.env.NODE_ENV === 'development') {
-          console.log(
-            `[Elder] ${page.properties.Name?.title?.[0]?.plain_text}: Photo property:`,
-            JSON.stringify(photoProperty, null, 2)
-          );
-          console.log(`[Elder] Extracted photo URL: ${photoUrl}`);
-        }
-
-        // Get only Published hwalseo count
-        const hwalseoCount = await getPublishedHwalseoCountByElder(page.id);
-
-        return {
-          id: page.id,
-          name: page.properties.Name?.title?.[0]?.plain_text || '',
-          slug: page.id.replaceAll('-', ''),
-          photo: getProxiedImageUrl(photoUrl),
-          birthYear: page.properties.BirthYear?.number || undefined,
-          gender: page.properties.Gender?.select?.name || undefined,
-          region: page.properties.Region?.select?.name || undefined,
-          introduction:
-            page.properties.Introduction?.rich_text?.[0]?.plain_text || undefined,
-          hwalseoCount,
-        };
-      })
-    );
-
-    return elders;
   } catch (error) {
     console.error('Error fetching elder list:', error);
     return [];
@@ -943,22 +987,7 @@ export async function getHwalseoByElderId(elderId: string): Promise<HwalseoCard[
 
     return response.results.map((result) => {
       const page = result as NotionPageWithProperties;
-      // slug는 항상 자동 생성
-      const slug = buildHwalseoSlug(elderData?.slug, page.id);
-
-      return {
-        id: page.id,
-        slug,
-        title: page.properties.Title?.title?.[0]?.plain_text || '',
-        elderName: elderData?.name || '',
-        elderId: page.properties.Elder?.relation?.[0]?.id || undefined,
-        theme: page.properties.Theme?.select?.name || '',
-        excerpt: page.properties.Excerpt?.rich_text?.[0]?.plain_text || '',
-        coverImage: getProxiedImageUrl(
-          page.cover?.external?.url || page.cover?.file?.url || ''
-        ),
-        publishedAt: page.properties.PublishedAt?.date?.start || '',
-      };
+      return pageToHwalseoCard(page, elderData);
     });
   } catch (error) {
     console.error('Error fetching hwalseo by elder ID:', error);
