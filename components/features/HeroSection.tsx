@@ -4,20 +4,10 @@ import { ArrowRight } from 'lucide-react';
 import { Container } from '@/components/layout';
 import { Button } from '@/components/ui';
 import { formatTitleParts } from '@/lib/utils';
-
-interface HwalseoItem {
-  id: string;
-  slug: string;
-  title: string;
-  elderName: string;
-  theme: string;
-  excerpt: string;
-  coverImage: string;
-  publishedAt: string;
-}
+import type { HwalseoCard } from '@/types';
 
 interface HeroSectionProps {
-  latestHwalseo: HwalseoItem | null;
+  latestHwalseo: HwalseoCard | null;
 }
 
 export function HeroSection({ latestHwalseo }: HeroSectionProps) {

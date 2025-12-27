@@ -2,20 +2,10 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { HwalseoCard } from './HwalseoCard';
 import { Button } from '@/components/ui';
-
-interface HwalseoItem {
-  id: string;
-  slug: string;
-  title: string;
-  elderName: string;
-  theme: string;
-  excerpt: string;
-  coverImage: string;
-  publishedAt: string;
-}
+import type { HwalseoCard as HwalseoCardType } from '@/types';
 
 interface HwalseoPreviewProps {
-  hwalseoList: HwalseoItem[];
+  hwalseoList: HwalseoCardType[];
 }
 
 export function HwalseoPreview({ hwalseoList }: HwalseoPreviewProps) {

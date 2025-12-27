@@ -1,19 +1,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
-
-interface HwalseoItem {
-  id: string;
-  slug: string;
-  title: string;
-  elderName: string;
-  theme: string;
-  excerpt: string;
-  coverImage: string;
-  publishedAt: string;
-}
+import type { HwalseoCard as HwalseoCardType } from '@/types';
 
 interface HwalseoCardProps {
-  hwalseo: HwalseoItem;
+  hwalseo: HwalseoCardType;
 }
 
 export function HwalseoCard({ hwalseo }: HwalseoCardProps) {

@@ -5,20 +5,10 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Search, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { HwalseoCard } from './HwalseoCard';
-
-interface HwalseoItem {
-  id: string;
-  slug: string;
-  title: string;
-  elderName: string;
-  theme: string;
-  excerpt: string;
-  coverImage: string;
-  publishedAt: string;
-}
+import type { HwalseoCard as HwalseoCardType } from '@/types';
 
 interface HwalseoFilterProps {
-  hwalseoList: HwalseoItem[];
+  hwalseoList: HwalseoCardType[];
   themes: string[];
 }
 
