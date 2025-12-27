@@ -65,20 +65,6 @@ export interface HwalseoCard {
 }
 
 /**
- * 테마 목록
- */
-export const THEMES = [
-  '전쟁의 기억',
-  '인생의 지혜',
-  '가족 이야기',
-  '직업과 소명',
-  '사랑과 우정',
-  '고향의 추억',
-] as const;
-
-export type Theme = typeof THEMES[number];
-
-/**
  * 후원 옵션
  */
 export interface DonationOption {
@@ -116,14 +102,6 @@ export interface TeamMember {
   image?: string;
 }
 
-export const TEAM_MEMBERS: TeamMember[] = [
-  { name: '강현서', role: '인터뷰·기획·글쓰기' },
-  { name: '박주원', role: '디자인·개발·전략' },
-  { name: '조혜정', role: '굿즈' },
-  { name: '윤희은', role: '영상' },
-  { name: '권민지', role: '마케팅·전략' },
-];
-
 /**
  * 네비게이션 링크
  */
@@ -138,45 +116,3 @@ export const NAV_LINKS: NavLink[] = [
   { label: '삼활인', href: '/about' },
   { label: '후원하기', href: '/donate' },
 ];
-
-/**
- * 엽서 폼 데이터
- */
-export interface PostcardFormData {
-  senderName: string;
-  message: string;
-  agreeToTerms: boolean;
-}
-
-/**
- * 후원 폼 데이터
- */
-export interface DonationFormData {
-  type: 'oneTime' | 'recurring';
-  amount: number;
-  customAmount?: number;
-  name: string;
-  email: string;
-  phone?: string;
-  paymentMethod: 'kakao' | 'toss' | 'bank';
-}
-
-/**
- * API 응답 타입
- */
-export interface ApiResponse<T> {
-  success: boolean;
-  data?: T;
-  error?: string;
-}
-
-/**
- * 구독자 타입
- */
-export interface Subscriber {
-  id: string;
-  email: string;
-  subscribedAt: string;
-  source: 'footer' | 'homepage' | 'hwalseo';
-  status: '활성' | '해지';
-}

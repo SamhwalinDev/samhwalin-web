@@ -29,26 +29,6 @@ export function formatCurrency(amount: number): string {
 }
 
 /**
- * 슬러그 생성
- */
-export function generateSlug(title: string): string {
-  return title
-    .toLowerCase()
-    .replace(/[^a-z0-9가-힣\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .trim();
-}
-
-/**
- * 텍스트 자르기
- */
-export function truncateText(text: string, maxLength: number): string {
-  if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength).trim() + '...';
-}
-
-/**
  * 제목에서 // 를 줄바꿈으로 변환
  * Notion에서 제목에 //를 입력하면 줄바꿈으로 표시됨
  * @returns 줄바꿈으로 분리된 문자열 배열
