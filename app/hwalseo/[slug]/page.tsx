@@ -176,7 +176,7 @@ function ContentRenderer({ content }: { content: string }) {
         // 목록
         if (line.startsWith('• ')) {
           return (
-            <li key={index} className="text-body-lg text-text leading-loose ml-4">
+            <li key={index} className="text-body-lg text-foreground leading-loose ml-4">
               {parseInlineFormatting(line.replace('• ', ''))}
             </li>
           );
@@ -184,7 +184,7 @@ function ContentRenderer({ content }: { content: string }) {
         // 일반 문단
         if (line.trim()) {
           return (
-            <p key={index} className="text-body-lg text-text leading-loose mb-6">
+            <p key={index} className="text-body-lg text-foreground leading-loose mb-6">
               {parseInlineFormatting(line)}
             </p>
           );

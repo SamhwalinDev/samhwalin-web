@@ -38,32 +38,35 @@ interface SectionProps extends HTMLAttributes<HTMLElement> {
   background?: 'default' | 'gray' | 'white';
 }
 
-const Section = forwardRef<HTMLElement, SectionProps>(
-  ({ className, as: Component = 'section', spacing = 'default', background = 'default', children, ...props }, ref) => {
-    const spacings = {
-      default: 'py-20 lg:py-32',
-      sm: 'py-12 lg:py-16',
-      lg: 'py-24 lg:py-40',
-    };
+function Section({
+  className,
+  as: Component = 'section',
+  spacing = 'default',
+  background = 'default',
+  children,
+  ...props
+}: SectionProps) {
+  const spacings = {
+    default: 'py-20 lg:py-32',
+    sm: 'py-12 lg:py-16',
+    lg: 'py-24 lg:py-40',
+  };
 
-    const backgrounds = {
-      default: 'bg-base',
-      gray: 'bg-muted',
-      white: 'bg-white',
-    };
+  const backgrounds = {
+    default: 'bg-base',
+    gray: 'bg-muted',
+    white: 'bg-white',
+  };
 
-    return (
-      <Component
-        // @ts-ignore - forwardRef 타입 이슈
-        ref={ref}
-        className={cn(spacings[spacing], backgrounds[background], className)}
-        {...props}
-      >
-        {children}
-      </Component>
-    );
-  }
-);
+  return (
+    <Component
+      className={cn(spacings[spacing], backgrounds[background], className)}
+      {...props}
+    >
+      {children}
+    </Component>
+  );
+}
 
 Section.displayName = 'Section';
 

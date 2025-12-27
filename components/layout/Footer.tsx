@@ -2,13 +2,14 @@ import Link from 'next/link';
 import { Mail, Instagram, Youtube } from 'lucide-react';
 import { NAV_LINKS } from '@/types';
 import { EmailSubscribeForm } from '@/components/features/EmailSubscribeForm';
+import { Container } from './Container';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
     <footer className="bg-white border-t border-border">
-      <div className="container-custom py-12 lg:py-16">
+      <Container className="py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
           {/* Brand */}
           <div>
@@ -102,7 +103,7 @@ export function Footer() {
             © {currentYear} 삼활인. All rights reserved.
           </p>
         </div>
-      </div>
+      </Container>
     </footer>
   );
 }
