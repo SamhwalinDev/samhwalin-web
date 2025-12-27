@@ -1,6 +1,54 @@
 import { Client } from '@notionhq/client';
+import type {
+  PageObjectResponse,
+  BlockObjectResponse,
+} from '@notionhq/client/build/src/api-endpoints';
 import type { Hwalseo, HwalseoCard, Elder, ElderCard } from '@/types';
 import { getProxiedImageUrl } from './utils';
+
+// ============================================
+// Notion 타입 헬퍼
+// ============================================
+
+/**
+ * Notion 페이지 프로퍼티에 안전하게 접근하기 위한 타입
+ * Notion SDK의 복잡한 유니온 타입 대신 실용적인 접근 방식 사용
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type NotionProperties = Record<string, any>;
+
+type NotionPageWithProperties = PageObjectResponse & {
+  properties: NotionProperties;
+  cover?: {
+    external?: { url: string };
+    file?: { url: string };
+  } | null;
+};
+
+/**
+ * 블록을 마크다운으로 변환할 때 사용하는 타입
+ */
+type NotionBlock = BlockObjectResponse & {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
+};
+
+/**
+ * RichText 아이템 타입 (Notion API의 복잡한 유니온 타입 대신 실용적 접근)
+ */
+interface NotionRichTextItem {
+  plain_text: string;
+  text?: { content: string };
+  href?: string | null;
+  annotations: {
+    bold: boolean;
+    italic: boolean;
+    strikethrough: boolean;
+    underline: boolean;
+    code: boolean;
+    color: string;
+  };
+}
 
 const notion = new Client({
   auth: process.env.NOTION_API_KEY,
@@ -37,7 +85,7 @@ async function getElderDataById(elderId: string): Promise<{ name: string; slug: 
   }
 
   try {
-    const page = (await notion.pages.retrieve({ page_id: elderId })) as any;
+    const page = (await notion.pages.retrieve({ page_id: elderId })) as NotionPageWithProperties;
     const name = page.properties.Name?.title?.[0]?.plain_text || '';
     const slug = page.properties.Slug?.rich_text?.[0]?.plain_text ||
                  page.id.replaceAll('-', '').slice(0, 8);
@@ -108,7 +156,8 @@ export async function getHwalseoList(): Promise<HwalseoCard[]> {
 
     // 각 Hwalseo에 대해 slug 자동 생성 (Elder 기반)
     const hwalseoCards = await Promise.all(
-      response.results.map(async (page: any) => {
+      response.results.map(async (result) => {
+        const page = result as NotionPageWithProperties;
         const elderId = page.properties.Elder?.relation?.[0]?.id;
 
         // Elder 데이터 가져오기 (slug와 name 모두 필요)
@@ -181,17 +230,17 @@ export async function getHwalseoBySlug(slug: string): Promise<Hwalseo | null> {
       return null;
     }
 
-    const elder = elderResponse.results[0] as any;
+    const elder = elderResponse.results[0] as NotionPageWithProperties;
 
     // Elder의 Hwalseo 중에서 ID가 shortId로 끝나는 것 찾기
     const hwalseoRelation = elder.properties.Hwalseo?.relation || [];
-    let page: any = null;
+    let page: NotionPageWithProperties | null = null;
 
     for (const rel of hwalseoRelation) {
-      const cleanId = rel.id.replaceAll('-', '');
+      const cleanId = (rel.id as string).replaceAll('-', '');
       if (cleanId.slice(-4).toLowerCase() === shortId.toLowerCase()) {
         // 해당 Hwalseo 조회
-        const hwalseoPage = await notion.pages.retrieve({ page_id: rel.id }) as any;
+        const hwalseoPage = await notion.pages.retrieve({ page_id: rel.id }) as NotionPageWithProperties;
         if (hwalseoPage.properties?.Status?.select?.name === 'Published') {
           page = hwalseoPage;
           break;
@@ -243,11 +292,12 @@ async function getPageContent(pageId: string, coverImageUrl?: string): Promise<s
     });
 
     // Filter out first image if it matches cover image (avoid duplicate display)
-    let filteredBlocks = blocks.results;
+    let filteredBlocks = blocks.results as NotionBlock[];
     if (coverImageUrl && filteredBlocks.length > 0) {
-      const firstBlock = filteredBlocks[0] as any;
+      const firstBlock = filteredBlocks[0];
       if (firstBlock.type === 'image') {
-        const firstImageUrl = firstBlock.image?.file?.url || firstBlock.image?.external?.url || '';
+        const imageData = firstBlock.image as { file?: { url: string }; external?: { url: string } };
+        const firstImageUrl = imageData?.file?.url || imageData?.external?.url || '';
         // Compare base URLs (without query params for Notion signed URLs)
         // Extract just the path/filename for more robust comparison
         const getImageKey = (url: string) => {
@@ -271,7 +321,7 @@ async function getPageContent(pageId: string, coverImageUrl?: string): Promise<s
   }
 }
 
-function blocksToMarkdown(blocks: any[]): string {
+function blocksToMarkdown(blocks: NotionBlock[]): string {
   return blocks
     .map((block) => {
       const type = block.type;
@@ -293,11 +343,13 @@ function blocksToMarkdown(blocks: any[]): string {
           return `> ${richTextToString(block.quote.rich_text)}`;
         case 'divider':
           return '---';
-        case 'image':
-          const imageUrl = getProxiedImageUrl(block.image?.file?.url || block.image?.external?.url || '');
-          const caption = block.image?.caption?.[0]?.plain_text || '';
+        case 'image': {
+          const imgData = block.image as { file?: { url: string }; external?: { url: string }; caption?: Array<{ plain_text: string }> };
+          const imageUrl = getProxiedImageUrl(imgData?.file?.url || imgData?.external?.url || '');
+          const caption = imgData?.caption?.[0]?.plain_text || '';
           // ||| 구분자 사용 (URL에 포함되지 않는 문자)
           return `[IMG]${imageUrl}[/IMG]${caption ? `[CAP]${caption}[/CAP]` : ''}`;
+        }
         default:
           return '';
       }
@@ -306,7 +358,7 @@ function blocksToMarkdown(blocks: any[]): string {
     .join('\n\n');
 }
 
-function richTextToString(richText: any[]): string {
+function richTextToString(richText: NotionRichTextItem[]): string {
   if (!richText || richText.length === 0) return '';
   return richText.map((item) => {
     let text = item.plain_text || item.text?.content || '';
@@ -378,12 +430,13 @@ export async function getRelatedHwalseos(
     });
 
     const filtered = response.results
-      .filter((page: any) => page.id !== currentId)
+      .filter((result) => result.id !== currentId)
       .slice(0, limit);
 
     // 각 Hwalseo에 대해 slug 자동 생성
     const hwalseoCards = await Promise.all(
-      filtered.map(async (page: any) => {
+      filtered.map(async (result) => {
+        const page = result as NotionPageWithProperties;
         const elderId = page.properties.Elder?.relation?.[0]?.id;
 
         // Elder 데이터 가져오기 (slug와 name 모두 필요)
@@ -438,7 +491,8 @@ export async function getDonationStats() {
     const today = koreaTime.toISOString().split('T')[0];
     const thisMonth = today.slice(0, 7);
 
-    donationsResponse.results.forEach((page: any) => {
+    donationsResponse.results.forEach((result) => {
+      const page = result as NotionPageWithProperties;
       const amount = page.properties.Amount?.number || 0;
       const name = page.properties.Name?.title?.[0]?.plain_text || '익명';
       const message = page.properties.Message?.rich_text?.[0]?.plain_text || '';
@@ -476,7 +530,7 @@ export async function getDonationStats() {
 
     let goalAmount = 300000;
     if (settingsResponse.results.length > 0) {
-      const settingsPage: any = settingsResponse.results[0];
+      const settingsPage = settingsResponse.results[0] as NotionPageWithProperties;
       goalAmount = settingsPage.properties.Value?.number || 300000;
     }
 
@@ -695,9 +749,10 @@ export async function createSubscriber(data: {
 
     console.log('Subscriber created:', response.id);
     return { success: true };
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error creating subscriber:', error);
-    console.error('Error details:', error?.body || error?.message || error);
+    const err = error as { body?: unknown; message?: string };
+    console.error('Error details:', err?.body || err?.message || error);
     return { success: false, error: 'server_error' };
   }
 }
@@ -726,7 +781,8 @@ export async function getElderList(): Promise<ElderCard[]> {
 
     // Use Promise.all to fetch published hwalseo counts in parallel
     const elders = await Promise.all(
-      response.results.map(async (page: any) => {
+      response.results.map(async (result) => {
+        const page = result as NotionPageWithProperties;
         // Debug: Log Photo property structure
         const photoProperty = page.properties.Photo;
         const photoUrl =
@@ -768,7 +824,7 @@ export async function getElderList(): Promise<ElderCard[]> {
 
 export async function getElderById(elderId: string): Promise<Elder | null> {
   try {
-    const page = (await notion.pages.retrieve({ page_id: elderId })) as any;
+    const page = (await notion.pages.retrieve({ page_id: elderId })) as NotionPageWithProperties;
 
     // Check if published
     if (page.properties.Status?.select?.name !== 'Published') {
@@ -793,7 +849,7 @@ export async function getElderById(elderId: string): Promise<Elder | null> {
         page.properties.Introduction?.rich_text?.[0]?.plain_text || undefined,
       bio: page.properties.Bio?.rich_text?.[0]?.plain_text || undefined,
       status: page.properties.Status?.select?.name || 'Draft',
-      hwalseoIds: hwalseoRelation.map((rel: any) => rel.id),
+      hwalseoIds: hwalseoRelation.map((rel: { id: string }) => rel.id),
     };
   } catch (error) {
     console.error('Error fetching elder by ID:', error);
@@ -827,7 +883,7 @@ export async function getElderByName(name: string): Promise<Elder | null> {
       return null;
     }
 
-    const page = response.results[0] as any;
+    const page = response.results[0] as NotionPageWithProperties;
     const hwalseoRelation = page.properties.Hwalseo?.relation || [];
 
     return {
@@ -846,7 +902,7 @@ export async function getElderByName(name: string): Promise<Elder | null> {
         page.properties.Introduction?.rich_text?.[0]?.plain_text || undefined,
       bio: page.properties.Bio?.rich_text?.[0]?.plain_text || undefined,
       status: page.properties.Status?.select?.name || 'Draft',
-      hwalseoIds: hwalseoRelation.map((rel: any) => rel.id),
+      hwalseoIds: hwalseoRelation.map((rel: { id: string }) => rel.id),
     };
   } catch (error) {
     console.error('Error fetching elder by name:', error);
@@ -885,7 +941,8 @@ export async function getHwalseoByElderId(elderId: string): Promise<HwalseoCard[
       ],
     });
 
-    return response.results.map((page: any) => {
+    return response.results.map((result) => {
+      const page = result as NotionPageWithProperties;
       // slug는 항상 자동 생성
       const slug = buildHwalseoSlug(elderData?.slug, page.id);
 
