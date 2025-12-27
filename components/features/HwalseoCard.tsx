@@ -46,16 +46,12 @@ export function HwalseoCard({ hwalseo }: HwalseoCardProps) {
           </span>
 
           {/* 제목 - 고정 높이, 2줄 제한 */}
-          <h3
-            className="text-h4 text-foreground mb-2 min-h-[3.5rem] overflow-hidden"
-            style={{
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              whiteSpace: 'pre-line'
-            }}
-          >
-            {hwalseo.title.replaceAll('//', '\n')}
+          <h3 className="text-h4 text-foreground mb-2 h-[3.5rem] overflow-hidden">
+            {hwalseo.title.split('//').slice(0, 2).map((line, i) => (
+              <span key={`${hwalseo.id}-title-${i}`} className="block truncate">
+                {line.trim()}
+              </span>
+            ))}
           </h3>
 
           {/* 어르신 이름 */}

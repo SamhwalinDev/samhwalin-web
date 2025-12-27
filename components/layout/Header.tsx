@@ -30,9 +30,9 @@ export function Header({ variant = 'default' }: HeaderProps) {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image
-              src="/images/logo-alive-header.png"
-              alt="어라이브 로고"
-              width={120}
+              src="/images/samhwalin-logo.svg"
+              alt="삼활인 로고"
+              width={148}
               height={32}
               className="h-8 w-auto"
               priority
