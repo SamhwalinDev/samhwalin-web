@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn, formatCurrency } from '@/lib/utils';
 
 export interface ProgressBarProps {
   value: number;           // 현재 값
@@ -71,10 +71,6 @@ interface DonationProgressProps {
 }
 
 export function DonationProgress({ current, goal, donorCount, className }: DonationProgressProps) {
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('ko-KR').format(amount) + '원';
-  };
-
   return (
     <div className={cn('p-5 bg-white rounded-lg border border-border', className)}>
       <ProgressBar value={current} max={goal} label="이번 달 후원 목표" />
