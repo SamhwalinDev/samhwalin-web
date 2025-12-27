@@ -107,9 +107,7 @@ components/
 │   └── Header.tsx
 └── ui/                     # Reusable UI components
     ├── Button.tsx
-    ├── Card.tsx
     ├── Input.tsx
-    ├── Modal.tsx
     ├── ProgressBar.tsx
     └── ProxiedImage.tsx    # Handles image proxy for long URLs
 
@@ -192,10 +190,6 @@ interface HwalseoCard { ... } // Abbreviated hwalseo for cards
 
 ### Constants
 ```typescript
-// Available themes
-const THEMES = ['전쟁의 기억', '인생의 지혜', '가족 이야기',
-                '직업과 소명', '사랑과 우정', '고향의 추억'];
-
 // Navigation links
 const NAV_LINKS = [
   { label: '활서', href: '/hwalseo' },
@@ -235,12 +229,11 @@ All data functions are in `lib/notion.ts`:
 In `lib/utils.ts`:
 
 ```typescript
-cn(...inputs)           // Tailwind class merge (clsx + tailwind-merge)
-formatDate(dateString)  // Korean date format: "2024년 1월 15일"
-formatCurrency(amount)  // Korean currency: "10,000원"
-generateSlug(title)     // URL-safe slug from title
-truncateText(text, max) // Truncate with ellipsis
-getProxiedImageUrl(url) // Convert Notion/S3 URLs to proxy URLs
+cn(...inputs)            // Tailwind class merge (clsx + tailwind-merge)
+formatDate(dateString)   // Korean date format: "2024년 1월 15일"
+formatCurrency(amount)   // Korean currency: "10,000원"
+formatTitleParts(title)  // Split title by // for line breaks
+getProxiedImageUrl(url)  // Convert Notion/S3 URLs to proxy URLs
 ```
 
 ## Image Handling
@@ -473,6 +466,54 @@ Note: Headings are shifted down one level (h1→h2, etc.) since the page title u
 - Image comparison in getPageContent uses path matching to avoid duplicates
 
 ## Recent Changes
+
+### 2024-12-27: Code Quality Refactoring
+
+Comprehensive code review and refactoring across 4 phases.
+
+#### Phase 1: Quick Wins
+- Fixed `text-text` → `text-foreground` in hwalseo detail page
+- Removed unnecessary `forwardRef` and `@ts-ignore` in Container.tsx
+- Replaced `container-custom` with `<Container>` component in Footer.tsx
+
+#### Phase 2: Type & Duplication Cleanup
+- Consolidated duplicate `HwalseoItem` interfaces → use `HwalseoCard` from `@/types` (4 files, ~40 lines removed)
+- Extracted `buildHwalseoSlug()` helper function in lib/notion.ts (4 locations consolidated)
+- Removed duplicate `formatCurrency` → use shared function from `lib/utils.ts`
+
+#### Phase 3: lib/notion.ts Optimization
+- **3-1: Type Safety** - Replaced `any` types with Notion SDK types (`PageObjectResponse`, `BlockObjectResponse`, etc.)
+- **3-2: Helper Extraction** - Created `pageToHwalseoCard()` helper (~45 lines duplication removed)
+- **3-3: N+1 Query Fix** - Implemented batch fetching with `batchGetElderData()`, reduced API calls significantly
+- **3-4: Block Pagination** - Added cursor-based pagination for pages with 100+ blocks
+
+#### Phase 4: Unused Code Removal (~481 lines removed)
+**Deleted files:**
+- `components/features/ElderCta.tsx`
+- `components/ui/Modal.tsx`
+- `components/ui/Card.tsx`
+
+**Removed from files:**
+- `Input.tsx`: Textarea, Checkbox components
+- `types/index.ts`: THEMES, Theme, TEAM_MEMBERS, PostcardFormData, DonationFormData, ApiResponse, Subscriber
+- `lib/utils.ts`: generateSlug, truncateText functions
+
+#### Key Helper Functions Added
+| Function | Location | Purpose |
+|----------|----------|---------|
+| `buildHwalseoSlug()` | lib/notion.ts | Generate hwalseo slug from elder slug + page ID |
+| `pageToHwalseoCard()` | lib/notion.ts | Transform Notion page to HwalseoCard type |
+| `batchGetElderData()` | lib/notion.ts | Batch fetch elder data with caching |
+
+#### Performance Improvements
+- N+1 queries → Batch queries (reduced Notion API calls)
+- Block pagination for long pages (100+ blocks now fully load)
+- Elder data caching in batch operations
+
+#### Total Impact
+- ~600+ lines of duplicate/unused code removed
+- Improved type safety throughout lib/notion.ts
+- Better API performance and rate limit handling
 
 ### 2024-12-22: Color System Unification
 - **Background color**: Changed from `#FFFEF9` to `#FFFFFE` for cleaner whites
