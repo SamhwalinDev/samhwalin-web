@@ -1,6 +1,7 @@
 export { DonationForm } from './DonationForm';
 export { DonationProgress } from './DonationProgress';
 export { ElderCard } from './ElderCard';
+export { ElderFilter } from './ElderFilter';
 export { EmailSubscribeForm } from './EmailSubscribeForm';
 export { HeroSection } from './HeroSection';
 export { HwalseoCard } from './HwalseoCard';
