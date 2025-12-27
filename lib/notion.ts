@@ -54,6 +54,37 @@ const postcardDbId = process.env.NOTION_POSTCARD_DATABASE_ID!;
 const subscriberDbId = process.env.NOTION_SUBSCRIBE_DATABASE_ID!;
 const elderDbId = process.env.NOTION_ELDER_DATABASE_ID!;
 
+/**
+ * Elder ID로 Published 상태인 Hwalseo 개수 조회
+ */
+async function getPublishedHwalseoCountByElder(elderId: string): Promise<number> {
+  try {
+    const response = await notion.databases.query({
+      database_id: databaseId,
+      filter: {
+        and: [
+          {
+            property: 'Elder',
+            relation: {
+              contains: elderId,
+            },
+          },
+          {
+            property: 'Status',
+            select: {
+              equals: 'Published',
+            },
+          },
+        ],
+      },
+    });
+    return response.results.length;
+  } catch (error) {
+    console.error('Error fetching published hwalseo count:', error);
+    return 0;
+  }
+}
+
 export async function getHwalseoList(): Promise<HwalseoCard[]> {
   try {
     const response = await notion.databases.query({
@@ -694,36 +725,42 @@ export async function getElderList(): Promise<ElderCard[]> {
       ],
     });
 
-    return response.results.map((page: any) => {
-      const hwalseoRelation = page.properties.Hwalseo?.relation || [];
+    // Use Promise.all to fetch published hwalseo counts in parallel
+    const elders = await Promise.all(
+      response.results.map(async (page: any) => {
+        // Debug: Log Photo property structure
+        const photoProperty = page.properties.Photo;
+        const photoUrl =
+          photoProperty?.files?.[0]?.file?.url ||
+          photoProperty?.files?.[0]?.external?.url ||
+          '';
+        if (process.env.NODE_ENV === 'development') {
+          console.log(
+            `[Elder] ${page.properties.Name?.title?.[0]?.plain_text}: Photo property:`,
+            JSON.stringify(photoProperty, null, 2)
+          );
+          console.log(`[Elder] Extracted photo URL: ${photoUrl}`);
+        }
 
-      // Debug: Log Photo property structure
-      const photoProperty = page.properties.Photo;
-      const photoUrl =
-        photoProperty?.files?.[0]?.file?.url ||
-        photoProperty?.files?.[0]?.external?.url ||
-        '';
-      if (process.env.NODE_ENV === 'development') {
-        console.log(
-          `[Elder] ${page.properties.Name?.title?.[0]?.plain_text}: Photo property:`,
-          JSON.stringify(photoProperty, null, 2)
-        );
-        console.log(`[Elder] Extracted photo URL: ${photoUrl}`);
-      }
+        // Get only Published hwalseo count
+        const hwalseoCount = await getPublishedHwalseoCountByElder(page.id);
 
-      return {
-        id: page.id,
-        name: page.properties.Name?.title?.[0]?.plain_text || '',
-        slug: page.id.replaceAll('-', ''),
-        photo: getProxiedImageUrl(photoUrl),
-        birthYear: page.properties.BirthYear?.number || undefined,
-        gender: page.properties.Gender?.select?.name || undefined,
-        region: page.properties.Region?.select?.name || undefined,
-        introduction:
-          page.properties.Introduction?.rich_text?.[0]?.plain_text || undefined,
-        hwalseoCount: hwalseoRelation.length,
-      };
-    });
+        return {
+          id: page.id,
+          name: page.properties.Name?.title?.[0]?.plain_text || '',
+          slug: page.id.replaceAll('-', ''),
+          photo: getProxiedImageUrl(photoUrl),
+          birthYear: page.properties.BirthYear?.number || undefined,
+          gender: page.properties.Gender?.select?.name || undefined,
+          region: page.properties.Region?.select?.name || undefined,
+          introduction:
+            page.properties.Introduction?.rich_text?.[0]?.plain_text || undefined,
+          hwalseoCount,
+        };
+      })
+    );
+
+    return elders;
   } catch (error) {
     console.error('Error fetching elder list:', error);
     return [];
