@@ -12,7 +12,6 @@ const NAV_LINKS = [
   { label: '프로필', href: '/elders' },
   { label: '활서', href: '/hwalseo' },
   { label: '프로젝트 소개', href: '/about' },
-  { label: '후원하기', href: '/donate' },
 ];
 
 interface HeaderProps {

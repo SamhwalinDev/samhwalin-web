@@ -17,13 +17,9 @@ samhwalin-web/
 │   ├── hwalseo/
 │   │   ├── page.tsx             # 활서 목록
 │   │   └── [slug]/page.tsx      # 활서 상세
-│   ├── donate/
-│   │   ├── page.tsx             # 후원 페이지
-│   │   └── thank-you/page.tsx   # 후원 감사
 │   ├── postcard/
 │   │   └── thank-you/page.tsx   # 엽서 감사
 │   └── api/
-│       ├── donation/route.ts    # 후원 API
 │       ├── postcard/route.ts    # 엽서 API
 │       ├── subscribe/route.ts   # 구독 API (NEW)
 │       └── image/route.ts       # 이미지 프록시
@@ -45,11 +41,9 @@ samhwalin-web/
 ### Database IDs (환경변수)
 ```typescript
 NOTION_HWALSEO_DATABASE_ID   // 활서
-NOTION_ELDER_DATABASE_ID     // 어르신 (NEW)
-NOTION_DONATION_DATABASE_ID  // 후원
+NOTION_ELDER_DATABASE_ID     // 어르신
 NOTION_POSTCARD_DATABASE_ID  // 엽서
-NOTION_SUBSCRIBE_DATABASE_ID // 구독 (NEW)
-NOTION_SETTINGS_DATABASE_ID  // 설정
+NOTION_SUBSCRIBE_DATABASE_ID // 구독
 ```
 
 ### 활서(Hwalseo) 함수
@@ -85,18 +79,12 @@ async function getElderByName(name: string): Promise<Elder | null>
 async function getElderRegions(): Promise<string[]>
 ```
 
-### 후원/엽서/구독 함수
+### 엽서/구독 함수
 ```typescript
-// 후원 통계 조회
-async function getDonationStats(): Promise<DonationStats>
-
-// 후원 생성
-async function createDonation(data: { name: string; amount: number; type: string }): Promise<Result>
-
 // 엽서 생성
 async function createPostcard(data: PostcardData): Promise<Result>
 
-// 구독자 생성 (NEW)
+// 구독자 생성
 async function createSubscriber(data: { email: string; source: string }): Promise<Result>
 ```
 
@@ -179,15 +167,6 @@ interface ElderCard {
 
 ### 기타 타입
 ```typescript
-interface Donation {
-  id: string;
-  name: string;
-  amount: number;
-  message?: string;
-  status: string;
-  date: string;
-}
-
 interface Postcard {
   id: string;
   name: string;
@@ -201,13 +180,6 @@ interface Postcard {
   status: string;
   date: string;
 }
-
-interface DonationOption {
-  amount: number;
-  label: string;
-  impact: string;
-  isDefault?: boolean;
-}
 ```
 
 ### 상수
@@ -215,13 +187,9 @@ interface DonationOption {
 // 네비게이션 링크
 const NAV_LINKS = [
   { href: '/', label: '홈' },
-  { href: '/elders', label: '어르신' },  // 변경됨
+  { href: '/elders', label: '어르신' },
   { href: '/about', label: '소개' },
-  { href: '/donate', label: '후원하기' },
 ];
-
-// 후원 금액 옵션
-const DONATION_OPTIONS: Record<'oneTime' | 'recurring', DonationOption[]>
 ```
 
 ---
@@ -262,28 +230,16 @@ function getProxiedImageUrl(url: string): string
 | `HwalseoFilter.tsx` | 활서 필터 (테마/어르신) |
 | `HwalseoPreview.tsx` | 홈페이지 활서 미리보기 |
 | `HwalseoCta.tsx` | 활서 하단 CTA |
-| `ElderCard.tsx` | 어르신 카드 (NEW) |
-| `ElderFilter.tsx` | 어르신 필터 (NEW) |
-| `DonationForm.tsx` | 후원 폼 (금액 선택 → 정보 입력 → 결제) |
-| `DonationProgress.tsx` | 후원 진행률 바 |
-| `SocialProof.tsx` | 소셜 프루프 (후원자 수 등) |
+| `ElderCard.tsx` | 어르신 카드 |
+| `ElderFilter.tsx` | 어르신 필터 |
 | `PostcardModal.tsx` | 엽서 모달 (주소검색 포함) |
-| `EmailSubscribeForm.tsx` | 이메일 구독 폼 (NEW) |
+| `EmailSubscribeForm.tsx` | 이메일 구독 폼 |
 | `HeroSection.tsx` | 홈 히어로 섹션 |
 | `MissionSection.tsx` | 미션 섹션 |
 
 ---
 
 ## 🌐 API Routes
-
-### POST /api/donation
-```typescript
-// Request
-{ name: string; amount: number; type: 'oneTime' | 'recurring' }
-
-// Response
-{ success: true, id: string } | { error: string }
-```
 
 ### POST /api/postcard
 ```typescript

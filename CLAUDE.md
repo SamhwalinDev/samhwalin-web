@@ -2,12 +2,11 @@
 
 ## Project Overview
 
-삼활인(Samhwalin) - A Next.js web application for preserving and sharing stories of Korean elders through "활서(Hwalseo)" (living letters). The platform allows users to read elder stories, send postcards, and make donations to support the project.
+삼활인(Samhwalin) - A Next.js web application for preserving and sharing stories of Korean elders through "활서(Hwalseo)" (living letters). The platform allows users to read elder stories and send postcards.
 
 Key features:
 - **활서 (Hwalseo)**: Browse and read stories from Korean elders organized by themes
 - **어르신 (Elders)**: View profiles of elders and their associated stories
-- **후원 (Donations)**: Support the project with one-time or recurring donations
 - **엽서 (Postcards)**: Send thank-you postcards to elders after reading their stories
 - **뉴스레터 (Newsletter)**: Email subscription for updates
 
@@ -79,11 +78,9 @@ git push origin feature/elder-filter
 app/                        # Next.js App Router pages
 ├── about/                  # About page (al'ive program, team, philosophy)
 ├── api/
-│   ├── donation/           # Donation API route
 │   ├── image/              # Image proxy for Notion/S3 URLs
 │   ├── postcard/           # Postcard submission API
 │   └── subscribe/          # Newsletter subscription API
-├── donate/                 # Donation flow pages
 ├── elders/                 # Elder list and detail pages
 │   └── [slug]/             # Elder detail page (UUID without dashes)
 ├── hwalseo/                # Hwalseo list and detail pages
@@ -139,8 +136,6 @@ Required in `.env.local`:
 NOTION_API_KEY=              # Notion integration token
 NOTION_HWALSEO_DATABASE_ID=  # Hwalseo content database
 NOTION_ELDER_DATABASE_ID=    # Elder profiles database
-NOTION_DONATION_DATABASE_ID= # Donation records database
-NOTION_SETTINGS_DATABASE_ID= # Site settings (donation goal, etc.)
 NOTION_POSTCARD_DATABASE_ID= # Postcard messages database
 NOTION_SUBSCRIBE_DATABASE_ID=# Newsletter subscribers database
 SENTRY_DSN=                  # Sentry error tracking (optional)
@@ -195,7 +190,6 @@ const NAV_LINKS = [
   { label: '활서', href: '/hwalseo' },
   { label: '어르신들', href: '/elders' },
   { label: '삼활인', href: '/about' },
-  { label: '후원하기', href: '/donate' },
 ];
 ```
 
@@ -215,9 +209,7 @@ All data functions are in `lib/notion.ts`:
 - `getElderById(elderId)` - Fetch elder by UUID
 - `getElderByName(name)` - Fetch elder by name (legacy support)
 
-### Donation Functions
-- `getDonationStats()` - Get donation progress, goal, and recent donors
-- `createDonation(data)` - Submit new donation record
+### Postcard Functions
 - `createPostcard(data)` - Submit new postcard message
 
 ### Subscriber Functions
@@ -495,7 +487,7 @@ Comprehensive code review and refactoring across 4 phases.
 
 **Removed from files:**
 - `Input.tsx`: Textarea, Checkbox components
-- `types/index.ts`: THEMES, Theme, TEAM_MEMBERS, PostcardFormData, DonationFormData, ApiResponse, Subscriber
+- `types/index.ts`: THEMES, Theme, TEAM_MEMBERS, PostcardFormData, ApiResponse, Subscriber
 - `lib/utils.ts`: generateSlug, truncateText functions
 
 #### Key Helper Functions Added
@@ -519,5 +511,5 @@ Comprehensive code review and refactoring across 4 phases.
 - **Background color**: Changed from `#FFFEF9` to `#FFFFFE` for cleaner whites
 - **Gray semantic tokens**: Migrated 31 files from raw Tailwind gray utilities to semantic tokens
   - Step 1-3: Core pages (home, hwalseo, elders)
-  - Step 4: Remaining components (features, ui, layout, about, donate, postcard)
+  - Step 4: Remaining components (features, ui, layout, about, postcard)
 - **Design tokens**: All colors now defined in `tailwind.config.ts` for consistent theming

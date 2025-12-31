@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
-import { Send, Heart } from 'lucide-react';
+import { Send } from 'lucide-react';
 import { PostcardModal } from '@/components/features';
 
 interface HwalseoCtaProps {
@@ -27,13 +26,6 @@ export function HwalseoCta({ elderName, hwalseoSlug }: HwalseoCtaProps) {
             <Send size={18} />
             엽서 보내기
           </button>
-          <Link
-            href="/donate"
-            className="inline-flex items-center justify-center gap-2 whitespace-nowrap bg-white text-foreground border border-gray-300 px-8 py-4 rounded-md font-semibold hover:bg-muted transition-colors"
-          >
-            <Heart size={18} />
-            후원하기
-          </Link>
         </div>
       </div>
 

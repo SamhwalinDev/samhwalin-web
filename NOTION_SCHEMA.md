@@ -8,12 +8,10 @@
 1. [데이터베이스 개요](#데이터베이스-개요)
 2. [활서 (Hwalseo) 데이터베이스](#1-활서-hwalseo-데이터베이스)
 3. [어르신 (Elder) 데이터베이스](#2-어르신-elder-데이터베이스)
-4. [후원 (Donation) 데이터베이스](#3-후원-donation-데이터베이스)
-5. [엽서 (Postcard) 데이터베이스](#4-엽서-postcard-데이터베이스)
-6. [구독자 (Subscriber) 데이터베이스](#5-구독자-subscriber-데이터베이스)
-7. [설정 (Settings) 데이터베이스](#6-설정-settings-데이터베이스)
-8. [속성 타입 참조](#속성-타입-참조)
-9. [공통 패턴](#공통-패턴)
+4. [엽서 (Postcard) 데이터베이스](#3-엽서-postcard-데이터베이스)
+5. [구독자 (Subscriber) 데이터베이스](#4-구독자-subscriber-데이터베이스)
+6. [속성 타입 참조](#속성-타입-참조)
+7. [공통 패턴](#공통-패턴)
 
 ---
 
@@ -23,10 +21,8 @@
 |-------------|---------|------|
 | 활서 (Hwalseo) | `NOTION_HWALSEO_DATABASE_ID` | 어르신 이야기 콘텐츠 |
 | 어르신 (Elder) | `NOTION_ELDER_DATABASE_ID` | 어르신 프로필 |
-| 후원 (Donation) | `NOTION_DONATION_DATABASE_ID` | 후원 기록 |
 | 엽서 (Postcard) | `NOTION_POSTCARD_DATABASE_ID` | 엽서 신청 기록 |
 | 구독자 (Subscriber) | `NOTION_SUBSCRIBE_DATABASE_ID` | 뉴스레터 구독자 |
-| 설정 (Settings) | `NOTION_SETTINGS_DATABASE_ID` | 사이트 설정값 |
 
 ### 데이터베이스 관계도
 
@@ -178,52 +174,7 @@ getElderByName(name)       // 이름으로 조회
 
 ---
 
-## 3. 후원 (Donation) 데이터베이스
-
-후원 기록을 저장하는 데이터베이스입니다.
-
-### 환경변수
-```
-NOTION_DONATION_DATABASE_ID
-```
-
-### Properties
-
-| Property Name | Notion Type | Required | TypeScript Field | Description |
-|---------------|-------------|----------|------------------|-------------|
-| Name | `title` | ✅ | `name` | 후원자명 |
-| Amount | `number` | ✅ | `amount` | 후원 금액 (원) |
-| Date | `date` | ✅ | `date` | 후원일 |
-| Message | `rich_text` | | `message` | 후원 유형 (일시후원/정기후원) |
-| Status | `select` | ✅ | `status` | 상태 |
-
-### Status 옵션 (select)
-
-| 옵션 | 설명 |
-|------|------|
-| 결제대기 | 후원 신청됨, 입금 대기 |
-| 확인완료 | 입금 확인됨 (통계에 반영) |
-
-### 코드에서 사용
-
-```typescript
-// lib/notion.ts
-getDonationStats()         // 후원 통계 조회 (확인완료만)
-createDonation(data)       // 후원 기록 생성
-```
-
-### 통계 계산 로직
-
-`getDonationStats()`에서 계산하는 항목:
-- `current`: 확인완료된 총 후원금액
-- `donorCount`: 고유 후원자 수 (이름 기준)
-- `thisMonthCount`: 이번 달 후원 건수
-- `todayCount`: 오늘 후원 건수
-- `recentDonors`: 최근 후원자 5명
-
----
-
-## 4. 엽서 (Postcard) 데이터베이스
+## 3. 엽서 (Postcard) 데이터베이스
 
 활서를 읽고 보내는 감사 엽서 신청 기록입니다.
 
@@ -262,7 +213,7 @@ createPostcard(data)       // 엽서 신청 생성
 
 ---
 
-## 5. 구독자 (Subscriber) 데이터베이스
+## 4. 구독자 (Subscriber) 데이터베이스
 
 뉴스레터 구독자 목록입니다.
 
@@ -303,43 +254,6 @@ NOTION_SUBSCRIBE_DATABASE_ID
 // lib/notion.ts
 checkSubscriberExists(email)  // 중복 이메일 체크
 createSubscriber(data)        // 구독자 생성
-```
-
----
-
-## 6. 설정 (Settings) 데이터베이스
-
-사이트 전역 설정값을 저장합니다.
-
-### 환경변수
-```
-NOTION_SETTINGS_DATABASE_ID
-```
-
-### Properties
-
-| Property Name | Notion Type | Required | Description |
-|---------------|-------------|----------|-------------|
-| Key | `title` | ✅ | 설정 키 |
-| Value | `number` | ✅ | 설정 값 |
-
-### 현재 사용 중인 설정
-
-| Key | Description | 기본값 |
-|-----|-------------|--------|
-| 후원목표 | 후원 목표 금액 (원) | 300000 |
-
-### 코드에서 사용
-
-```typescript
-// lib/notion.ts - getDonationStats() 내부에서 사용
-const settingsResponse = await notion.databases.query({
-  database_id: settingsDbId,
-  filter: {
-    property: 'Key',
-    title: { equals: '후원목표' },
-  },
-});
 ```
 
 ---

@@ -1,15 +1,14 @@
 import Link from 'next/link';
 import { Container, Section } from '@/components/layout';
-import { HeroSection, MissionSection, HwalseoPreview, DonationProgress, DonationForm, SocialProof, EmailSubscribeForm } from '@/components/features';
+import { HeroSection, MissionSection, HwalseoPreview, EmailSubscribeForm } from '@/components/features';
 import { ProxiedImage } from '@/components/ui';
-import { getHwalseoList, getDonationStats, getElderList } from '@/lib/notion';
+import { getHwalseoList, getElderList } from '@/lib/notion';
 
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [hwalseoList, donationStats, elders] = await Promise.all([
+  const [hwalseoList, elders] = await Promise.all([
     getHwalseoList(),
-    getDonationStats(),
     getElderList(),
   ]);
 
@@ -107,50 +106,6 @@ export default async function HomePage() {
       <Section spacing="lg" className="bg-muted">
         <Container>
           <MissionSection />
-        </Container>
-      </Section>
-
-      {/* 후원 섹션 */}
-      <Section spacing="lg" className="bg-white">
-        <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-            {/* 왼쪽: 후원 현황 카드 */}
-            <div className="bg-white border border-border rounded-2xl p-6 lg:p-8 flex flex-col">
-              {/* 헤더 텍스트 */}
-              <div className="mb-8">
-                <h2 className="text-h2 text-foreground mb-3">
-                  함께 만들어가요
-                </h2>
-                <p className="text-body text-muted-foreground">
-                  여러분의 후원이 어르신들의
-                  <br className="sm:hidden" />
-                  {' '}이야기를 세상에 전합니다.
-                </p>
-              </div>
-
-              {/* 프로그래스 - 세로 중앙 */}
-              <div className="flex-1 flex flex-col justify-center">
-                <DonationProgress
-                  current={donationStats.current}
-                  goal={donationStats.goal}
-                  donorCount={donationStats.donorCount}
-                />
-              </div>
-
-              {/* 소셜 프루프 - 하단 */}
-              <div className="mt-8 pt-6 border-t border-gray-100">
-                <SocialProof
-                  hwalseoCount={hwalseoList.length}
-                  donorCount={donationStats.donorCount}
-                />
-              </div>
-            </div>
-
-            {/* 오른쪽: 후원 폼 */}
-            <div className="bg-white border border-border rounded-2xl p-6 lg:p-8">
-              <DonationForm />
-            </div>
-          </div>
         </Container>
       </Section>
 

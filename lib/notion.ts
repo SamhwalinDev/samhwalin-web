@@ -176,8 +176,6 @@ async function batchGetElderData(
   return result;
 }
 
-const donationDbId = process.env.NOTION_DONATION_DATABASE_ID!;
-const settingsDbId = process.env.NOTION_SETTINGS_DATABASE_ID!;
 const postcardDbId = process.env.NOTION_POSTCARD_DATABASE_ID!;
 const subscriberDbId = process.env.NOTION_SUBSCRIBE_DATABASE_ID!;
 const elderDbId = process.env.NOTION_ELDER_DATABASE_ID!;
@@ -502,99 +500,6 @@ export async function getRelatedHwalseos(
     return [];
   }
 }
-// 후원 통계 가져오기
-export async function getDonationStats() {
-  try {
-    // 확인완료된 후원만 가져오기
-    const donationsResponse = await notion.databases.query({
-      database_id: donationDbId,
-      filter: {
-        property: 'Status',
-        select: {
-          equals: '확인완료',
-        },
-      },
-    });
-
-    let totalAmount = 0;
-    const uniqueDonors = new Set<string>();
-    let thisMonthCount = 0;
-    let todayCount = 0;
-    const recentDonors: { name: string; amount: number; message?: string }[] = [];
-
-    // 한국 시간 기준으로 오늘 날짜 계산
-    const now = new Date();
-    const koreaTime = new Date(now.getTime() + (9 * 60 * 60 * 1000));
-    const today = koreaTime.toISOString().split('T')[0];
-    const thisMonth = today.slice(0, 7);
-
-    donationsResponse.results.forEach((result) => {
-      const page = result as NotionPageWithProperties;
-      const amount = page.properties.Amount?.number || 0;
-      const name = page.properties.Name?.title?.[0]?.plain_text || '익명';
-      const message = page.properties.Message?.rich_text?.[0]?.plain_text || '';
-      const dateStr = page.properties.Date?.date?.start || '';
-
-      totalAmount += amount;
-      uniqueDonors.add(name);
-
-      if (dateStr) {
-        if (dateStr.startsWith(thisMonth)) {
-          thisMonthCount += 1;
-        }
-        if (dateStr === today) {
-          todayCount += 1;
-        }
-      }
-
-      if (recentDonors.length < 5) {
-        recentDonors.push({ name, amount, message });
-      }
-    });
-
-    const donorCount = uniqueDonors.size;
-
-    // 목표 금액 가져오기
-    const settingsResponse = await notion.databases.query({
-      database_id: settingsDbId,
-      filter: {
-        property: 'Key',
-        title: {
-          equals: '후원목표',
-        },
-      },
-    });
-
-    let goalAmount = 300000;
-    if (settingsResponse.results.length > 0) {
-      const settingsPage = settingsResponse.results[0] as NotionPageWithProperties;
-      goalAmount = settingsPage.properties.Value?.number || 300000;
-    }
-
-    return {
-      current: totalAmount,
-      goal: goalAmount,
-      donorCount,
-      thisMonthCount,
-      todayCount,
-      recentDonors,
-      isGoalReached: totalAmount >= goalAmount,
-      percentage: Math.min(Math.round((totalAmount / goalAmount) * 100), 100),
-    };
-  } catch (error) {
-    console.error('Error fetching donation stats:', error);
-    return {
-      current: 0,
-      goal: 300000,
-      donorCount: 0,
-      thisMonthCount: 0,
-      todayCount: 0,
-      recentDonors: [],
-      isGoalReached: false,
-      percentage: 0,
-    };
-  }
-}
 // ============================================
 // 엽서 관련 함수
 // ============================================
@@ -640,43 +545,6 @@ export async function createPostcard(data: {
     return { success: true, id: response.id };
   } catch (error) {
     console.error('Error creating postcard:', error);
-    return { success: false, error };
-  }
-}
-// 후원 저장 함수
-export async function createDonation(data: {
-  name: string;
-  amount: number;
-  type: string;
-}) {
-  try {
-    const today = new Date();
-    const koreaTime = new Date(today.getTime() + (9 * 60 * 60 * 1000));
-    const dateStr = koreaTime.toISOString().split('T')[0];
-
-    const response = await notion.pages.create({
-      parent: { database_id: donationDbId },
-      properties: {
-        Name: {
-          title: [{ text: { content: data.name } }],
-        },
-        Amount: {
-          number: data.amount,
-        },
-        Date: {
-          date: { start: dateStr },
-        },
-        Message: {
-          rich_text: [{ text: { content: data.type === 'recurring' ? '정기후원' : '일시후원' } }],
-        },
-        Status: {
-          select: { name: '결제대기' },
-        },
-      },
-    });
-    return { success: true, id: response.id };
-  } catch (error) {
-    console.error('Error creating donation:', error);
     return { success: false, error };
   }
 }

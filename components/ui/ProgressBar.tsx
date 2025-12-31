@@ -1,4 +1,4 @@
-import { cn, formatCurrency } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 export interface ProgressBarProps {
   value: number;           // 현재 값
@@ -57,32 +57,6 @@ export function ProgressBar({
           aria-valuemax={max}
           aria-label={`${label}: ${percentage}%`}
         />
-      </div>
-    </div>
-  );
-}
-
-// 후원 목표 진행바 (특화 버전)
-interface DonationProgressProps {
-  current: number;
-  goal: number;
-  donorCount?: number;
-  className?: string;
-}
-
-export function DonationProgress({ current, goal, donorCount, className }: DonationProgressProps) {
-  return (
-    <div className={cn('p-5 bg-white rounded-lg border border-border', className)}>
-      <ProgressBar value={current} max={goal} label="이번 달 후원 목표" />
-      <div className="flex justify-between items-center mt-3">
-        <span className="text-caption text-muted-foreground">
-          {formatCurrency(current)} / {formatCurrency(goal)}
-        </span>
-        {donorCount !== undefined && (
-          <span className="text-caption text-muted-foreground">
-            {donorCount}명이 함께하고 있습니다
-          </span>
-        )}
       </div>
     </div>
   );

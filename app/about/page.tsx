@@ -352,7 +352,7 @@ export default function AboutPage() {
             함께해 주세요
           </h2>
           <p className="text-gray-400 mb-8">
-            어르신들의 이야기를 읽고, 프로젝트를 후원해 주세요.
+            어르신들의 이야기를 읽어보세요.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -360,12 +360,6 @@ export default function AboutPage() {
               className="px-8 py-4 bg-white text-foreground rounded-lg font-medium hover:bg-gray-100 transition-colors"
             >
               활서 읽으러 가기
-            </Link>
-            <Link
-              href="/donate"
-              className="px-8 py-4 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors"
-            >
-              후원하기
             </Link>
           </div>
         </div>

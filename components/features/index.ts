@@ -1,5 +1,3 @@
-export { DonationForm } from './DonationForm';
-export { DonationProgress } from './DonationProgress';
 export { ElderCard } from './ElderCard';
 export { ElderFilter } from './ElderFilter';
 export { EmailSubscribeForm } from './EmailSubscribeForm';
@@ -11,4 +9,3 @@ export { HwalseoPreview } from './HwalseoPreview';
 export { MissionSection } from './MissionSection';
 export { MobileTableOfContents } from './MobileTableOfContents';
 export { PostcardModal } from './PostcardModal';
-export { SocialProof, PopularBadge } from './SocialProof';
