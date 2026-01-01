@@ -98,14 +98,10 @@ samhwalin-web/
 │   ├── hwalseo/                  # 활서
 │   │   ├── page.tsx              # 활서 목록
 │   │   └── [slug]/page.tsx       # 활서 상세
-│   ├── donate/                   # 후원
-│   │   ├── page.tsx              # 후원 페이지
-│   │   └── thank-you/page.tsx    # 후원 감사
 │   ├── postcard/
 │   │   └── thank-you/page.tsx    # 엽서 감사
 │   ├── monitoring/               # Sentry 터널
 │   └── api/
-│       ├── donation/route.ts     # 후원 API
 │       ├── postcard/route.ts     # 엽서 API
 │       ├── subscribe/route.ts    # 뉴스레터 구독 API
 │       └── image/route.ts        # 이미지 프록시 API
@@ -136,10 +132,6 @@ samhwalin-web/
 | `HwalseoCta.tsx` | 활서 하단 CTA |
 | `ElderCard.tsx` | 어르신 카드 |
 | `ElderFilter.tsx` | 어르신 필터 (지역/검색) |
-| `ElderCta.tsx` | 어르신 페이지 CTA |
-| `DonationForm.tsx` | 후원 폼 |
-| `DonationProgress.tsx` | 후원 진행률 바 |
-| `SocialProof.tsx` | 소셜 프루프 |
 | `PostcardModal.tsx` | 엽서 모달 |
 | `EmailSubscribeForm.tsx` | 이메일 구독 폼 |
 | `HeroSection.tsx` | 홈 히어로 섹션 |
@@ -159,16 +151,8 @@ samhwalin-web/
 | `NOTION_API_KEY` | Notion Integration Token |
 | `NOTION_HWALSEO_DATABASE_ID` | 활서 데이터베이스 ID |
 | `NOTION_ELDER_DATABASE_ID` | 어르신 데이터베이스 ID |
-| `NOTION_DONATION_DATABASE_ID` | 후원 데이터베이스 ID |
-| `NOTION_SETTINGS_DATABASE_ID` | 설정 데이터베이스 ID |
 | `NOTION_POSTCARD_DATABASE_ID` | 엽서 데이터베이스 ID |
 | `NOTION_SUBSCRIBE_DATABASE_ID` | 구독자 데이터베이스 ID |
-
-### 필수 (결제)
-
-| 변수명 | 설명 |
-|--------|------|
-| `NEXT_PUBLIC_KAKAOPAY_LINK` | 카카오페이 송금 링크 |
 
 ### 선택 (에러 모니터링)
 
@@ -194,20 +178,14 @@ samhwalin-web/
 - 지역별 필터링
 - 어르신별 활서 연결
 
-### 3. 후원 (Donations)
-- 일시/정기 후원 선택
-- 카카오페이 송금 연동
-- 후원 목표 진행률 표시
-
-### 4. 엽서 (Postcards)
+### 3. 엽서 (Postcards)
 - 활서 읽은 후 감사 엽서 전송
-- 후원과 연계
 
-### 5. 뉴스레터 구독
+### 4. 뉴스레터 구독
 - 이메일 구독 (중복 체크)
 - 구독 출처 추적 (homepage, footer, hwalseo)
 
-### 6. 이미지 프록시
+### 5. 이미지 프록시
 - Notion 이미지 URL 만료 문제 해결
 - `/api/image?url=...` 형태로 프록시
 - 7일 CDN 캐싱

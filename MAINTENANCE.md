@@ -61,13 +61,9 @@ samhwalin-web/
 │   ├── hwalseo/
 │   │   ├── page.tsx             # 활서 목록
 │   │   └── [slug]/page.tsx      # 활서 상세
-│   ├── donate/
-│   │   ├── page.tsx             # 후원 페이지
-│   │   └── thank-you/page.tsx   # 후원 감사 페이지
 │   ├── postcard/
 │   │   └── thank-you/page.tsx   # 엽서 감사 페이지
 │   └── api/
-│       ├── donation/route.ts    # 후원 API
 │       ├── postcard/route.ts    # 엽서 API
 │       └── image/route.ts       # 이미지 프록시 API
 ├── components/
@@ -124,23 +120,6 @@ vercel --prod --force
 | PublishedAt | date | ✅ | 발행일 |
 | (cover) | page cover | ✅ | 커버 이미지 |
 
-### 후원 (Donation)
-
-| 속성명 | 타입 | 설명 |
-|--------|------|------|
-| Name | title | 후원자명 |
-| Amount | number | 후원 금액 |
-| Date | date | 후원일 |
-| Message | rich_text | 일시후원/정기후원 |
-| Status | select | 결제대기/확인완료 |
-
-### 설정 (Settings)
-
-| 속성명 | 타입 | 설명 |
-|--------|------|------|
-| Key | title | 설정 키 |
-| Value | number | 설정 값 |
-
 ### 엽서 (Postcard)
 
 | 속성명 | 타입 | 설명 |
@@ -163,7 +142,6 @@ vercel --prod --force
 | `/` | 60초 | 홈페이지 |
 | `/hwalseo` | 60초 | 활서 목록 |
 | `/about` | 300초 | 소개 페이지 |
-| `/donate` | 3600초 | 후원 페이지 |
 | `/hwalseo/[slug]` | 동적 | 활서 상세 (매 요청) |
 
 ---

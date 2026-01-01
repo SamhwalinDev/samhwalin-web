@@ -71,7 +71,7 @@ samhwalin-web/
 │   ├── layout.tsx           # 루트 레이아웃
 │   ├── page.tsx             # 홈페이지
 │   ├── hwalseo/             # 활서 페이지
-│   ├── donate/              # 후원 페이지
+│   ├── elders/              # 어르신 페이지
 │   └── about/               # 소개 페이지
 ├── components/
 │   ├── ui/                  # 기본 UI 컴포넌트
@@ -142,7 +142,7 @@ vercel
 import { Button } from '@/components/ui';
 
 <Button variant="primary">기본 버튼</Button>
-<Button variant="cta" size="lg">후원하기</Button>
+<Button variant="cta" size="lg">활서 읽기</Button>
 <Button variant="secondary">보조 버튼</Button>
 ```
 
