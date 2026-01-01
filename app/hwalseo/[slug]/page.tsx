@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft } from 'lucide-react';
 import { Container, Section } from '@/components/layout';
-import { HwalseoCard, HwalseoCta, MobileTableOfContents } from '@/components/features';
+import { HwalseoCard, HwalseoCta, MobileTableOfContents, ShareButtons } from '@/components/features';
 import { ProxiedImage } from '@/components/ui';
 import { getHwalseoBySlug, getRelatedHwalseos, getElderByName } from '@/lib/notion';
 import { formatDate, formatTitleParts } from '@/lib/utils';
@@ -377,9 +377,15 @@ export default async function HwalseoDetailPage({
               {hwalseo.elderName}
               {elder?.birthYear ? ` (${new Date().getFullYear() - elder.birthYear}세)` : ''}
             </p>
-            <time className="text-caption text-gray-400">
-              {formatDate(hwalseo.publishedAt)}
-            </time>
+            <div className="flex items-center gap-4">
+              <time className="text-caption text-gray-400">
+                {formatDate(hwalseo.publishedAt)}
+              </time>
+              <ShareButtons
+                title={hwalseo.title}
+                url={`https://samhwalin.org/hwalseo/${params.slug}`}
+              />
+            </div>
           </div>
         </Container>
       </Section>
@@ -463,7 +469,12 @@ export default async function HwalseoDetailPage({
                 <ContentRenderer content={hwalseo.content} />
               </article>
 
-              <HwalseoCta elderName={hwalseo.elderName} hwalseoSlug={hwalseo.slug} />
+              <HwalseoCta
+                elderName={hwalseo.elderName}
+                hwalseoSlug={hwalseo.slug}
+                shareTitle={hwalseo.title}
+                shareUrl={`https://samhwalin.org/hwalseo/${params.slug}`}
+              />
             </div>
 
             {/* 오른쪽 - 목차 (데스크톱) */}
