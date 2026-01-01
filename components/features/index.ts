@@ -9,3 +9,4 @@ export { HwalseoPreview } from './HwalseoPreview';
 export { MissionSection } from './MissionSection';
 export { MobileTableOfContents } from './MobileTableOfContents';
 export { PostcardModal } from './PostcardModal';
+export { ShareButtons } from './ShareButtons';
