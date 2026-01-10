@@ -3,6 +3,7 @@ import { Header, Footer } from '@/components/layout';
 import '@/styles/globals.css';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://samhwalin.org'),
   title: {
     default: '삼활인 - 세대를 잇는 이야기',
     template: '%s | 삼활인',
