@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     description: '어르신들의 삶을 기록하고, 세대를 연결합니다.',
     images: [
       {
-        url: '/og-image.jpg',
+        url: 'https://samhwalin.org/og-image.png',
         width: 1200,
         height: 630,
         alt: '삼활인',
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '삼활인 - 세대를 잇는 이야기',
     description: '어르신들의 삶을 기록하고, 세대를 연결합니다.',
-    images: ['/og-image.jpg'],
+    images: ['https://samhwalin.org/og-image.png'],
   },
   robots: {
     index: true,
