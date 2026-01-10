@@ -8,7 +8,7 @@ import { Container, Section } from '@/components/layout';
 import { HwalseoCard, HwalseoCta, MobileTableOfContents, ShareButtons } from '@/components/features';
 import { ProxiedImage } from '@/components/ui';
 import { getHwalseoBySlug, getRelatedHwalseos, getElderByName } from '@/lib/notion';
-import { formatDate, formatTitleParts } from '@/lib/utils';
+import { formatDate, formatTitleParts, formatTitleFlat } from '@/lib/utils';
 import type { Elder } from '@/types';
 
 /**
@@ -72,13 +72,35 @@ export async function generateMetadata({
     return { title: '활서를 찾을 수 없습니다' };
   }
 
+  const pageUrl = `https://samhwalin.org/hwalseo/${params.slug}`;
+  const flatTitle = formatTitleFlat(hwalseo.title);
+  // Use proxy URL for stable, non-expiring image
+  const ogImage = hwalseo.coverImage
+    ? `https://samhwalin.org/api/image?url=${encodeURIComponent(hwalseo.coverImage)}`
+    : 'https://samhwalin.org/og-image.png';
+
   return {
-    title: hwalseo.title,
+    title: flatTitle,
     description: hwalseo.excerpt,
     openGraph: {
-      title: hwalseo.title,
+      title: flatTitle,
       description: hwalseo.excerpt,
-      images: hwalseo.coverImage ? [hwalseo.coverImage] : [],
+      url: pageUrl,
+      type: 'article',
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: flatTitle,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: flatTitle,
+      description: hwalseo.excerpt,
+      images: [ogImage],
     },
   };
 }
@@ -382,7 +404,7 @@ export default async function HwalseoDetailPage({
                 {formatDate(hwalseo.publishedAt)}
               </time>
               <ShareButtons
-                title={hwalseo.title}
+                title={formatTitleFlat(hwalseo.title)}
                 url={`https://samhwalin.org/hwalseo/${params.slug}`}
               />
             </div>
@@ -472,7 +494,7 @@ export default async function HwalseoDetailPage({
               <HwalseoCta
                 elderName={hwalseo.elderName}
                 hwalseoSlug={hwalseo.slug}
-                shareTitle={hwalseo.title}
+                shareTitle={formatTitleFlat(hwalseo.title)}
                 shareUrl={`https://samhwalin.org/hwalseo/${params.slug}`}
               />
             </div>

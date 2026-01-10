@@ -29,12 +29,23 @@ export function formatCurrency(amount: number): string {
 }
 
 /**
- * 제목에서 // 를 줄바꿈으로 변환
- * Notion에서 제목에 //를 입력하면 줄바꿈으로 표시됨
+ * 제목에서 // 또는 \\ 를 줄바꿈으로 변환
+ * Notion에서 제목에 // 또는 \\를 입력하면 줄바꿈으로 표시됨
  * @returns 줄바꿈으로 분리된 문자열 배열
  */
 export function formatTitleParts(title: string): string[] {
-  return title.split('//').map((part) => part.trim());
+  return title.split(/\/\/|\\\\/).map((part) => part.trim());
+}
+
+/**
+ * 제목을 단일 라인으로 변환 (메타데이터, 공유 등에 사용)
+ * // 또는 \\ 구분자를 공백으로 대체
+ */
+export function formatTitleFlat(title: string): string {
+  return title
+    .split(/\/\/|\\\\/)
+    .map((part) => part.trim())
+    .join(' ');
 }
 
 /**

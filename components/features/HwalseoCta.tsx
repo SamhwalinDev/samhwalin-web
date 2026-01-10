@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Send } from 'lucide-react';
 import { PostcardModal } from '@/components/features';
 import { ShareButtons } from './ShareButtons';
+import { EmailSubscribeForm } from './EmailSubscribeForm';
 
 interface HwalseoCtaProps {
   elderName: string;
@@ -69,6 +70,16 @@ export function HwalseoCta({ elderName, hwalseoSlug, shareTitle, shareUrl }: Hwa
               </svg>
               인스타그램
             </a>
+          </div>
+        </div>
+
+        {/* 3. Email Subscription */}
+        <div className="mt-8 pt-6 border-t border-gray-100">
+          <p className="text-sm text-muted-foreground mb-4 text-center">
+            새로운 활서 소식 받기
+          </p>
+          <div className="max-w-sm mx-auto">
+            <EmailSubscribeForm source="hwalseo" />
           </div>
         </div>
       </div>

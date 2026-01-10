@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { Mail, Instagram, Youtube } from 'lucide-react';
 import { NAV_LINKS } from '@/types';
-import { EmailSubscribeForm } from '@/components/features/EmailSubscribeForm';
 import { Container } from './Container';
 
 export function Footer() {
@@ -81,19 +80,6 @@ export function Footer() {
                 </a>
               </li>
             </ul>
-          </div>
-        </div>
-
-        {/* Newsletter Subscription */}
-        <div className="mt-12 pt-8 border-t border-border">
-          <div className="max-w-md mx-auto text-center">
-            <h4 className="text-body font-semibold text-foreground mb-2">
-              새로운 이야기를 받아보세요
-            </h4>
-            <p className="text-body-sm text-muted-foreground mb-4">
-              새로운 활서가 발행되면 이메일로 알려드릴게요.
-            </p>
-            <EmailSubscribeForm source="footer" />
           </div>
         </div>
 
