@@ -337,7 +337,7 @@ export async function getHwalseoBySlug(slug: string): Promise<Hwalseo | null> {
       likes: page.properties.Likes?.number || 0,
       
       // Elder 프로필 정보 (프로필 카드용)
-      elder: elderFullData,
+      elder: elderFullData || undefined,
     };
   } catch (error) {
     console.error('Error fetching hwalseo by slug:', error);

@@ -20,7 +20,7 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
   useEffect(() => {
     // Extract headings from markdown content
     const regex = /^(#{2,3})\s+(.+)$/gm;
-    const matches = [...content.matchAll(regex)];
+    const matches = Array.from(content.matchAll(regex));
     
     // Strip markdown formatting from heading text
     const stripMarkdown = (text: string) => {
