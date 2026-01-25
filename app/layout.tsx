@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Header, Footer } from '@/components/layout';
+import JsonLd from '@/components/JsonLd';
 import '@/styles/globals.css';
 
 export const metadata: Metadata = {
@@ -52,6 +53,7 @@ export default function RootLayout({
     <html lang="ko">
       <head>
         <meta name="theme-color" content="#FFFFFE" />
+        <JsonLd />
       </head>
       <body className="min-h-screen flex flex-col">
         <Header />
