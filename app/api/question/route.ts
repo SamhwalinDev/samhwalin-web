@@ -1,39 +1,52 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createQuestion } from '@/lib/notion';
+import { Client } from '@notionhq/client';
+
+const notion = new Client({ auth: process.env.NOTION_API_KEY });
+const QUESTION_DB_ID = process.env.NOTION_QUESTION_DB_ID || '2f2d1667aaa3801b9597fd85a6804be8';
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    
-    const { question, nickname, hwalseoId, elderId } = body;
+    const { question, nickname, hwalseoId, elderId, hwalseoTitle, elderName } = await request.json();
 
-    if (!question || !hwalseoId) {
-      return NextResponse.json(
-        { error: 'Question and hwalseoId are required' },
-        { status: 400 }
-      );
+    if (!question?.trim()) {
+      return NextResponse.json({ error: 'Question is required' }, { status: 400 });
     }
 
-    const result = await createQuestion({
-      question,
-      nickname: nickname || '익명',
-      hwalseoId,
-      elderId,
+    if (!hwalseoId) {
+      return NextResponse.json({ error: 'HwalseoId is required' }, { status: 400 });
+    }
+
+    // Create new page in Question DB
+    // Note: Using Korean field names to match existing Notion DB structure
+    const response = await notion.pages.create({
+      parent: { database_id: QUESTION_DB_ID },
+      properties: {
+        '질문': {
+          title: [{ text: { content: question.trim() } }],
+        },
+        '닉네임': {
+          rich_text: [{ text: { content: nickname?.trim() || '익명' } }],
+        },
+        '활서': {
+          relation: [{ id: hwalseoId }],
+        },
+        ...(elderId && {
+          '어르신': {
+            relation: [{ id: elderId }],
+          },
+        }),
+        '상태': {
+          select: { name: '대기중' },
+        },
+        '공개여부': {
+          checkbox: false,
+        },
+      },
     });
 
-    if (result.success) {
-      return NextResponse.json({ success: true, id: result.id });
-    } else {
-      return NextResponse.json(
-        { error: result.error },
-        { status: 500 }
-      );
-    }
+    return NextResponse.json({ success: true, id: response.id });
   } catch (error) {
-    console.error('API error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    console.error('Failed to submit question:', error);
+    return NextResponse.json({ error: 'Failed to submit' }, { status: 500 });
   }
 }

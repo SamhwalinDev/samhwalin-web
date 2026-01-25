@@ -293,6 +293,16 @@ export async function getHwalseoBySlug(slug: string): Promise<Hwalseo | null> {
 
     // Elder 데이터 가져오기 (캐시됨)
     const elderData = elderId ? await getElderDataById(elderId) : null;
+    
+    // Elder 상세 정보 가져오기 (프로필 표시용)
+    let elderFullData: Elder | null = null;
+    if (elderId) {
+      try {
+        elderFullData = await getElderById(elderId);
+      } catch (error) {
+        console.error('Error fetching elder full data:', error);
+      }
+    }
 
     // slug는 항상 자동 생성
     const generatedSlug = elderData?.slug
@@ -325,6 +335,9 @@ export async function getHwalseoBySlug(slug: string): Promise<Hwalseo | null> {
       region: page.properties.Region?.rich_text?.[0]?.plain_text || undefined,
       readingTime: page.properties.ReadingTime?.number || undefined,
       likes: page.properties.Likes?.number || 0,
+      
+      // Elder 프로필 정보 (프로필 카드용)
+      elder: elderFullData,
     };
   } catch (error) {
     console.error('Error fetching hwalseo by slug:', error);
@@ -630,9 +643,23 @@ export async function createSubscriber(data: {
       return { success: false, error: 'duplicate' };
     }
 
-    const today = new Date();
-    const koreaTime = new Date(today.getTime() + 9 * 60 * 60 * 1000);
-    const dateStr = koreaTime.toISOString().split('T')[0];
+    // 현재 시간을 ISO 형식으로
+    const subscribeAt = new Date().toISOString();
+
+    // Source 값을 한국어로 매핑
+    const sourceMap: Record<string, string> = {
+      'homepage': '홈페이지',
+      'footer': '푸터',
+      'hwalseo': '활서페이지',
+      '활서페이지': '활서페이지',
+      '홈페이지': '홈페이지',
+      '푸터': '푸터',
+      '프로젝트소개': '프로젝트소개',
+      '프로필페이지': '프로필페이지',
+      '해답찾기': '해답찾기',
+      'Q&A': 'Q&A',
+    };
+    const sourceValue = sourceMap[data.source] || '홈페이지';
 
     // Build properties object
     const properties: Record<string, unknown> = {
@@ -640,24 +667,30 @@ export async function createSubscriber(data: {
       Email: {
         title: [{ text: { content: data.email } }],
       },
-      // Date property - SubscribeAt (exact name from Notion)
+      // Date property - SubscribeAt
       SubscribeAt: {
-        date: { start: dateStr },
+        date: { start: subscribeAt },
       },
-      // Rich_Text property - Source
+      // Rich text property - Source (rich_text 타입)
       Source: {
-        rich_text: [{ text: { content: data.source || 'website' } }],
+        rich_text: [
+          {
+            text: {
+              content: sourceValue,
+            },
+          },
+        ],
       },
-      // Select property - Status
+      // Select property - Status (select 타입)
       Status: {
         select: { name: '활성' },
       },
     };
 
-    // Add ElderId if provided
+    // Add ElderId if provided (relation 타입)
     if (data.elderId) {
       properties.ElderId = {
-        select: { name: data.elderId },
+        relation: [{ id: data.elderId }],
       };
     }
 
@@ -758,11 +791,13 @@ export async function getElderById(elderId: string): Promise<Elder | null> {
     }
 
     const hwalseoRelation = page.properties.Hwalseo?.relation || [];
+    const slug = page.properties.Slug?.rich_text?.[0]?.plain_text ||
+                 page.id.replaceAll('-', '');
 
     return {
       id: page.id,
       name: page.properties.Name?.title?.[0]?.plain_text || '',
-      slug: page.id.replaceAll('-', ''),
+      slug: slug,
       photo: getProxiedImageUrl(
         page.properties.Photo?.files?.[0]?.file?.url ||
           page.properties.Photo?.files?.[0]?.external?.url ||
@@ -770,7 +805,8 @@ export async function getElderById(elderId: string): Promise<Elder | null> {
       ),
       birthYear: page.properties.BirthYear?.number || undefined,
       gender: page.properties.Gender?.select?.name || undefined,
-      region: page.properties.Region?.select?.name || undefined,
+      region: page.properties.Region?.select?.name || 
+              page.properties.Region?.rich_text?.[0]?.plain_text || undefined,
       introduction:
         page.properties.Introduction?.rich_text?.[0]?.plain_text || undefined,
       bio: page.properties.Bio?.rich_text?.[0]?.plain_text || undefined,

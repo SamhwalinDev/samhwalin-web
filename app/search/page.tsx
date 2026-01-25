@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import ScrollAnimationWrapper from '@/components/ui/ScrollAnimationWrapper';
+import DarkSubscribeSection from '@/components/features/DarkSubscribeSection';
 
 // 고민 태그 목록
 const WORRY_TAGS = [
@@ -271,6 +272,8 @@ export default function SearchPage() {
         </div>
       </section>
 
+      {/* CTA - Subscribe Section */}
+      <DarkSubscribeSection source="해답찾기" />
     </main>
   );
 }

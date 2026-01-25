@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { getHwalseoList } from '@/lib/notion';
 import { ProxiedImage } from '@/components/ui';
 import { formatDate, formatTitleParts } from '@/lib/utils';
+import { AnimatedList } from '@/components/features/AnimatedList';
+import DarkSubscribeSection from '@/components/features/DarkSubscribeSection';
 
 export const revalidate = 60;
 
@@ -50,45 +52,47 @@ export default async function HwalseoListPage() {
         <div className="max-w-6xl mx-auto px-6">
           {hwalseoList.length > 0 ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {hwalseoList.map((hwalseo) => (
-                <Link
-                  key={hwalseo.id}
-                  href={`/hwalseo/${hwalseo.slug}`}
-                  className="block bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100 group"
-                >
-                  <div className="h-48 bg-gray-100 relative overflow-hidden">
-                    {hwalseo.coverImage ? (
-                      <ProxiedImage
-                        src={hwalseo.coverImage}
-                        alt={hwalseo.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-50">
-                        <span className="text-5xl opacity-50">📜</span>
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-6">
-                    <span className="text-primary text-sm font-semibold">
-                      {hwalseo.theme || '활서'}
-                    </span>
-                    <h3 className="text-lg font-bold text-gray-900 mt-2 mb-3 line-clamp-2 group-hover:text-primary transition-colors">
-                      {formatTitleParts(hwalseo.title).map((part, index) => (
-                        <span key={index}>
-                          {index > 0 && <br />}
-                          {part}
-                        </span>
-                      ))}
-                    </h3>
-                    <div className="flex items-center justify-between text-sm text-gray-500">
-                      <span>{hwalseo.elderName}</span>
-                      <span>{formatDate ? formatDate(hwalseo.publishedAt) : hwalseo.publishedAt}</span>
+              <AnimatedList pageKey="hwalseo-list">
+                {hwalseoList.map((hwalseo) => (
+                  <Link
+                    key={hwalseo.id}
+                    href={`/hwalseo/${hwalseo.slug}`}
+                    className="block bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100 group"
+                  >
+                    <div className="h-48 bg-gray-100 relative overflow-hidden">
+                      {hwalseo.coverImage ? (
+                        <ProxiedImage
+                          src={hwalseo.coverImage}
+                          alt={hwalseo.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-50">
+                          <span className="text-5xl opacity-50">📜</span>
+                        </div>
+                      )}
                     </div>
-                  </div>
-                </Link>
-              ))}
+                    <div className="p-6">
+                      <span className="text-primary text-sm font-semibold">
+                        {hwalseo.theme || '활서'}
+                      </span>
+                      <h3 className="text-lg font-bold text-gray-900 mt-2 mb-3 line-clamp-2 group-hover:text-primary transition-colors">
+                        {formatTitleParts(hwalseo.title).map((part, index) => (
+                          <span key={index}>
+                            {index > 0 && <br />}
+                            {part}
+                          </span>
+                        ))}
+                      </h3>
+                      <div className="flex items-center justify-between text-sm text-gray-500">
+                        <span>{hwalseo.elderName}</span>
+                        <span>{formatDate ? formatDate(hwalseo.publishedAt) : hwalseo.publishedAt}</span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </AnimatedList>
             </div>
           ) : (
             <div className="text-center py-20">
@@ -104,23 +108,8 @@ export default async function HwalseoListPage() {
         </div>
       </section>
 
-      {/* CTA - Subtle purple tint */}
-      <section className="py-16" style={{ backgroundColor: '#F8F8FB' }}>
-        <div className="max-w-2xl mx-auto px-6 text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            더 많은 이야기가 궁금하신가요?
-          </h2>
-          <p className="text-gray-600 mb-6">
-            새로운 활서가 올라오면 알려드릴게요.
-          </p>
-          <Link 
-            href="/#subscribe"
-            className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-xl font-semibold hover:bg-primary/90 transition-all"
-          >
-            소식 받기
-          </Link>
-        </div>
-      </section>
+      {/* CTA - Subscribe Section */}
+      <DarkSubscribeSection source="활서페이지" />
     </main>
   );
 }

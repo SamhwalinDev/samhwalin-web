@@ -2,6 +2,8 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { getElderList } from '@/lib/notion';
 import { ProxiedImage } from '@/components/ui';
+import DarkSubscribeSection from '@/components/features/DarkSubscribeSection';
+import { AnimatedList } from '@/components/features/AnimatedList';
 
 export const revalidate = 60;
 
@@ -109,6 +111,9 @@ export default async function EldersPage() {
           )}
         </div>
       </section>
+
+      {/* CTA - Subscribe Section */}
+      <DarkSubscribeSection source="프로필페이지" />
     </main>
   );
 }

@@ -12,6 +12,14 @@ export const metadata: Metadata = {
   keywords: ['삼활인', '활서', '세대 교류', '인터뷰 대상자', '생애 기록', '소셜 임팩트'],
   authors: [{ name: '삼활인' }],
   creator: '삼활인',
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
@@ -41,8 +49,6 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="theme-color" content="#FFFFFE" />
       </head>
       <body className="min-h-screen flex flex-col">

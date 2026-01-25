@@ -7,6 +7,7 @@ interface QuestionFormProps {
   elderName: string;
   elderId?: string;
   hwalseoId: string;
+  hwalseoTitle?: string;
 }
 
 // Helper function to extract first name from Korean names
@@ -18,7 +19,7 @@ const getFirstName = (fullName: string): string => {
   return fullName;
 };
 
-export default function QuestionForm({ elderName, elderId, hwalseoId }: QuestionFormProps) {
+export default function QuestionForm({ elderName, elderId, hwalseoId, hwalseoTitle }: QuestionFormProps) {
   const [nickname, setNickname] = useState('');
   const [question, setQuestion] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -43,6 +44,8 @@ export default function QuestionForm({ elderName, elderId, hwalseoId }: Question
           nickname: nickname.trim() || '익명',
           hwalseoId,
           elderId,
+          hwalseoTitle,
+          elderName,
         }),
       });
 
@@ -71,7 +74,7 @@ export default function QuestionForm({ elderName, elderId, hwalseoId }: Question
         </h3>
         <p className="text-muted-foreground mb-6">
           {firstName}에게 전달해드릴게요.
-          <br />답변은 검토 후 공개됩니다.
+          <br />답변이 등록되면 이 페이지에서 확인하실 수 있습니다.
         </p>
         <button
           onClick={() => setIsSubmitted(false)}

@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import ScrollAnimationWrapper from '@/components/ui/ScrollAnimationWrapper';
+import AboutCTA from '@/components/features/AboutCTA';
 
 export const revalidate = 300;
 
@@ -440,50 +441,7 @@ export default function AboutPage() {
 
       {/* Section 8: OFFER (CTA - Value Ladder) - Primary Dark */}
       <ScrollAnimationWrapper animation="blur" duration={1000}>
-        <section className="py-24 bg-gray-900 text-white">
-          <div className="max-w-4xl mx-auto px-6 text-center">
-            <ScrollAnimationWrapper animation="fade-up" delay={200} duration={800}>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-                함께 활력을 얻어보시겠습니까?
-              </h2>
-            </ScrollAnimationWrapper>
-            
-            <ScrollAnimationWrapper animation="fade" delay={400} duration={800}>
-              <p className="text-2xl text-gray-300 mb-12">
-                Arrive, Alive! No longer Alone.
-              </p>
-            </ScrollAnimationWrapper>
-
-            <ScrollAnimationWrapper animation="fade-up" delay={600} duration={900}>
-              <div className="flex flex-col md:flex-row justify-center gap-4 mb-12">
-                <Link 
-                  href="/hwalseo"
-                  className="bg-white text-gray-900 px-8 py-4 rounded-2xl font-semibold hover:bg-gray-100 transition-all hover:-translate-y-0.5 shadow-lg"
-                >
-                  활서 읽기
-                </Link>
-                <Link 
-                  href="#"
-                  className="border-2 border-white text-white px-8 py-4 rounded-2xl font-semibold hover:bg-white hover:text-gray-900 transition-all !text-white"
-                >
-                  뉴스레터 구독
-                </Link>
-                <Link 
-                  href="/support"
-                  className="border-2 border-white text-white px-8 py-4 rounded-2xl font-semibold hover:bg-white hover:text-gray-900 transition-all !text-white"
-                >
-                  후원하기
-                </Link>
-              </div>
-            </ScrollAnimationWrapper>
-
-            <ScrollAnimationWrapper animation="fade" delay={800} duration={700}>
-              <p className="text-gray-400 text-sm">
-                협업 문의: info@samhwalin.org
-              </p>
-            </ScrollAnimationWrapper>
-          </div>
-        </section>
+        <AboutCTA />
       </ScrollAnimationWrapper>
 
     </main>

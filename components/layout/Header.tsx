@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X, Search } from 'lucide-react';
 import { Container } from './Container';
+import { HeaderSearch } from './HeaderSearch';
 import { cn } from '@/lib/utils';
 import { NAV_LINKS } from '@/types';
 
@@ -41,13 +42,14 @@ export function Header({ variant = 'default' }: HeaderProps) {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    'text-body-sm font-medium transition-colors',
+                    'text-body-sm font-medium transition-colors flex items-center gap-1',
                     pathname === link.href
                       ? 'text-foreground'
                       : 'text-muted-foreground hover:text-foreground'
                   )}
                 >
                   {link.label}
+                  {link.href === '/search' && <Search size={16} className="inline" />}
                 </Link>
               ))}
             </nav>
@@ -56,10 +58,15 @@ export function Header({ variant = 'default' }: HeaderProps) {
           {/* Search & Mobile Menu */}
           {variant === 'default' && (
             <div className="flex items-center gap-2">
-              {/* Search Icon */}
+              {/* Search Input (Desktop) */}
+              <div className="hidden md:block">
+                <HeaderSearch />
+              </div>
+
+              {/* Search Icon (Mobile - links to search page) */}
               <Link 
                 href="/search" 
-                className="p-2 text-gray-600 hover:text-orange-500 hover:bg-orange-50 rounded-full transition-all duration-200"
+                className="md:hidden p-2 text-gray-600 hover:text-orange-500 hover:bg-orange-50 rounded-full transition-all duration-200"
                 aria-label="해답 찾기"
                 title="해답 찾기"
               >
@@ -86,31 +93,17 @@ export function Header({ variant = 'default' }: HeaderProps) {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  'block py-3 text-body font-medium transition-colors',
+                  'flex items-center gap-2 py-3 text-body font-medium transition-colors',
                   pathname === link.href
                     ? 'text-foreground'
                     : 'text-muted-foreground hover:text-foreground'
                 )}
                 onClick={() => setIsMenuOpen(false)}
               >
+                {link.href === '/search' && <Search size={18} />}
                 {link.label}
               </Link>
             ))}
-            
-            {/* Search Link for Mobile */}
-            <Link
-              href="/search"
-              className={cn(
-                'flex items-center gap-2 py-3 text-body font-medium transition-colors',
-                pathname === '/search'
-                  ? 'text-foreground'
-                  : 'text-muted-foreground hover:text-foreground'
-              )}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              <Search size={18} />
-              해답 찾기
-            </Link>
           </nav>
         )}
       </Container>

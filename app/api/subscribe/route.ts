@@ -26,11 +26,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 소스 검증
-    const validSources = ['footer', 'homepage', 'hwalseo'];
+    // 소스 검증 (한국어 값도 허용)
+    const validSources = ['footer', 'homepage', 'hwalseo', '홈페이지', '활서페이지', '푸터', '프로젝트소개', '프로필페이지', '해답찾기', 'Q&A'];
     if (!validSources.includes(source)) {
       return NextResponse.json(
-        { success: false, error: 'invalid_source' },
+        { success: false, error: 'invalid_source', message: '올바른 구독 출처가 아닙니다.' },
         { status: 400 }
       );
     }
@@ -46,17 +46,17 @@ export async function POST(request: NextRequest) {
     if (!result.success) {
       if (result.error === 'duplicate') {
         return NextResponse.json(
-          { success: false, error: 'duplicate' },
+          { success: false, error: 'duplicate', message: '이미 구독 중인 이메일입니다.' },
           { status: 409 }
         );
       }
       return NextResponse.json(
-        { success: false, error: result.error || 'server_error' },
+        { success: false, error: result.error || 'server_error', message: '구독 중 오류가 발생했습니다.' },
         { status: 500 }
       );
     }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, message: '구독이 완료되었습니다!' });
   } catch (error) {
     console.error('Subscribe API error:', error);
     return NextResponse.json(

@@ -122,9 +122,10 @@ export interface NavLink {
 }
 
 export const NAV_LINKS: NavLink[] = [
+  { label: '삼활인 소개', href: '/about' },
   { label: '활서', href: '/hwalseo' },
   { label: '프로필', href: '/elders' },
-  { label: '프로젝트 소개', href: '/about' },
+  { label: 'Q&A', href: '/qna' },
   { label: '테스형 AI', href: '/testype' },
   { label: '해답 찾기', href: '/search' },
 ];

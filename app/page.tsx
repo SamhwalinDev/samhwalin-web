@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Container, Section } from '@/components/layout';
-import { BeforeIDieBanner, MissionSection, EmailSubscribeForm } from '@/components/features';
+import { BeforeIDieBanner, MissionSection } from '@/components/features';
+import DarkSubscribeSection from '@/components/features/DarkSubscribeSection';
 import { ProxiedImage } from '@/components/ui';
 import ScrollAnimationWrapper from '@/components/ui/ScrollAnimationWrapper';
 import { getHwalseoList, getElderList, getEldersWithQuotes } from '@/lib/notion';
@@ -106,8 +107,6 @@ export default async function HomePage() {
                       </p>
                       <div className="flex items-center gap-4 text-sm text-gray-400">
                         <span>{formatDate ? formatDate(latestHwalseo.publishedAt) : latestHwalseo.publishedAt}</span>
-                        <span>·</span>
-                        <span>5분 읽기</span>
                       </div>
                     </div>
                   </Link>
@@ -364,40 +363,7 @@ export default async function HomePage() {
       </ScrollAnimationWrapper>
 
       {/* ========== EMAIL SUBSCRIBE ========== */}
-      <section className="py-16 md:py-24" style={{ backgroundColor: '#F8F8FB' }}>
-        <div className="max-w-xl mx-auto px-6 text-center">
-          <ScrollAnimationWrapper animation="scale" duration={800}>
-            <div 
-              className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-6"
-              style={{ backgroundColor: '#EEEEF5' }}
-            >
-              <span className="text-3xl">📬</span>
-            </div>
-          </ScrollAnimationWrapper>
-          
-          <ScrollAnimationWrapper animation="fade-up" delay={200} duration={800}>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              새 활서가 올라오면 알려드릴까요?
-            </h2>
-          </ScrollAnimationWrapper>
-          
-          <ScrollAnimationWrapper animation="fade-up" delay={400} duration={800}>
-            <p className="text-lg text-gray-600 mb-8">
-              이메일을 남겨주시면 새로운 인터뷰 대상자의 이야기가 올라올 때 알려드립니다.
-            </p>
-          </ScrollAnimationWrapper>
-          
-          <ScrollAnimationWrapper animation="fade-up" delay={600} duration={800}>
-            <EmailSubscribeForm source="homepage" className="max-w-md mx-auto" />
-          </ScrollAnimationWrapper>
-          
-          <ScrollAnimationWrapper animation="fade" delay={800} duration={700}>
-            <p className="text-sm text-gray-400 mt-4">
-              언제든 구독을 취소할 수 있습니다. 스팸 메일을 보내지 않습니다.
-            </p>
-          </ScrollAnimationWrapper>
-        </div>
-      </section>
+      <DarkSubscribeSection source="홈페이지" />
 
     </main>
   );

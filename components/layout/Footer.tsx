@@ -9,6 +9,7 @@ export function Footer() {
   return (
     <footer className="bg-white border-t border-border">
       <Container className="py-12 lg:py-16">
+        {/* 1. Footer Links - TOP */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
           {/* Brand */}
           <div>

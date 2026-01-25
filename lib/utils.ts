@@ -71,3 +71,20 @@ export function getProxiedImageUrl(url: string): string {
 
   return url;
 }
+
+/**
+ * Notion 텍스트를 HTML로 변환
+ * - // → <br /> (줄바꿈)
+ * - **text** → <strong>text</strong> (볼드)
+ * @param text 원본 텍스트
+ * @returns HTML 문자열 (dangerouslySetInnerHTML에 사용 가능)
+ */
+export function processNotionText(text: string | null | undefined): string {
+  if (!text) return '';
+  
+  return text
+    // Convert **text** to bold (non-greedy match)
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    // Convert // to line breaks
+    .replace(/\/\//g, '<br />');
+}

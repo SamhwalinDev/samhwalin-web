@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Quote } from 'lucide-react';
+import { processNotionText } from '@/lib/utils';
 
 interface Elder {
   id: string;
@@ -72,9 +73,10 @@ export default function BeforeIDieBanner({ elders }: BeforeIDieBannerProps) {
             
             {/* Content */}
             <div className={`flex-1 min-w-0 transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
-              <p className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 leading-snug group-hover:text-primary transition-colors">
-                "{currentElder.quote || ''}"
-              </p>
+              <p 
+                className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 leading-snug group-hover:text-primary transition-colors"
+                dangerouslySetInnerHTML={{ __html: `"${processNotionText(currentElder.quote)}"` }}
+              />
               <p className="text-base md:text-lg text-gray-600">
                 — {firstName}
                 {age && <span className="text-gray-400"> ({age}세)</span>}

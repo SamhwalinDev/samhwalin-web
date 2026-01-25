@@ -6,6 +6,7 @@ import { Container, Section } from '@/components/layout';
 import { HwalseoCard } from '@/components/features';
 import { ProxiedImage } from '@/components/ui';
 import { getElderById, getHwalseoByElderId } from '@/lib/notion';
+import { processNotionText } from '@/lib/utils';
 
 export const revalidate = 60;
 
@@ -115,9 +116,10 @@ export default async function ElderDetailPage({
 
                 {/* Introduction - as a styled quote */}
                 {elder.introduction && (
-                  <blockquote className="text-xl md:text-2xl text-gray-700 mb-6 leading-relaxed">
-                    &ldquo;{elder.introduction}&rdquo;
-                  </blockquote>
+                  <blockquote 
+                    className="text-xl md:text-2xl text-gray-700 mb-6 leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: `&ldquo;${processNotionText(elder.introduction)}&rdquo;` }}
+                  />
                 )}
 
                 {/* Bio */}
