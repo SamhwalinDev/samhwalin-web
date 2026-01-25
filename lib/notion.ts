@@ -3,7 +3,7 @@ import type {
   PageObjectResponse,
   BlockObjectResponse,
 } from '@notionhq/client/build/src/api-endpoints';
-import type { Hwalseo, HwalseoCard, Elder, ElderCard } from '@/types';
+import type { Hwalseo, HwalseoCard, Elder, ElderCard, Question, QuestionInput } from '@/types';
 import { getProxiedImageUrl } from './utils';
 
 // ============================================
@@ -55,6 +55,7 @@ const notion = new Client({
 });
 
 const databaseId = process.env.NOTION_HWALSEO_DATABASE_ID!;
+const QUESTION_DB_ID = '2f2d1667aaa3801b9597fd85a6804be8';
 
 // ============================================
 // Slug 생성 헬퍼 함수
@@ -302,6 +303,7 @@ export async function getHwalseoBySlug(slug: string): Promise<Hwalseo | null> {
       id: page.id,
       slug: generatedSlug,
       title: page.properties.Title?.title?.[0]?.plain_text || '',
+      subtitle: page.properties.Subtitle?.rich_text?.[0]?.plain_text || undefined,
       elderName: elderData?.name || '',
       elderId,
       theme: page.properties.Theme?.select?.name || '',
@@ -311,6 +313,18 @@ export async function getHwalseoBySlug(slug: string): Promise<Hwalseo | null> {
       publishedAt: page.properties.PublishedAt?.date?.start || '',
       createdAt: page.created_time,
       updatedAt: page.last_edited_time,
+      
+      // 스토리텔링 구조를 위한 새 필드들 (Notion DB에 없으면 undefined)
+      hook: page.properties.Hook?.rich_text?.[0]?.plain_text || undefined,
+      bio: page.properties.Bio?.rich_text?.[0]?.plain_text || undefined,
+      keyTakeaway: page.properties.KeyTakeaway?.rich_text?.[0]?.plain_text || undefined,
+      behind: page.properties.Behind?.rich_text?.[0]?.plain_text || undefined,
+      toReader: page.properties.ToReader?.rich_text?.[0]?.plain_text || undefined,
+      
+      // 추가 메타데이터
+      region: page.properties.Region?.rich_text?.[0]?.plain_text || elderData?.region,
+      readingTime: page.properties.ReadingTime?.number || undefined,
+      likes: page.properties.Likes?.number || 0,
     };
   } catch (error) {
     console.error('Error fetching hwalseo by slug:', error);
@@ -760,6 +774,7 @@ export async function getElderById(elderId: string): Promise<Elder | null> {
       introduction:
         page.properties.Introduction?.rich_text?.[0]?.plain_text || undefined,
       bio: page.properties.Bio?.rich_text?.[0]?.plain_text || undefined,
+      quote: page.properties.Quote?.rich_text?.[0]?.plain_text || undefined,
       status: page.properties.Status?.select?.name || 'Draft',
       hwalseoIds: hwalseoRelation.map((rel: { id: string }) => rel.id),
     };
@@ -813,12 +828,76 @@ export async function getElderByName(name: string): Promise<Elder | null> {
       introduction:
         page.properties.Introduction?.rich_text?.[0]?.plain_text || undefined,
       bio: page.properties.Bio?.rich_text?.[0]?.plain_text || undefined,
+      quote: page.properties.Quote?.rich_text?.[0]?.plain_text || undefined,
       status: page.properties.Status?.select?.name || 'Draft',
       hwalseoIds: hwalseoRelation.map((rel: { id: string }) => rel.id),
     };
   } catch (error) {
     console.error('Error fetching elder by name:', error);
     return null;
+  }
+}
+
+/**
+ * Get elders who have quotes (for BeforeIDieBanner)
+ */
+export async function getEldersWithQuotes(): Promise<Elder[]> {
+  try {
+    const response = await notion.databases.query({
+      database_id: elderDbId,
+      filter: {
+        and: [
+          {
+            property: 'Status',
+            select: {
+              equals: 'Published',
+            },
+          },
+          {
+            property: '명언',
+            rich_text: {
+              is_not_empty: true,
+            },
+          },
+        ],
+      },
+      sorts: [
+        {
+          timestamp: 'created_time',
+          direction: 'descending',
+        },
+      ],
+    });
+
+    return response.results
+      .map((result) => {
+        const page = result as NotionPageWithProperties;
+        const hwalseoRelation = page.properties.Hwalseo?.relation || [];
+
+        return {
+          id: page.id,
+          name: page.properties.Name?.title?.[0]?.plain_text || '',
+          slug: page.id.replaceAll('-', ''),
+          photo: getProxiedImageUrl(
+            page.properties.Photo?.files?.[0]?.file?.url ||
+              page.properties.Photo?.files?.[0]?.external?.url ||
+              ''
+          ),
+          birthYear: page.properties.BirthYear?.number || undefined,
+          gender: page.properties.Gender?.select?.name || undefined,
+          region: page.properties.Region?.select?.name || undefined,
+          introduction:
+            page.properties.Introduction?.rich_text?.[0]?.plain_text || undefined,
+          bio: page.properties.Bio?.rich_text?.[0]?.plain_text || undefined,
+          quote: page.properties['명언']?.rich_text?.[0]?.plain_text || undefined,
+          status: page.properties.Status?.select?.name || 'Draft',
+          hwalseoIds: hwalseoRelation.map((rel: { id: string }) => rel.id),
+        };
+      })
+      .filter((elder) => elder.quote && elder.quote.trim().length > 0); // 빈 명언 필터링
+  } catch (error) {
+    console.error('Failed to fetch elders with quotes:', error);
+    return [];
   }
 }
 
@@ -860,5 +939,158 @@ export async function getHwalseoByElderId(elderId: string): Promise<HwalseoCard[
   } catch (error) {
     console.error('Error fetching hwalseo by elder ID:', error);
     return [];
+  }
+}
+
+// ============================================
+// Question Functions
+// ============================================
+
+/**
+ * Get questions for a specific hwalseo (only public, answered ones)
+ */
+export async function getQuestionsByHwalseoId(hwalseoId: string): Promise<Question[]> {
+  try {
+    const response = await notion.databases.query({
+      database_id: QUESTION_DB_ID,
+      filter: {
+        and: [
+          {
+            property: '활서',
+            relation: {
+              contains: hwalseoId,
+            },
+          },
+          {
+            property: '공개여부',
+            checkbox: {
+              equals: true,
+            },
+          },
+          {
+            property: '상태',
+            select: {
+              equals: '답변완료',
+            },
+          },
+        ],
+      },
+      sorts: [
+        {
+          property: '생성일',
+          direction: 'descending',
+        },
+      ],
+    });
+
+    return response.results.map((page) => {
+      const p = page as NotionPageWithProperties;
+      return {
+        id: p.id,
+        question: p.properties['질문']?.title?.[0]?.plain_text || '',
+        nickname: p.properties['닉네임']?.rich_text?.[0]?.plain_text || '익명',
+        hwalseoId: p.properties['활서']?.relation?.[0]?.id || '',
+        elderId: p.properties['어르신']?.relation?.[0]?.id || '',
+        answer: p.properties['답변']?.rich_text?.[0]?.plain_text || '',
+        status: (p.properties['상태']?.select?.name as '대기중' | '답변완료') || '대기중',
+        isPublic: p.properties['공개여부']?.checkbox || false,
+        createdAt: p.properties['생성일']?.created_time || '',
+      };
+    });
+  } catch (error) {
+    console.error('Failed to fetch questions:', error);
+    return [];
+  }
+}
+
+/**
+ * Create a new question
+ */
+export async function createQuestion(input: QuestionInput): Promise<{ success: boolean; id?: string; error?: string }> {
+  try {
+    const response = await notion.pages.create({
+      parent: { database_id: QUESTION_DB_ID },
+      properties: {
+        '질문': {
+          title: [{ text: { content: input.question } }],
+        },
+        '닉네임': {
+          rich_text: [{ text: { content: input.nickname || '익명' } }],
+        },
+        '활서': {
+          relation: [{ id: input.hwalseoId }],
+        },
+        ...(input.elderId && {
+          '어르신': {
+            relation: [{ id: input.elderId }],
+          },
+        }),
+        '상태': {
+          select: { name: '대기중' },
+        },
+        '공개여부': {
+          checkbox: false,
+        },
+      },
+    });
+
+    return { success: true, id: response.id };
+  } catch (error) {
+    console.error('Failed to create question:', error);
+    return { success: false, error: 'Failed to create question' };
+  }
+}
+
+// ============================================
+// Elder Count
+// ============================================
+
+/**
+ * 발행된 Elder(프로필) 개수 가져오기
+ */
+export async function getElderCount(publishedOnly: boolean = true): Promise<number> {
+  try {
+    console.log(`Fetching elder count (publishedOnly=${publishedOnly}) with database ID:`, process.env.NOTION_ELDER_DATABASE_ID);
+    
+    const queryOptions: any = {
+      database_id: process.env.NOTION_ELDER_DATABASE_ID!,
+    };
+    
+    // 테스형용으로 호출될 때는 모든 프로필 카운트 (Published + Draft)
+    if (publishedOnly) {
+      queryOptions.filter = {
+        property: 'Status',
+        select: {
+          equals: 'Published',
+        },
+      };
+    }
+    
+    const response = await notion.databases.query(queryOptions);
+    
+    console.log(`Elder count response (publishedOnly=${publishedOnly}):`, {
+      total: response.results.length,
+      results: response.results.map(page => ({
+        id: page.id,
+        status: page.properties?.Status?.select?.name
+      }))
+    });
+    
+    return response.results.length;
+  } catch (error) {
+    console.error('Failed to get elder count:', error);
+    
+    // 필터 없이 전체 개수로 fallback 시도
+    try {
+      console.log('Trying without filter (fallback)...');
+      const fallbackResponse = await notion.databases.query({
+        database_id: process.env.NOTION_ELDER_DATABASE_ID!,
+      });
+      console.log('Total elders (unfiltered):', fallbackResponse.results.length);
+      return fallbackResponse.results.length;
+    } catch (fallbackError) {
+      console.error('Fallback also failed:', fallbackError);
+      return 0;
+    }
   }
 }

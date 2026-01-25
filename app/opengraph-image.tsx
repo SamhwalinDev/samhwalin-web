@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 
 export const runtime = 'nodejs';
-export const alt = '삼활인 - 어르신들의 이야기를 전합니다.';
+export const alt = '삼활인 - 인터뷰 대상자들의 이야기를 전합니다.';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -24,7 +24,7 @@ export default async function Image() {
           삼활인
         </div>
         <div style={{ fontSize: 36, color: '#6B7280' }}>
-          어르신들의 이야기를 전합니다.
+          인터뷰 대상자들의 이야기를 전합니다.
         </div>
       </div>
     ),

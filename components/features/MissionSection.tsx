@@ -6,7 +6,7 @@ const values = [
   {
     icon: Heart,
     title: 'Remembering',
-    description: '어르신들의 삶을 기억합니다',
+    description: '오랜 세월을 살아오신 분들의 삶을 기억합니다',
   },
   {
     icon: Users,

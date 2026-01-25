@@ -35,7 +35,7 @@ Container.displayName = 'Container';
 interface SectionProps extends HTMLAttributes<HTMLElement> {
   as?: 'section' | 'div';
   spacing?: 'default' | 'sm' | 'lg';
-  background?: 'default' | 'gray' | 'white';
+  background?: 'default' | 'gray' | 'white' | 'dark';
 }
 
 function Section({
@@ -56,6 +56,7 @@ function Section({
     default: 'bg-base',
     gray: 'bg-muted',
     white: 'bg-white',
+    dark: 'bg-gray-900',
   };
 
   return (

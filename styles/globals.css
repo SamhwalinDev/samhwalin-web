@@ -193,6 +193,51 @@
   .btn-amount.selected {
     @apply border-2 border-gray-900 shadow-md;
   }
+
+  /* ========================================
+     Toss-style Components
+     ======================================== */
+
+  /* Toss-style Card */
+  .card-toss {
+    @apply bg-white rounded-[20px] p-6 transition-all duration-200;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 
+                0 4px 20px rgba(0, 0, 0, 0.04);
+  }
+
+  .card-toss:hover {
+    @apply -translate-y-0.5;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 
+                0 8px 32px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Like button styles */
+  .btn-like {
+    @apply flex items-center gap-2 px-4 py-2.5 rounded-full font-medium 
+           transition-all duration-200;
+  }
+
+  .btn-like-inactive {
+    @apply bg-gray-100 text-gray-600 hover:bg-orange-50 hover:text-orange-500;
+  }
+
+  .btn-like-active {
+    @apply bg-orange-50 text-orange-500;
+  }
+
+  /* Toss-style section spacing (override existing) */
+  .section-spacing-toss {
+    @apply py-16 md:py-20 lg:py-24;
+  }
+
+  /* Container variants */
+  .container-narrow {
+    @apply max-w-3xl mx-auto px-4 sm:px-6;
+  }
+
+  .container-wide {
+    @apply max-w-6xl mx-auto px-4 sm:px-6;
+  }
 }
 
 /* ========================================
@@ -258,3 +303,44 @@ a.bg-gray-900,
 a.bg-primary {
   color: white !important;
 }
+
+/* Hero Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+/* Staggered Animation */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-stagger > * {
+  opacity: 0;
+  animation: slideInUp 0.8s ease-out forwards;
+}
+
+.animate-stagger > *:nth-child(1) { animation-delay: 0ms; }
+.animate-stagger > *:nth-child(2) { animation-delay: 150ms; }
+.animate-stagger > *:nth-child(3) { animation-delay: 300ms; }
+.animate-stagger > *:nth-child(4) { animation-delay: 450ms; }
+.animate-stagger > *:nth-child(5) { animation-delay: 600ms; }
+.animate-stagger > *:nth-child(6) { animation-delay: 750ms; }

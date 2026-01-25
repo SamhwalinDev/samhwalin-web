@@ -4,15 +4,10 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Search } from 'lucide-react';
 import { Container } from './Container';
 import { cn } from '@/lib/utils';
-
-const NAV_LINKS = [
-  { label: '프로필', href: '/elders' },
-  { label: '활서', href: '/hwalseo' },
-  { label: '프로젝트 소개', href: '/about' },
-];
+import { NAV_LINKS } from '@/types';
 
 interface HeaderProps {
   variant?: 'default' | 'minimal';
@@ -58,15 +53,28 @@ export function Header({ variant = 'default' }: HeaderProps) {
             </nav>
           )}
 
-          {/* Mobile Menu Button */}
+          {/* Search & Mobile Menu */}
           {variant === 'default' && (
-            <button
-              className="md:hidden p-2 text-muted-foreground hover:text-foreground"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label="메뉴 열기"
-            >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+            <div className="flex items-center gap-2">
+              {/* Search Icon */}
+              <Link 
+                href="/search" 
+                className="p-2 text-gray-600 hover:text-orange-500 hover:bg-orange-50 rounded-full transition-all duration-200"
+                aria-label="해답 찾기"
+                title="해답 찾기"
+              >
+                <Search size={20} />
+              </Link>
+
+              {/* Mobile Menu Button */}
+              <button
+                className="md:hidden p-2 text-muted-foreground hover:text-foreground"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                aria-label="메뉴 열기"
+              >
+                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           )}
         </div>
 
@@ -88,6 +96,21 @@ export function Header({ variant = 'default' }: HeaderProps) {
                 {link.label}
               </Link>
             ))}
+            
+            {/* Search Link for Mobile */}
+            <Link
+              href="/search"
+              className={cn(
+                'flex items-center gap-2 py-3 text-body font-medium transition-colors',
+                pathname === '/search'
+                  ? 'text-foreground'
+                  : 'text-muted-foreground hover:text-foreground'
+              )}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Search size={18} />
+              해답 찾기
+            </Link>
           </nav>
         )}
       </Container>

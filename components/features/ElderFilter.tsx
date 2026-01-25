@@ -12,7 +12,7 @@ interface ElderFilterProps {
 export function ElderFilter({ elders }: ElderFilterProps) {
   const [searchQuery, setSearchQuery] = useState('');
 
-  // 필터링된 어르신 목록
+  // 필터링된 프로필 목록
   const filteredElders = useMemo(() => {
     if (!searchQuery.trim()) {
       return elders;
@@ -51,7 +51,7 @@ export function ElderFilter({ elders }: ElderFilterProps) {
         {filteredElders.length}명의 어르신
       </p>
 
-      {/* 어르신 그리드 */}
+      {/* 프로필 그리드 */}
       {filteredElders.length > 0 ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
           {filteredElders.map((elder) => (
@@ -61,7 +61,7 @@ export function ElderFilter({ elders }: ElderFilterProps) {
       ) : (
         <div className="text-center py-16">
           <p className="text-body text-muted-foreground">
-            {searchQuery ? '검색 결과가 없습니다.' : '등록된 어르신이 없습니다.'}
+            {searchQuery ? '검색 결과가 없습니다.' : '등록된 프로필이 없습니다.'}
           </p>
         </div>
       )}

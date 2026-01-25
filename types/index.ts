@@ -11,6 +11,7 @@ export interface Elder {
   region?: string;
   introduction?: string;
   bio?: string;
+  quote?: string;              // Before I Die 명언
   status: 'Published' | 'Draft';
   hwalseoIds: string[];
 }
@@ -37,6 +38,7 @@ export interface Hwalseo {
   id: string;
   slug: string;
   title: string;
+  subtitle?: string;        // 부제목
   elderName: string;        // 어르신 이름 (레거시, elderId 사용 권장)
   elderId?: string;         // 어르신 DB 참조
   elder?: Elder;            // 어르신 데이터 (상세 조회 시)
@@ -47,6 +49,18 @@ export interface Hwalseo {
   publishedAt: string;      // 발행일
   createdAt: string;
   updatedAt: string;
+  
+  // 스토리텔링 구조를 위한 새 필드들
+  hook?: string;            // 훅 - 강렬한 첫 문장
+  bio?: string;             // 맥락 - 인터뷰 대상자 소개
+  keyTakeaway?: string;     // 핵심 교훈
+  behind?: string;          // 뒷이야기 - 인터뷰 후기
+  toReader?: string;        // 독자에게 전하는 말
+  
+  // 추가 메타데이터
+  region?: string;          // 지역
+  readingTime?: number;     // 예상 읽기 시간 (분)
+  likes?: number;          // 좋아요 수
 }
 
 /**
@@ -62,6 +76,31 @@ export interface HwalseoCard {
   excerpt: string;
   coverImage: string;
   publishedAt: string;
+}
+
+/**
+ * 질문 (Question) 타입
+ */
+export interface Question {
+  id: string;
+  question: string;
+  nickname: string;
+  hwalseoId: string;
+  elderId?: string;
+  answer?: string;
+  status: '대기중' | '답변완료';
+  isPublic: boolean;
+  createdAt: string;
+}
+
+/**
+ * 질문 입력 타입
+ */
+export interface QuestionInput {
+  question: string;
+  nickname: string;
+  hwalseoId: string;
+  elderId?: string;
 }
 
 /**
@@ -84,6 +123,8 @@ export interface NavLink {
 
 export const NAV_LINKS: NavLink[] = [
   { label: '활서', href: '/hwalseo' },
-  { label: '어르신들', href: '/elders' },
-  { label: '삼활인', href: '/about' },
+  { label: '프로필', href: '/elders' },
+  { label: '프로젝트 소개', href: '/about' },
+  { label: '테스형 AI', href: '/testype' },
+  { label: '해답 찾기', href: '/search' },
 ];

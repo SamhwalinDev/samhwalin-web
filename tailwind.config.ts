@@ -100,6 +100,11 @@ const config: Config = {
         '30': '7.5rem',
       },
 
+      // Scale
+      scale: {
+        '98': '0.98',
+      },
+
       // Layout
       maxWidth: {
         'container': '1200px',
@@ -115,6 +120,8 @@ const config: Config = {
         'xl': '0 16px 48px rgba(0, 0, 0, 0.12)',
         'card': '0 2px 8px rgba(0, 0, 0, 0.06)',
         'card-hover': '0 8px 24px rgba(0, 0, 0, 0.1)',
+        'toss': '0 2px 8px rgba(0, 0, 0, 0.04), 0 4px 20px rgba(0, 0, 0, 0.04)',
+        'toss-hover': '0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 32px rgba(0, 0, 0, 0.08)',
       },
 
       // Border Radius
@@ -123,6 +130,9 @@ const config: Config = {
         'md': '8px',
         'lg': '12px',
         'xl': '16px',
+        '2xl': '16px',
+        '3xl': '20px',
+        '4xl': '24px',
       },
 
       // Transitions

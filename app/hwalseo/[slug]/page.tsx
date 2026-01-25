@@ -2,91 +2,39 @@ import React from 'react';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
-import { ArrowLeft } from 'lucide-react';
-import { Container, Section } from '@/components/layout';
-import { HwalseoCard, HwalseoCta, MobileTableOfContents, ShareButtons } from '@/components/features';
-import { ProxiedImage } from '@/components/ui';
-import { getHwalseoBySlug, getRelatedHwalseos, getElderByName } from '@/lib/notion';
-import { formatDate, formatTitleParts, formatTitleFlat } from '@/lib/utils';
-import type { Elder } from '@/types';
+import { ArrowLeft, Calendar, MapPin, Clock, Quote } from 'lucide-react';
+import { LikeButton, QuestionForm } from '@/components/features';
+import ScrollAnimationWrapper from '@/components/ui/ScrollAnimationWrapper';
+import { getHwalseoBySlug } from '@/lib/notion';
+import { formatDate, formatTitleFlat } from '@/lib/utils';
 
-/**
- * Parse inline markdown formatting and custom tags to React elements
- * Handles: **bold**, *italic*, `code`, ~~strikethrough~~, <u>underline</u>,
- * [links](url), [COLOR:name]text[/COLOR], [HIGHLIGHT:name]text[/HIGHLIGHT]
- */
-function parseInlineFormatting(text: string): React.ReactNode {
-  const processMarkdown = (str: string): string => {
-    let result = str;
-
-    // Bold: **text**
-    result = result.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-
-    // Italic: *text* (not preceded by *)
-    result = result.replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, '<em>$1</em>');
-
-    // Code: `text`
-    result = result.replace(/`([^`]+)`/g, '<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono">$1</code>');
-
-    // Strikethrough: ~~text~~
-    result = result.replace(/~~(.+?)~~/g, '<del>$1</del>');
-
-    // Underline: <u>text</u> - already HTML, just keep it
-
-    // Links: [text](url)
-    result = result.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-primary hover:underline" target="_blank" rel="noopener noreferrer">$1</a>');
-
-    // Color: [COLOR:name]text[/COLOR]
-    result = result.replace(/\[COLOR:(\w+)\](.+?)\[\/COLOR\]/g, '<span style="color: var(--notion-$1)">$2</span>');
-
-    // Highlight: [HIGHLIGHT:name]text[/HIGHLIGHT]
-    result = result.replace(/\[HIGHLIGHT:(\w+)\](.+?)\[\/HIGHLIGHT\]/g, '<mark style="background-color: var(--notion-$1-bg); padding: 0.125rem 0.25rem; border-radius: 0.125rem;">$2</mark>');
-
-    return result;
-  };
-
-  const processedHtml = processMarkdown(text);
-
-  // If no formatting was applied, return plain text
-  if (processedHtml === text) {
-    return text;
-  }
-
-  // Return as HTML
-  return <span dangerouslySetInnerHTML={{ __html: processedHtml }} />;
-}
-
-export const revalidate = 3600;
-
-interface HwalseoDetailPageProps {
+interface Props {
   params: { slug: string };
 }
 
-export async function generateMetadata({
-  params,
-}: HwalseoDetailPageProps): Promise<Metadata> {
-  const hwalseo = await getHwalseoBySlug(params.slug);
+export const revalidate = 60;
 
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const hwalseo = await getHwalseoBySlug(params.slug);
+  
   if (!hwalseo) {
-    return { title: '활서를 찾을 수 없습니다' };
+    return {
+      title: '활서를 찾을 수 없습니다 | 삼활인',
+      description: '요청하신 활서를 찾을 수 없습니다.',
+    };
   }
 
-  const pageUrl = `https://samhwalin.org/hwalseo/${params.slug}`;
   const flatTitle = formatTitleFlat(hwalseo.title);
-  // Use proxy URL for stable, non-expiring image
-  const ogImage = hwalseo.coverImage
-    ? `https://samhwalin.org/api/image?url=${encodeURIComponent(hwalseo.coverImage)}`
-    : 'https://samhwalin.org/og-image.png';
+  const ogImage = `/api/og?title=${encodeURIComponent(flatTitle)}&elderName=${encodeURIComponent(hwalseo.elderName)}`;
 
   return {
-    title: flatTitle,
+    title: `${flatTitle} | 삼활인`,
     description: hwalseo.excerpt,
     openGraph: {
       title: flatTitle,
       description: hwalseo.excerpt,
-      url: pageUrl,
       type: 'article',
+      publishedTime: hwalseo.publishedAt,
       images: [
         {
           url: ogImage,
@@ -105,421 +53,219 @@ export async function generateMetadata({
   };
 }
 
-function ContentRenderer({ content }: { content: string }) {
-  const lines = content.split('\n');
-
-  return (
-    <>
-      {lines.map((line, index) => {
-        // 이미지
-        if (line.includes('[IMG]')) {
-          const urlMatch = line.match(/\[IMG\](.*?)\[\/IMG\]/);
-          const captionMatch = line.match(/\[CAP\](.*?)\[\/CAP\]/);
-
-          if (urlMatch && urlMatch[1]) {
-            const url = urlMatch[1];
-            const caption = captionMatch ? captionMatch[1] : '';
-
-            return (
-              <figure key={index} className="my-8">
-                <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-gray-100">
-                  <Image
-                    src={url}
-                    alt={caption || '활서 이미지'}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 680px"
-                    loading="lazy"
-                  />
-                </div>
-                {caption && (
-                  <figcaption className="text-center text-caption text-muted-foreground mt-2">
-                    {parseInlineFormatting(caption)}
-                  </figcaption>
-                )}
-              </figure>
-            );
-          }
-        }
-        // 대제목 (#) - Notion heading_1
-        if (line.startsWith('# ') && !line.startsWith('## ')) {
-          const text = line.replace('# ', '');
-          return (
-            <h2
-              key={index}
-              id={`heading-${index}`}
-              className="text-article-h1 text-foreground mt-12 mb-6 scroll-mt-24 break-keep"
-            >
-              {parseInlineFormatting(text)}
-            </h2>
-          );
-        }
-        // 제목 (##) - Notion heading_2
-        if (line.startsWith('## ')) {
-          const text = line.replace('## ', '');
-          return (
-            <h3
-              key={index}
-              id={`heading-${index}`}
-              className="text-article-h2 text-foreground mt-10 mb-5 scroll-mt-24 break-keep"
-            >
-              {parseInlineFormatting(text)}
-            </h3>
-          );
-        }
-        // 소제목 (###) - Notion heading_3
-        if (line.startsWith('### ')) {
-          const text = line.replace('### ', '');
-          return (
-            <h4
-              key={index}
-              id={`heading-${index}`}
-              className="text-article-h3 text-foreground mt-8 mb-4 scroll-mt-24 break-keep"
-            >
-              {parseInlineFormatting(text)}
-            </h4>
-          );
-        }
-        // 인용문 (>)
-        if (line.startsWith('> ')) {
-          return (
-            <blockquote
-              key={index}
-              className="border-l-4 border-primary pl-6 my-8 italic text-muted-foreground"
-            >
-              {parseInlineFormatting(line.replace('> ', ''))}
-            </blockquote>
-          );
-        }
-        // 구분선
-        if (line === '---') {
-          return <hr key={index} className="my-8 border-border" />;
-        }
-        // 목록
-        if (line.startsWith('• ')) {
-          return (
-            <li key={index} className="text-body-lg text-foreground leading-loose ml-4">
-              {parseInlineFormatting(line.replace('• ', ''))}
-            </li>
-          );
-        }
-        // 일반 문단
-        if (line.trim()) {
-          return (
-            <p key={index} className="text-body-lg text-foreground leading-loose mb-6">
-              {parseInlineFormatting(line)}
-            </p>
-          );
-        }
-        return null;
-      })}
-    </>
-  );
-}
-
-interface Heading {
-  level: number;
-  text: string;
-  lineIndex: number;
-}
-
-function extractHeadings(content: string): Heading[] {
-  const lines = content.split('\n');
-
-  return lines
-    .map((line, index) => {
-      if (line.startsWith('# ') && !line.startsWith('## ')) {
-        return { level: 1, text: line.replace('# ', ''), lineIndex: index };
-      }
-      if (line.startsWith('## ')) {
-        return { level: 2, text: line.replace('## ', ''), lineIndex: index };
-      }
-      if (line.startsWith('### ')) {
-        return { level: 3, text: line.replace('### ', ''), lineIndex: index };
-      }
-      return null;
-    })
-    .filter((h): h is Heading => h !== null);
-}
-
-function DesktopTableOfContents({ content }: { content: string }) {
-  const headings = extractHeadings(content);
-
-  if (headings.length === 0) return null;
-
-  return (
-    <nav className="hidden xl:block w-56 shrink-0">
-      <div className="sticky top-24">
-        <h4 className="text-sm font-semibold text-foreground mb-4">목차</h4>
-        <ul className="space-y-0.5 text-sm">
-          {headings.map((heading, idx) => {
-            const isH1 = heading.level === 1;
-            const isH2 = heading.level === 2;
-            const isH3 = heading.level === 3;
-            const isFirstH1 = isH1 && headings.findIndex((h) => h.level === 1) === idx;
-
-            return (
-              <li
-                key={idx}
-                className={`
-                  ${isH1 && !isFirstH1 ? 'mt-4 pt-3 border-t border-gray-100' : ''}
-                  ${isH3 ? 'ml-4' : ''}
-                `}
-              >
-                <a
-                  href={`#heading-${heading.lineIndex}`}
-                  className={`
-                    block py-1.5 transition-colors line-clamp-2 break-keep
-                    ${isH1 ? 'font-bold text-foreground hover:text-primary text-[15px]' : ''}
-                    ${isH2 ? 'font-medium text-muted-foreground hover:text-primary pl-3 border-l-2 border-border hover:border-primary text-[14px]' : ''}
-                    ${isH3 ? 'text-muted-foreground hover:text-foreground text-[13px] pl-3' : ''}
-                  `}
-                >
-                  {isH1 && <span className="text-primary mr-2">■</span>}
-                  {isH2 && <span className="text-gray-400 mr-1.5">›</span>}
-                  {isH3 && <span className="text-gray-300 mr-1.5">–</span>}
-                  {heading.text}
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    </nav>
-  );
-}
-
-function ElderProfile({
-  elderName,
-  elder,
-}: {
-  elderName: string;
-  elder: Elder | null;
-}) {
-  const linkHref = elder
-    ? `/elders/${elder.slug}`
-    : `/hwalseo?elder=${encodeURIComponent(elderName)}`;
-
-  const currentYear = new Date().getFullYear();
-  const age = elder?.birthYear ? currentYear - elder.birthYear : null;
-
-  return (
-    <Link href={linkHref} className="xl:hidden block">
-      <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 p-6 bg-muted rounded-xl mb-10 hover:bg-gray-100 transition-colors">
-        {/* 어르신 사진 */}
-        {elder?.photo ? (
-          <div className="relative w-32 h-32 sm:w-40 sm:h-40 mx-auto sm:mx-0 rounded-xl overflow-hidden bg-gray-200 shrink-0">
-            <ProxiedImage
-              src={elder.photo}
-              alt={elder.name}
-              fill
-              className="object-cover"
-            />
-          </div>
-        ) : (
-          <div className="w-32 h-32 sm:w-40 sm:h-40 mx-auto sm:mx-0 rounded-xl bg-gray-200 flex items-center justify-center text-5xl shrink-0">
-            {elder?.gender === '여성' ? '👵' : '👴'}
-          </div>
-        )}
-
-        {/* 약력 */}
-        <div className="flex-1">
-          <h3 className="text-h2 text-foreground mb-1 text-center sm:text-left break-keep">
-            {elder?.name || elderName}
-          </h3>
-          {age && (
-            <p className="text-body-sm text-muted-foreground mb-4 text-center sm:text-left">
-              {elder?.birthYear}년생 ({age}세)
-            </p>
-          )}
-          {elder?.introduction && (
-            <p className="text-body text-gray-700 mb-3 break-keep">
-              &ldquo;{elder.introduction}&rdquo;
-            </p>
-          )}
-          {elder?.bio && (
-            <div className="space-y-1">
-              {elder.bio
-                .split('\n')
-                .slice(0, 3)
-                .map((line, idx) => (
-                  <p key={idx} className="text-body-sm text-muted-foreground break-keep">
-                    {line}
-                  </p>
-                ))}
-            </div>
-          )}
-          <p className="text-small text-primary mt-4 text-center sm:text-left">
-            {elder ? '프로필 보기 →' : '모든 활서 보기 →'}
-          </p>
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-export default async function HwalseoDetailPage({
-  params,
-}: HwalseoDetailPageProps) {
+export default async function HwalseoDetailPage({ params }: Props) {
   const hwalseo = await getHwalseoBySlug(params.slug);
-
+  
   if (!hwalseo) {
     notFound();
   }
 
-  // Fetch elder and related hwalseos in parallel
-  const [elder, relatedHwalseos] = await Promise.all([
-    getElderByName(hwalseo.elderName),
-    getRelatedHwalseos(hwalseo.id, hwalseo.theme, 2),
-  ]);
+  // 읽기 시간 계산 (없으면 본문 길이로 추정)
+  const estimatedReadingTime = hwalseo.readingTime || Math.ceil(hwalseo.content.length / 1000);
 
   return (
-    <>
-      <Section spacing="sm" className="border-b border-border">
-        <Container>
-          <Link
-            href="/hwalseo"
-            className="inline-flex items-center gap-2 text-body-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
+    <main className="min-h-screen bg-gray-50">
+      
+      {/* 상단 네비게이션 */}
+      <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div className="max-w-3xl mx-auto px-6 py-4">
+          <Link 
+            href="/hwalseo" 
+            className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
           >
-            <ArrowLeft size={16} />
-            활서 목록
+            <ArrowLeft className="w-4 h-4" />
+            <span>활서 목록</span>
           </Link>
+        </div>
+      </div>
 
-          <div className="max-w-content">
-            <span className="tag mb-3">{hwalseo.theme}</span>
-            <h1 className="text-display text-foreground mb-4">
-              {formatTitleParts(hwalseo.title).map((part, i, arr) => (
-                <span key={i}>
-                  {part}
-                  {i < arr.length - 1 && <br />}
-                </span>
-              ))}
-            </h1>
-            <p className="text-body-lg text-muted-foreground mb-6">
-              {hwalseo.elderName}
-              {elder?.birthYear ? ` (${new Date().getFullYear() - elder.birthYear}세)` : ''}
-            </p>
-            <div className="flex items-center gap-4">
-              <time className="text-caption text-gray-400">
-                {formatDate(hwalseo.publishedAt)}
-              </time>
-              <ShareButtons
-                title={formatTitleFlat(hwalseo.title)}
-                url={`https://samhwalin.org/hwalseo/${params.slug}`}
-              />
-            </div>
-          </div>
-        </Container>
-      </Section>
-
-      <Section spacing="default" className="pt-8">
-        <Container>
-          <div className="flex gap-8 justify-center">
-            {/* 왼쪽 - 어르신 정보 카드 (데스크톱) */}
-            <aside className="hidden xl:block w-56 shrink-0">
-              <div className="sticky top-24">
-                {elder ? (
-                  <Link
-                    href={`/elders/${elder.slug}`}
-                    className="block bg-white border border-border shadow-sm rounded-xl p-5 hover:shadow-md hover:border-gray-300 transition-all"
-                  >
-                    {/* 프로필 사진 */}
-                    {elder.photo ? (
-                      <div className="relative w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden bg-gray-200">
-                        <ProxiedImage
-                          src={elder.photo}
-                          alt={elder.name}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    ) : (
-                      <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center text-3xl">
-                        {elder.gender === '여성' ? '👵' : '👴'}
-                      </div>
-                    )}
-                    <h4 className="text-h3 text-foreground text-center mb-1 break-keep">
-                      {elder.name}
-                    </h4>
-                    {elder.birthYear && (
-                      <p className="text-caption text-muted-foreground text-center mb-3">
-                        {elder.birthYear}년생
-                      </p>
-                    )}
-                    {/* 약력 */}
-                    {elder.bio && (
-                      <div className="text-small text-muted-foreground text-left mb-3 space-y-1 border-t border-gray-100 pt-3">
-                        {elder.bio
-                          .split('\n')
-                          .slice(0, 3)
-                          .map((line, idx) => (
-                            <p key={idx} className="break-keep line-clamp-1">
-                              {line}
-                            </p>
-                          ))}
-                      </div>
-                    )}
-                    <p className="text-small text-primary text-center mt-3">
-                      프로필 보기 →
-                    </p>
-                  </Link>
-                ) : (
-                  <Link
-                    href={`/hwalseo?elder=${encodeURIComponent(hwalseo.elderName)}`}
-                    className="block bg-white border border-border shadow-sm rounded-xl p-5 hover:shadow-md hover:border-gray-300 transition-all"
-                  >
-                    <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center text-3xl">
-                      👴
-                    </div>
-                    <h4 className="text-h3 text-foreground text-center mb-1 break-keep">
-                      {hwalseo.elderName}
-                    </h4>
-                    <p className="text-small text-gray-400 text-center mt-3">
-                      모든 활서 보기 →
-                    </p>
-                  </Link>
-                )}
+      <article className="max-w-3xl mx-auto px-6 py-12">
+        
+        {/* ========== 1. HOOK (훅) ========== */}
+        {/* 첫 문장으로 시선 잡기 */}
+        <ScrollAnimationWrapper animation="fade" duration={1000}>
+          <section className="mb-16">
+            {hwalseo.hook && (
+              <div className="bg-[#FFF8F3] rounded-3xl p-8 mb-8">
+                <Quote className="w-8 h-8 text-orange-400 mb-4" />
+                <p className="text-2xl md:text-3xl font-medium text-gray-900 leading-relaxed">
+                  "{hwalseo.hook}"
+                </p>
               </div>
-            </aside>
-
-            {/* 중앙 - 본문 */}
-            <div className="flex-1 max-w-content min-w-0">
-              {/* 모바일 어르신 프로필 */}
-              <ElderProfile elderName={hwalseo.elderName} elder={elder} />
-
-              <article className="prose prose-lg max-w-none">
-                <ContentRenderer content={hwalseo.content} />
-              </article>
-
-              <HwalseoCta
-                elderName={hwalseo.elderName}
-                hwalseoSlug={hwalseo.slug}
-                shareTitle={formatTitleFlat(hwalseo.title)}
-                shareUrl={`https://samhwalin.org/hwalseo/${params.slug}`}
-              />
+            )}
+            
+            {/* 제목 & 메타 */}
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
+              {hwalseo.title}
+            </h1>
+            
+            {hwalseo.subtitle && (
+              <p className="text-xl text-gray-600 mb-6">
+                {hwalseo.subtitle}
+              </p>
+            )}
+            
+            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+              <span className="font-medium text-orange-600">{hwalseo.elderName}님의 이야기</span>
+              {hwalseo.region && (
+                <span className="flex items-center gap-1">
+                  <MapPin className="w-4 h-4" />
+                  {hwalseo.region}
+                </span>
+              )}
+              {hwalseo.publishedAt && (
+                <span className="flex items-center gap-1">
+                  <Calendar className="w-4 h-4" />
+                  {formatDate(hwalseo.publishedAt)}
+                </span>
+              )}
+              <span className="flex items-center gap-1">
+                <Clock className="w-4 h-4" />
+                {estimatedReadingTime}분
+              </span>
             </div>
+          </section>
+        </ScrollAnimationWrapper>
 
-            {/* 오른쪽 - 목차 (데스크톱) */}
-            <DesktopTableOfContents content={hwalseo.content} />
+        {/* ========== 2. CONTEXT (맥락) ========== */}
+        {/* 이 분은 어떤 삶을 살았는가 */}
+        {hwalseo.bio && (
+          <ScrollAnimationWrapper animation="fade-up" duration={800}>
+            <section className="mb-16">
+              <h2 className="text-sm font-semibold text-orange-600 uppercase tracking-wider mb-4">
+                이 분의 삶
+              </h2>
+              <div className="bg-white rounded-2xl p-6 shadow-sm">
+                <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                  {hwalseo.bio}
+                </p>
+              </div>
+            </section>
+          </ScrollAnimationWrapper>
+        )}
+
+        {/* ========== 3. LESSON (가르침) ========== */}
+        {/* 본문 - 핵심 이야기 */}
+        <ScrollAnimationWrapper animation="fade-up" duration={800}>
+          <section className="mb-16">
+            <h2 className="text-sm font-semibold text-orange-600 uppercase tracking-wider mb-4">
+              이야기
+            </h2>
+            <div 
+              className="prose prose-lg max-w-none
+                       prose-headings:font-bold prose-headings:text-gray-900
+                       prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-6
+                       prose-a:text-orange-600 prose-a:no-underline hover:prose-a:underline
+                       prose-blockquote:border-l-4 prose-blockquote:border-l-orange-400 prose-blockquote:bg-orange-50
+                       prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:my-8
+                       prose-blockquote:not-italic prose-blockquote:text-gray-700 prose-blockquote:font-medium
+                       prose-strong:text-gray-900 prose-strong:font-semibold
+                       prose-ul:my-6 prose-ol:my-6
+                       prose-li:text-gray-700 prose-li:leading-relaxed
+                       prose-h1:text-2xl prose-h1:mb-6 prose-h1:mt-8
+                       prose-h2:text-xl prose-h2:mb-4 prose-h2:mt-6
+                       prose-h3:text-lg prose-h3:mb-3 prose-h3:mt-4"
+              dangerouslySetInnerHTML={{ __html: hwalseo.content }}
+            />
+          </section>
+        </ScrollAnimationWrapper>
+
+        {/* ========== 4. KEY TAKEAWAY (핵심 교훈) ========== */}
+        {hwalseo.keyTakeaway && (
+          <ScrollAnimationWrapper animation="scale" duration={800}>
+            <section className="mb-16">
+              <div className="bg-gray-900 text-white rounded-3xl p-8 text-center">
+                <p className="text-sm font-semibold text-orange-400 uppercase tracking-wider mb-4">
+                  핵심 교훈
+                </p>
+                <p className="text-xl md:text-2xl font-medium leading-relaxed">
+                  "{hwalseo.keyTakeaway}"
+                </p>
+                <p className="text-gray-400 mt-4">
+                  — {hwalseo.elderName}
+                </p>
+              </div>
+            </section>
+          </ScrollAnimationWrapper>
+        )}
+
+        {/* ========== 5. BEHIND (뒷이야기) ========== */}
+        {hwalseo.behind && (
+          <ScrollAnimationWrapper animation="fade-up" duration={800}>
+            <section className="mb-16">
+              <h2 className="text-sm font-semibold text-orange-600 uppercase tracking-wider mb-4">
+                인터뷰 뒷이야기
+              </h2>
+              <div className="bg-[#F5F8F5] rounded-2xl p-6">
+                <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                  {hwalseo.behind}
+                </p>
+              </div>
+            </section>
+          </ScrollAnimationWrapper>
+        )}
+
+        {/* ========== 6. TO READER (독자에게) ========== */}
+        {hwalseo.toReader && (
+          <ScrollAnimationWrapper animation="fade-up" duration={800}>
+            <section className="mb-16">
+              <h2 className="text-sm font-semibold text-orange-600 uppercase tracking-wider mb-4">
+                {hwalseo.elderName}님이 당신에게
+              </h2>
+              <div className="border-2 border-orange-200 rounded-2xl p-6 bg-white">
+                <p className="text-lg text-gray-800 leading-relaxed italic">
+                  "{hwalseo.toReader}"
+                </p>
+              </div>
+            </section>
+          </ScrollAnimationWrapper>
+        )}
+
+        {/* ========== 좋아요 버튼 ========== */}
+        <ScrollAnimationWrapper animation="fade" duration={800}>
+          <div className="flex justify-center mb-16">
+            <LikeButton 
+              postId={hwalseo.id} 
+              initialLikes={hwalseo.likes || 0} 
+            />
           </div>
-        </Container>
-      </Section>
+        </ScrollAnimationWrapper>
 
-      {relatedHwalseos.length > 0 && (
-        <Section background="gray" spacing="default">
-          <Container>
-            <h2 className="text-h1 text-foreground mb-8 text-center">다른 활서</h2>
-            <div className="grid sm:grid-cols-2 gap-8 max-w-3xl mx-auto">
-              {relatedHwalseos.map((related) => (
-                <HwalseoCard key={related.id} hwalseo={related} />
-              ))}
+        {/* ========== 구분선 ========== */}
+        <hr className="border-gray-200 mb-16" />
+
+        {/* ========== 질문하기 ========== */}
+        <ScrollAnimationWrapper animation="fade-up" duration={800}>
+          <section className="mb-16">
+            <QuestionForm 
+              elderName={hwalseo.elderName}
+              elderId={hwalseo.elderId}
+              hwalseoId={hwalseo.id}
+            />
+          </section>
+        </ScrollAnimationWrapper>
+
+        {/* ========== 하단 네비게이션 ========== */}
+        <ScrollAnimationWrapper animation="fade-up" duration={800}>
+          <div className="pt-8 border-t border-gray-200">
+            <div className="flex justify-between items-center">
+              <Link 
+                href="/hwalseo" 
+                className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>활서 목록으로</span>
+              </Link>
+              
+              <div className="text-right text-sm text-gray-500">
+                <p>이 활서가 도움이 되셨나요?</p>
+                <p className="text-orange-600 font-medium mt-1">당신의 이야기도 들려주세요</p>
+              </div>
             </div>
-          </Container>
-        </Section>
-      )}
+          </div>
+        </ScrollAnimationWrapper>
 
-      {/* Mobile Table of Contents - only visible on < xl screens */}
-      <MobileTableOfContents content={hwalseo.content} />
-    </>
+      </article>
+    </main>
   );
 }

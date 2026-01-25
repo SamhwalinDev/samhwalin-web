@@ -52,7 +52,7 @@ export function HeroSection({ latestHwalseo }: HeroSectionProps) {
               ))
             ) : (
               <>
-                어르신의 삶이<br />
+                황혼에 다다른 분들의 삶이<br />
                 우리의 이야기가 됩니다
               </>
             )}
@@ -63,7 +63,7 @@ export function HeroSection({ latestHwalseo }: HeroSectionProps) {
               latestHwalseo.excerpt
             ) : (
               <>
-                삼활인은 어르신들의 인생 이야기를 기록하고,<br />
+                삼활인은 인터뷰 대상자들의 인생 이야기를 기록하고,<br />
                 세대를 넘어 연결하는 프로젝트입니다.
               </>
             )}

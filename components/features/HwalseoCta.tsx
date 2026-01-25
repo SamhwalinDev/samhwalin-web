@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { Send } from 'lucide-react';
-import { PostcardModal } from '@/components/features';
+// import { useState } from 'react'; // 엽서 기능 임시 비활성화
+// import { Send } from 'lucide-react'; // 엽서 기능 임시 비활성화
+// import { PostcardModal } from '@/components/features'; // 엽서 기능 임시 비활성화
 import { ShareButtons } from './ShareButtons';
 import { EmailSubscribeForm } from './EmailSubscribeForm';
 
@@ -14,7 +14,7 @@ interface HwalseoCtaProps {
 }
 
 export function HwalseoCta({ elderName, hwalseoSlug, shareTitle, shareUrl }: HwalseoCtaProps) {
-  const [isPostcardOpen, setIsPostcardOpen] = useState(false);
+  // const [isPostcardOpen, setIsPostcardOpen] = useState(false); // 엽서 기능 임시 비활성화
 
   return (
     <>
@@ -38,9 +38,10 @@ export function HwalseoCta({ elderName, hwalseoSlug, shareTitle, shareUrl }: Hwa
           </div>
         )}
 
-        {/* 2. Action Buttons - 엽서 보내기 + 인스타그램 */}
+        {/* 2. Action Buttons - 인스타그램 (엽서 보내기는 임시 숨김) */}
         <div className="mt-8 pt-6 border-t border-gray-100">
           <div className="flex flex-row gap-3 justify-center">
+            {/* 엽서 보내기 버튼 - 임시 비활성화
             <button
               onClick={() => setIsPostcardOpen(true)}
               className="inline-flex items-center justify-center gap-2 whitespace-nowrap bg-gray-900 text-white px-6 py-3 rounded-md font-medium hover:bg-gray-800 transition-colors"
@@ -48,6 +49,7 @@ export function HwalseoCta({ elderName, hwalseoSlug, shareTitle, shareUrl }: Hwa
               <Send size={18} />
               엽서 보내기
             </button>
+            */}
             <a
               href="https://www.instagram.com/samhwalin/"
               target="_blank"
@@ -84,12 +86,14 @@ export function HwalseoCta({ elderName, hwalseoSlug, shareTitle, shareUrl }: Hwa
         </div>
       </div>
 
+      {/* 엽서 기능 임시 비활성화
       <PostcardModal
         isOpen={isPostcardOpen}
         onClose={() => setIsPostcardOpen(false)}
         elderName={elderName}
         hwalseoSlug={hwalseoSlug}
       />
+      */}
     </>
   );
 }

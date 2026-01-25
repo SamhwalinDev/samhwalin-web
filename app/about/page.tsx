@@ -1,369 +1,491 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import Image from 'next/image';
-import { Container } from '@/components/layout';
+import { ArrowRight, ChevronDown } from 'lucide-react';
+import ScrollAnimationWrapper from '@/components/ui/ScrollAnimationWrapper';
 
 export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: '프로젝트 소개 | 삼활인',
   description:
-    '삼활인은 어르신들의 인생 이야기를 기록하고, 세대를 넘어 연결하는 프로젝트입니다.',
+    '삼활인은 인터뷰 대상자들의 인생 이야기를 기록하고, 세대를 넘어 연결하는 프로젝트입니다.',
 };
-
-const hwalseoSteps = [
-  {
-    icon: '🎤',
-    step: 'STEP 1',
-    title: '인터뷰',
-    description: '어르신과 1:1 깊은 대화를 나눕니다',
-  },
-  {
-    icon: '✍️',
-    step: 'STEP 2',
-    title: '기록',
-    description: '이야기를 정성껏 글로 옮깁니다',
-  },
-  {
-    icon: '📖',
-    step: 'STEP 3',
-    title: '발행',
-    description: '웹과 책자로 발행합니다',
-  },
-  {
-    icon: '💌',
-    step: 'STEP 4',
-    title: '연결',
-    description: '독자가 엽서로 마음을 전합니다',
-  },
-];
-
-const philosophy = [
-  {
-    number: '01',
-    latin: 'Memento Mori',
-    korean: '죽음을 기억하라',
-    description:
-      '죽음의 유한성을 기억할 때, 사람은 자신의 삶을 기록하려 하고, 기록을 통해 관계를 맺고, 다시 기억됩니다.',
-  },
-  {
-    number: '02',
-    latin: 'Amor Fati',
-    korean: '운명을 사랑하라',
-    description:
-      '죽음을 기억하면, 현재의 삶을 사랑할 수밖에 없습니다. 지나온 모든 순간이 소중해집니다.',
-  },
-  {
-    number: '03',
-    latin: 'Carpe Diem',
-    korean: '오늘을 살아라',
-    description:
-      '사랑, 희망, 기쁨과 같은 가치에 집중할 때 인간은 활력을 회복합니다.',
-  },
-];
-
-const team = [
-  {
-    name: '강현서',
-    role: '대표',
-    description: '인터뷰 · 기획',
-  },
-  {
-    name: '박주원',
-    role: '개발',
-    description: '디자인',
-  },
-];
 
 export default function AboutPage() {
   return (
-    <>
-      {/* 히어로 섹션 */}
-      <section
-        className="relative min-h-[90vh] flex items-center overflow-hidden"
-        style={{
-          background:
-            'linear-gradient(135deg, #111827 0%, #1f2937 50%, rgba(146,64,14,0.12) 100%)',
-        }}
-      >
-        {/* Top right orange glow */}
-        <div
-          className="absolute top-0 right-0 w-[400px] h-[400px] md:w-[500px] md:h-[500px] rounded-full -translate-y-1/2 translate-x-1/3 pointer-events-none"
-          style={{ background: 'rgba(245, 158, 11, 0.15)', filter: 'blur(100px)' }}
-        />
-        {/* Bottom left glow */}
-        <div
-          className="absolute bottom-0 left-0 w-[280px] h-[280px] md:w-[350px] md:h-[350px] rounded-full translate-y-1/2 -translate-x-1/3 pointer-events-none"
-          style={{ background: 'rgba(251, 191, 36, 0.08)', filter: 'blur(80px)' }}
-        />
-
-        <div className="relative z-10 w-full text-center px-6 py-20">
-          {/* Logo */}
-          <div className="mb-8">
-            <Image
-              src="/images/logo-alive-about.png"
-              alt="al'ive"
-              width={180}
-              height={60}
-              className="mx-auto h-12 md:h-14 w-auto"
-              priority
-            />
-          </div>
-
-          {/* Title */}
-          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white mb-6 tracking-wide font-light">
-            Arrive, Alive!{' '}
-            <span className="text-primary">no longer Alone.</span>
-          </h1>
-
-          <p className="text-base sm:text-lg md:text-xl text-white/70 mb-12 font-light leading-relaxed">
-            잊히지 않는 삶을 잇습니다.
-            <br />
-            이어지면 잊히지 않습니다.
-          </p>
-
-          {/* Divider */}
-          <div className="w-16 h-px mx-auto mb-12 bg-white/30" />
-
-          {/* Quote */}
-          <blockquote className="text-sm md:text-base text-white/40 italic max-w-xl mx-auto leading-relaxed">
-            &ldquo;Don&apos;t ask yourself what the world needs.
-            <br />
-            Ask yourself what makes you come alive, and go do that.
-            <br />
-            Because what the world needs is people who have come alive.&rdquo;
-          </blockquote>
-          <p className="text-xs text-white/25 mt-4">— Howard Thurman</p>
-
-          {/* Button */}
-          <Link
-            href="/hwalseo"
-            className="inline-block mt-12 px-8 py-4 bg-white text-foreground rounded-lg font-medium hover:bg-gray-100 transition-colors"
-          >
-            활서 읽어보기 →
-          </Link>
-        </div>
-      </section>
-
-      {/* al'ive 프로젝트 섹션 */}
-      <section className="bg-white py-20">
-        <div className="max-w-3xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <span className="inline-block px-3 py-1 bg-primary-extra-light text-primary-dark rounded-full text-sm font-medium mb-4">
-              비영리 프로젝트
+    <main className="min-h-screen">
+      
+      {/* Section 1: HOOK (Hero) - Green tint */}
+      <section className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#F5F8F5' }}>
+        <div className="max-w-5xl mx-auto px-6 text-center">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+            <span className="animate-fade-in-up opacity-0" style={{ animationDelay: '0ms' }}>
+              Arrive, Alive!
             </span>
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
-              al&apos;ive 프로젝트
-            </h2>
-            <p className="text-muted-foreground">
-              alive + arrive의 중의적 의미를 담았습니다.
-            </p>
+            <br />
+            <span className="text-primary animate-fade-in-up opacity-0" style={{ animationDelay: '200ms' }}>
+              No longer Alone.
+            </span>
+          </h1>
+          <p className="text-2xl md:text-3xl text-gray-700 mb-4 font-medium animate-fade-in-up opacity-0" style={{ animationDelay: '400ms' }}>
+            Making People Alive and Connected
+          </p>
+          <p className="text-lg text-gray-600 mb-12 max-w-4xl mx-auto leading-relaxed animate-fade-in-up opacity-0" style={{ animationDelay: '600ms' }}>
+            삼활인은 유한한 삶을 기억하며 주어진 삶을 사랑하고 매일의 활력을 되찾는 지역과 세대 간 네트워킹 문화를 만들어갑니다.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4 mb-16 animate-fade-in-up opacity-0" style={{ animationDelay: '800ms' }}>
+            <Link 
+              href="/hwalseo"
+              className="inline-flex items-center gap-2 bg-primary text-white px-8 py-4 rounded-2xl font-semibold hover:bg-primary/90 transition-all shadow-lg hover:-translate-y-0.5"
+            >
+              활서 읽기
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+            <Link 
+              href="/testype"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-semibold border-2 border-gray-300 text-gray-700 hover:bg-gray-100 transition-all shadow-lg hover:-translate-y-0.5"
+            >
+              테스형 만나기
+            </Link>
           </div>
-
-          <div className="grid md:grid-cols-2 gap-6 mb-16">
-            <div className="bg-muted rounded-2xl p-8 text-center">
-              <div className="w-12 h-12 bg-primary-extra-light rounded-xl flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">🌱</span>
-              </div>
-              <h3 className="text-xl font-semibold text-foreground mb-2">alive</h3>
-              <p className="text-muted-foreground">
-                살아있음을 기록합니다.
-                <br />
-                어르신들의 삶이 생생하게 남습니다.
-              </p>
-            </div>
-            <div className="bg-muted rounded-2xl p-8 text-center">
-              <div className="w-12 h-12 bg-primary-extra-light rounded-xl flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">✉️</span>
-              </div>
-              <h3 className="text-xl font-semibold text-foreground mb-2">arrive</h3>
-              <p className="text-muted-foreground">
-                다음 세대에게 도착합니다.
-                <br />
-                이야기가 시간을 넘어 전해집니다.
-              </p>
-            </div>
-          </div>
-
-          {/* Vision/Mission */}
-          <div className="border-t border-border pt-12">
-            <div className="grid md:grid-cols-2 gap-8">
-              <div>
-                <p className="text-sm font-medium text-primary-dark mb-2">VISION</p>
-                <p className="text-xl md:text-2xl font-medium text-foreground">
-                  우리의 이웃 어른들께
-                  <br />
-                  활력을 선물합니다.
-                </p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-primary-dark mb-2">MISSION</p>
-                <p className="text-xl md:text-2xl font-medium text-foreground">
-                  인생의 황혼에 다다른 이들의 삶을 기록하여 공동체에 기억되게
-                  합니다.
-                </p>
-              </div>
-            </div>
-          </div>
+          <ChevronDown className="w-6 h-6 text-gray-400 mx-auto animate-bounce" />
         </div>
       </section>
 
-      {/* 활서란? 섹션 */}
-      <section className="bg-primary-extra-light py-20">
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
-              활서(活書)란?{' '}
-              <span className="text-base text-muted-foreground font-normal">
-                살 활(活) + 글 서(書)
-              </span>
-            </h2>
-            <p className="text-muted-foreground">
-              어르신들의 살아있는 이야기를 담은 기록입니다.
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {hwalseoSteps.map((item) => (
-              <div
-                key={item.step}
-                className="bg-white rounded-2xl p-6 text-center shadow-sm"
+      {/* Section 2: PROBLEM (Pain Points) - Dark */}
+      <section className="py-24 bg-gray-900 text-white">
+        <div className="max-w-5xl mx-auto px-6">
+          <ScrollAnimationWrapper animation="fade" duration={1000}>
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+                왜 삼활인은 듣고 기록하려 하는가?
+              </h2>
+            </div>
+          </ScrollAnimationWrapper>
+          
+          <div className="grid md:grid-cols-2 gap-6 mb-16">
+            {[
+              { 
+                icon: '🏚️', 
+                title: '고령화와 외로움',
+                  desc: '고독사가 늘어나고 혼자 사는 분들이 증가합니다',
+                animation: 'fade-right' as const
+              },
+              { 
+                icon: '🚧', 
+                title: '세대 간 단절',
+                desc: '어른은 \'꼰대\'로 치부되고 대화의 창구가 사라졌습니다',
+                animation: 'fade-left' as const
+              },
+              { 
+                icon: '🧭', 
+                title: '멘토의 부재',
+                desc: '청년에겐 멘토가 없고 삶의 지혜를 구할 곳이 없습니다',
+                animation: 'fade-right' as const
+              },
+              { 
+                icon: '💔', 
+                title: '활력 상실',
+                  desc: '요양원과 홀로 사는 분들이 삶의 의미를 잃어갑니다',
+                animation: 'fade-left' as const
+              },
+            ].map((item, index) => (
+              <ScrollAnimationWrapper 
+                key={index}
+                animation={item.animation}
+                delay={index * 150}
+                duration={800}
               >
-                <div className="w-14 h-14 bg-primary-extra-light rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl">{item.icon}</span>
+                <div className="bg-white/5 backdrop-blur rounded-2xl p-6 border border-white/10">
+                  <div className="text-4xl mb-4">{item.icon}</div>
+                  <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
+                  <p className="text-gray-300 leading-relaxed">{item.desc}</p>
                 </div>
-                <p className="text-sm text-primary-dark font-medium mb-1">
-                  {item.step}
-                </p>
-                <h3 className="text-lg font-semibold text-foreground mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-sm text-muted-foreground">{item.description}</p>
-              </div>
+              </ScrollAnimationWrapper>
             ))}
           </div>
+          
+          <ScrollAnimationWrapper animation="fade-up" delay={600} duration={1000}>
+            <div className="text-center">
+              <p className="text-2xl font-bold text-primary">
+                따라서, 삼활인은 잊히지 않는 삶을 잇는 활력 공동체를 만들겠다고 다짐했습니다.
+              </p>
+            </div>
+          </ScrollAnimationWrapper>
         </div>
       </section>
 
-      {/* 우리의 철학 섹션 */}
-      <section className="bg-gray-900 text-white py-20">
-        <Container>
-          <div className="text-center mb-16">
-            <h2 className="text-2xl md:text-3xl font-bold text-primary mb-3">
-              우리의 철학
-            </h2>
-            <p className="text-gray-400">
-              al&apos;ive 프로젝트가 믿는 세 가지 가치
-            </p>
+      {/* Section 3: EPIPHANY (The Realization) - White */}
+      <ScrollAnimationWrapper animation="blur" duration={1200}>
+        <section className="py-24 bg-white">
+          <div className="max-w-3xl mx-auto px-6 text-center">
+            <ScrollAnimationWrapper animation="fade" delay={200} duration={800}>
+              <p className="text-primary font-medium mb-4">그런데 우리는 깨달았습니다</p>
+            </ScrollAnimationWrapper>
+            
+            <ScrollAnimationWrapper animation="fade-up" delay={400} duration={1000}>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8 leading-tight">
+                황혼에 다다른 분들의 삶 속에<br />
+                <span className="text-primary">청년들이 찾는 답</span>이<br />
+                있었습니다
+              </h2>
+            </ScrollAnimationWrapper>
+            
+            <ScrollAnimationWrapper animation="fade-up" delay={600} duration={900}>
+              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                긴 세월을 살아내며 얻은 경륜, 실패와 성공, 후회와 깨달음,<br />
+                그 모든 이야기 속에 우리가 찾던 지혜가 숨어 있었습니다.
+              </p>
+            </ScrollAnimationWrapper>
+            
+            <ScrollAnimationWrapper animation="scale" delay={800} duration={900}>
+              <div className="bg-gray-50 rounded-2xl p-8">
+                <p className="text-2xl font-bold text-gray-900">
+                  문제는 단 하나.<br />
+                  <span className="text-red-600">아무도 기록하지 않고 공유하지 않았다는 것.</span>
+                </p>
+              </div>
+            </ScrollAnimationWrapper>
           </div>
+        </section>
+      </ScrollAnimationWrapper>
 
-          <div className="max-w-4xl mx-auto space-y-0">
-            {philosophy.map((item, index) => (
-              <div key={item.latin}>
-                <div className="flex flex-col md:flex-row gap-6 md:gap-8 py-8">
-                  <div className="md:w-1/3">
-                    <p className="text-3xl font-bold text-primary mb-2">
-                      {item.number}
-                    </p>
-                    <h3 className="text-xl font-semibold text-white mb-1">
-                      {item.latin}
-                    </h3>
-                    <p className="text-primary/70">{item.korean}</p>
+      {/* Section 4: STORY (Philosophy & Journey) - Purple tint */}
+      <section className="py-24" style={{ backgroundColor: '#F8F8FB' }}>
+        <div className="max-w-5xl mx-auto px-6">
+          <ScrollAnimationWrapper animation="fade" duration={800}>
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                삼활인의 철학
+              </h2>
+              <p className="text-lg text-gray-600">
+                세 가지 가치가 하나의 흐름으로 연결됩니다
+              </p>
+            </div>
+          </ScrollAnimationWrapper>
+          
+          <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-4 mb-16">
+            {[
+              { 
+                icon: '💀', 
+                title: 'Memento Mori',
+                subtitle: '죽음을 기억하라',
+                desc: '삶의 유한함을 기억하기에 기록의 가치를 깨닫습니다' 
+              },
+              { 
+                icon: '❤️', 
+                title: 'Amor Fati',
+                subtitle: '운명을 사랑하라',
+                desc: '지나온 삶을 부정하지 않고 있는 그대로 사랑합니다' 
+              },
+              { 
+                icon: '☀️', 
+                title: 'Carpe Diem',
+                subtitle: '오늘을 충만히 살아라',
+                desc: '영원한 가치를 좇으며 매일의 활력을 되찾습니다' 
+              },
+            ].map((item, index) => (
+              <div key={index} className="flex flex-col md:flex-row items-center">
+                <ScrollAnimationWrapper animation="scale" delay={index * 200} duration={700}>
+                  <div className="bg-white rounded-3xl p-8 shadow-md max-w-xs text-center">
+                    <div className="text-5xl mb-4">{item.icon}</div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">{item.title}</h3>
+                    <p className="text-primary font-semibold mb-3">{item.subtitle}</p>
+                    <p className="text-gray-600 text-sm leading-relaxed">{item.desc}</p>
                   </div>
-                  <div className="md:w-2/3">
-                    <p className="text-gray-300 leading-relaxed">
-                      {item.description}
-                    </p>
-                  </div>
-                </div>
-                {index < philosophy.length - 1 && (
-                  <div className="h-px bg-gray-800" />
+                </ScrollAnimationWrapper>
+                {index < 2 && (
+                  <ArrowRight className="w-8 h-8 text-primary mx-4 hidden md:block rotate-0 md:rotate-0" />
+                )}
+                {index < 2 && (
+                  <ChevronDown className="w-8 h-8 text-primary my-4 md:hidden" />
                 )}
               </div>
             ))}
           </div>
-        </Container>
+        </div>
       </section>
 
-      {/* 운영팀 섹션 */}
-      <section className="bg-white py-20">
-        <div className="max-w-3xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <span className="inline-block px-3 py-1 bg-primary-extra-light text-primary-dark rounded-full text-sm font-medium mb-4">
-              운영팀
-            </span>
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
-              삼활인 三活人
-            </h2>
-            <p className="text-muted-foreground">세 가지 가치를 추구하는 사람들</p>
+      {/* Section 5: SOLUTION (어라이브 프로젝트) - White */}
+      <section className="py-24 bg-white">
+        <div className="max-w-5xl mx-auto px-6">
+          <ScrollAnimationWrapper animation="fade-up" duration={800}>
+            <div className="text-center mb-16">
+              <p className="text-primary font-medium mb-2">Our Solution</p>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                어라이브 프로젝트
+              </h2>
+              <p className="text-lg text-gray-600">
+                인터뷰 기반 생애 기록 프로젝트
+              </p>
+            </div>
+          </ScrollAnimationWrapper>
+
+          {/* Process Steps */}
+          <div className="mb-16">
+            <div className="border-l-4 border-primary pl-8 space-y-8">
+              {[
+                { 
+                  title: '인터뷰 & 라포 형성',
+                  desc: '1~2시간 대면 인터뷰, 지속적인 관계 유지'
+                },
+                { 
+                  title: '웹 활서 발행',
+                  desc: '청년을 위한 인사이트 뉴스레터로 삶의 교훈 전달'
+                },
+                { 
+                  title: '질문 교류',
+                  desc: '독자가 인터뷰 대상자에게 질문, 직접 답변'
+                },
+                { 
+                  title: '실물 & 영상 활서',
+                  desc: '제본해서 마을에 비치, 강점 기반 영상 제작'
+                },
+              ].map((step, index) => (
+                <ScrollAnimationWrapper key={index} animation="fade-up" delay={index * 200} duration={800}>
+                  <div>
+                    <div className="flex items-center gap-4 mb-2">
+                      <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold text-sm">
+                        {index + 1}
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-900">{step.title}</h3>
+                    </div>
+                    <p className="text-gray-600 ml-12">{step.desc}</p>
+                  </div>
+                </ScrollAnimationWrapper>
+              ))}
+            </div>
           </div>
 
-          <div className="flex justify-center gap-6 mb-8">
-            {team.map((member) => (
-              <div
-                key={member.name}
-                className="bg-muted rounded-2xl p-6 text-center w-48"
-              >
-                <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-3xl text-gray-400">👤</span>
+          {/* Feature Cards */}
+          <div className="grid md:grid-cols-2 gap-8">
+            <ScrollAnimationWrapper animation="fade-right" delay={0} duration={900}>
+              <div className="rounded-3xl p-8 shadow-lg border border-gray-100" style={{ backgroundColor: '#FFF8F3' }}>
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="text-3xl">📖</span>
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900">활서 (活書)</h3>
+                    <p className="text-gray-600">活(살 활) + 書(글 서)</p>
+                  </div>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                  {member.name}
-                </h3>
-                <p className="text-sm text-primary-dark font-medium mb-1">
-                  {member.role}
+                <p className="text-lg font-semibold text-primary mb-3">사람을 살리는 글</p>
+                <p className="text-gray-700 mb-6 leading-relaxed">
+                  인터뷰 대상자의 삶을 기록한 웹/영상/실물 콘텐츠입니다
                 </p>
-                <p className="text-sm text-muted-foreground">{member.description}</p>
+                <Link 
+                  href="/hwalseo"
+                  className="text-primary font-semibold hover:underline"
+                >
+                  활서 보러가기 →
+                </Link>
               </div>
+            </ScrollAnimationWrapper>
+
+            <ScrollAnimationWrapper animation="fade-left" delay={150} duration={900}>
+              <div className="rounded-3xl p-8 shadow-lg border border-gray-100 relative" style={{ backgroundColor: '#F5F8F5' }}>
+                <div className="absolute top-4 right-4 bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                  Coming Soon
+                </div>
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="text-3xl">💬</span>
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900">테스형 AI</h3>
+                  </div>
+                </div>
+                <p className="text-lg font-semibold text-green-700 mb-3">100명 인터뷰 대상자의 지혜가 담긴 AI</p>
+                <p className="text-gray-700 mb-6 leading-relaxed">
+                  실제 삶의 이야기에서 답을 찾습니다
+                </p>
+                <Link 
+                  href="/testype"
+                  className="text-green-700 font-semibold hover:underline"
+                >
+                  테스형 만나기 →
+                </Link>
+              </div>
+            </ScrollAnimationWrapper>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 6: PROOF (Goals & Values) - Green tint */}
+      <section className="py-24" style={{ backgroundColor: '#F5F8F5' }}>
+        <div className="max-w-5xl mx-auto px-6">
+          <ScrollAnimationWrapper animation="fade" duration={800}>
+            <div className="text-center mb-16">
+              <p className="text-primary font-medium mb-2">Our Goals</p>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-12">
+                우리의 목표
+              </h2>
+            </div>
+          </ScrollAnimationWrapper>
+
+          {/* Goal Numbers */}
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
+            {[
+              { number: '50명', desc: '2026년까지 기록할 인터뷰 대상자' },
+              { number: '10개', desc: '2027년까지 확장할 마을' },
+              { number: '1,000명', desc: '연결할 청년 독자' },
+            ].map((goal, index) => (
+              <ScrollAnimationWrapper key={index} animation="scale" delay={index * 200} duration={800}>
+                <div className="text-center">
+                  <div className="text-5xl md:text-6xl font-bold text-primary mb-4">
+                    {goal.number}
+                  </div>
+                  <p className="text-lg text-gray-700 font-medium">{goal.desc}</p>
+                </div>
+              </ScrollAnimationWrapper>
             ))}
           </div>
 
-          <div className="text-center">
-            <button
-              disabled
-              className="px-6 py-2 border border-gray-300 text-gray-400 rounded-lg cursor-not-allowed"
-            >
-              삼활인 더 알아보기
-            </button>
-          </div>
+          <ScrollAnimationWrapper animation="fade-up" delay={600} duration={800}>
+            {/* Core Values */}
+            <div className="flex flex-wrap justify-center gap-4">
+              {[
+                { icon: '🔗', label: 'Networking' },
+                { icon: '📝', label: 'Remembering' },
+                { icon: '📚', label: 'Archiving' },
+                { icon: '🎉', label: 'Enjoying' },
+              ].map((value, index) => (
+                <div 
+                  key={index}
+                  className="bg-white px-6 py-4 rounded-2xl shadow-sm flex items-center gap-3"
+                >
+                  <span className="text-2xl">{value.icon}</span>
+                  <span className="font-semibold text-gray-900">{value.label}</span>
+                </div>
+              ))}
+            </div>
+          </ScrollAnimationWrapper>
         </div>
       </section>
 
-      {/* CTA 섹션 */}
-      <section
-        className="relative py-20 overflow-hidden"
-        style={{
-          background:
-            'linear-gradient(135deg, #111827 0%, #1f2937 50%, rgba(146,64,14,0.12) 100%)',
-        }}
-      >
-        {/* Glow effects */}
-        <div
-          className="absolute top-0 right-0 w-[300px] h-[300px] rounded-full -translate-y-1/2 translate-x-1/3 pointer-events-none"
-          style={{ background: 'rgba(245, 158, 11, 0.1)', filter: 'blur(80px)' }}
-        />
-        <div
-          className="absolute bottom-0 left-0 w-[200px] h-[200px] rounded-full translate-y-1/2 -translate-x-1/3 pointer-events-none"
-          style={{ background: 'rgba(251, 191, 36, 0.06)', filter: 'blur(60px)' }}
-        />
+      {/* Section 7: VISION (Future Roadmap) - White */}
+      <section className="py-24 bg-white">
+        <div className="max-w-5xl mx-auto px-6">
+          <ScrollAnimationWrapper animation="fade-up" duration={800}>
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-12">
+                우리가 꿈꾸는 미래
+              </h2>
+            </div>
+          </ScrollAnimationWrapper>
 
-        <div className="relative z-10 max-w-xl mx-auto px-6 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-            함께해 주세요
-          </h2>
-          <p className="text-gray-400 mb-8">
-            어르신들의 이야기를 읽어보세요.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/hwalseo"
-              className="px-8 py-4 bg-white text-foreground rounded-lg font-medium hover:bg-gray-100 transition-colors"
-            >
-              활서 읽으러 가기
-            </Link>
+          {/* Timeline */}
+          <div className="relative">
+            {/* Horizontal line for desktop */}
+            <div className="hidden md:block absolute top-8 left-0 right-0 h-1 bg-gray-200"></div>
+            
+            <div className="grid md:grid-cols-4 gap-8">
+              {[
+                { 
+                  year: '현재',
+                  desc: '강화도 인터뷰 대상자 기록 시작',
+                  active: true
+                },
+                { 
+                  year: '2026',
+                  desc: '인터뷰 대상자 50명 기록\n테스형 AI 베타 출시',
+                  active: false
+                },
+                { 
+                  year: '2027',
+                  desc: '전국 10개 마을로 확장',
+                  active: false
+                },
+                { 
+                  year: '2030',
+                  desc: '모든 인터뷰 대상자가 기억되는 세상',
+                  active: false
+                },
+              ].map((milestone, index) => (
+                <ScrollAnimationWrapper 
+                  key={index} 
+                  animation="fade-up" 
+                  delay={index * 250} 
+                  duration={900}
+                >
+                  <div className="text-center relative">
+                    <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center font-bold text-lg relative z-10 ${
+                      milestone.active 
+                        ? 'bg-primary text-white' 
+                        : 'bg-gray-200 text-gray-600'
+                    }`}>
+                      📍
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">
+                      {milestone.year}
+                    </h3>
+                    <p className="text-gray-600 whitespace-pre-line leading-relaxed">
+                      {milestone.desc}
+                    </p>
+                  </div>
+                </ScrollAnimationWrapper>
+              ))}
+            </div>
           </div>
+
+          <ScrollAnimationWrapper animation="fade-up" delay={1000} duration={1000}>
+            <div className="text-center mt-16">
+              <p className="text-2xl font-bold text-gray-900 mb-4">
+                한 세대의 이야기가 다음 세대의 지혜가 되는 세상
+              </p>
+              <p className="text-xl text-primary font-semibold">
+                Making People Alive and Connected
+              </p>
+            </div>
+          </ScrollAnimationWrapper>
         </div>
       </section>
-    </>
+
+      {/* Section 8: OFFER (CTA - Value Ladder) - Primary Dark */}
+      <ScrollAnimationWrapper animation="blur" duration={1000}>
+        <section className="py-24 bg-gray-900 text-white">
+          <div className="max-w-4xl mx-auto px-6 text-center">
+            <ScrollAnimationWrapper animation="fade-up" delay={200} duration={800}>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+                함께 활력을 얻어보시겠습니까?
+              </h2>
+            </ScrollAnimationWrapper>
+            
+            <ScrollAnimationWrapper animation="fade" delay={400} duration={800}>
+              <p className="text-2xl text-gray-300 mb-12">
+                Arrive, Alive! No longer Alone.
+              </p>
+            </ScrollAnimationWrapper>
+
+            <ScrollAnimationWrapper animation="fade-up" delay={600} duration={900}>
+              <div className="flex flex-col md:flex-row justify-center gap-4 mb-12">
+                <Link 
+                  href="/hwalseo"
+                  className="bg-white text-gray-900 px-8 py-4 rounded-2xl font-semibold hover:bg-gray-100 transition-all hover:-translate-y-0.5 shadow-lg"
+                >
+                  활서 읽기
+                </Link>
+                <Link 
+                  href="#"
+                  className="border-2 border-white text-white px-8 py-4 rounded-2xl font-semibold hover:bg-white hover:text-gray-900 transition-all !text-white"
+                >
+                  뉴스레터 구독
+                </Link>
+                <Link 
+                  href="/support"
+                  className="border-2 border-white text-white px-8 py-4 rounded-2xl font-semibold hover:bg-white hover:text-gray-900 transition-all !text-white"
+                >
+                  후원하기
+                </Link>
+              </div>
+            </ScrollAnimationWrapper>
+
+            <ScrollAnimationWrapper animation="fade" delay={800} duration={700}>
+              <p className="text-gray-400 text-sm">
+                협업 문의: info@samhwalin.org
+              </p>
+            </ScrollAnimationWrapper>
+          </div>
+        </section>
+      </ScrollAnimationWrapper>
+
+    </main>
   );
 }

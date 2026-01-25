@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import Image from 'next/image';
+import { ProxiedImage } from '@/components/ui';
+import { formatDate, formatTitleParts } from '@/lib/utils';
 import type { HwalseoCard as HwalseoCardType } from '@/types';
 
 interface HwalseoCardProps {
@@ -7,59 +8,63 @@ interface HwalseoCardProps {
 }
 
 export function HwalseoCard({ hwalseo }: HwalseoCardProps) {
-  const formattedDate = new Date(hwalseo.publishedAt).toLocaleDateString('ko-KR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-
   return (
-    <Link href={`/hwalseo/${hwalseo.slug}`} className="group block h-full">
-      <article className="h-full flex flex-col bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow">
-        {/* 이미지 */}
-        <div className="relative aspect-[4/3] overflow-hidden">
-          <Image
-            src={hwalseo.coverImage || '/images/placeholder.jpg'}
+    <Link
+      href={`/hwalseo/${hwalseo.slug}`}
+      className="block bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 group"
+    >
+      {/* Cover Image */}
+      <div className="relative h-48 bg-gray-100 overflow-hidden">
+        {hwalseo.coverImage ? (
+          <ProxiedImage
+            src={hwalseo.coverImage}
             alt={hwalseo.title}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            sizes="(max-width: 768px) 100vw, 33vw"
             loading="lazy"
           />
-        </div>
-
-        {/* 콘텐츠 */}
-        <div className="flex flex-col flex-1 p-5">
-          {/* 테마 */}
-          <span className="text-small font-medium text-primary mb-2">
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
+            <span className="text-5xl opacity-50">📜</span>
+          </div>
+        )}
+      </div>
+      
+      {/* Card Content */}
+      <div className="p-6">
+        {/* Theme Tag */}
+        {hwalseo.theme && (
+          <span className="inline-block text-primary text-sm font-semibold mb-2">
             {hwalseo.theme}
           </span>
-
-          {/* 제목 - 고정 높이, 2줄 제한 */}
-          <h3 className="text-h4 text-foreground mb-2 h-[3.5rem] overflow-hidden">
-            {hwalseo.title.split(/\/\/|\\\\/).slice(0, 2).map((line, i) => (
-              <span key={`${hwalseo.id}-title-${i}`} className="block truncate">
-                {line.trim()}
-              </span>
-            ))}
-          </h3>
-
-          {/* 어르신 이름 */}
-          <p className="text-body-sm text-gray-700 mb-1">
-            {hwalseo.elderName}
-          </p>
-
-          {/* 요약 - 고정 높이, 2줄 제한 */}
-          <p className="text-body-sm text-muted-foreground line-clamp-2 min-h-[2.5rem]">
+        )}
+        
+        {/* Title */}
+        <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+          {formatTitleParts(hwalseo.title).map((part, index) => (
+            <span key={index}>
+              {index > 0 && <br />}
+              {part}
+            </span>
+          ))}
+        </h3>
+        
+        {/* Excerpt */}
+        {hwalseo.excerpt && (
+          <p className="text-gray-500 text-sm mb-4 line-clamp-2">
             {hwalseo.excerpt}
           </p>
-
-          {/* 날짜 - 하단 고정 */}
-          <p className="text-small text-gray-400 mt-auto pt-3">
-            {formattedDate}
-          </p>
+        )}
+        
+        {/* Meta */}
+        <div className="flex items-center justify-between text-sm text-gray-400">
+          <span className="font-medium text-gray-600">
+            {hwalseo.elderName}
+          </span>
+          <span>{formatDate(hwalseo.publishedAt)}</span>
         </div>
-      </article>
+      </div>
     </Link>
   );
 }
