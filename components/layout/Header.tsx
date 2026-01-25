@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X, Search } from 'lucide-react';
 import { Container } from './Container';
-import { HeaderSearch } from './HeaderSearch';
 import { cn } from '@/lib/utils';
 import { NAV_LINKS } from '@/types';
 
@@ -58,11 +57,6 @@ export function Header({ variant = 'default' }: HeaderProps) {
           {/* Search & Mobile Menu */}
           {variant === 'default' && (
             <div className="flex items-center gap-2">
-              {/* Search Input (Desktop) */}
-              <div className="hidden md:block">
-                <HeaderSearch />
-              </div>
-
               {/* Search Icon (Mobile - links to search page) */}
               <Link 
                 href="/search" 
