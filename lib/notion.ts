@@ -1070,12 +1070,10 @@ export async function getElderCount(publishedOnly: boolean = true): Promise<numb
     
     console.log(`Elder count response (publishedOnly=${publishedOnly}):`, {
       total: response.results.length,
-      results: response.results
-        .filter((page): page is PageObjectResponse => 'properties' in page)
-        .map(page => ({
-          id: page.id,
-          status: page.properties?.Status?.select?.name
-        }))
+      results: response.results.map((page: any) => ({
+        id: page.id,
+        status: page.properties?.Status?.select?.name
+      }))
     });
     
     return response.results.length;
