@@ -322,7 +322,7 @@ export async function getHwalseoBySlug(slug: string): Promise<Hwalseo | null> {
       toReader: page.properties.ToReader?.rich_text?.[0]?.plain_text || undefined,
       
       // 추가 메타데이터
-      region: page.properties.Region?.rich_text?.[0]?.plain_text || elderData?.region,
+      region: page.properties.Region?.rich_text?.[0]?.plain_text || undefined,
       readingTime: page.properties.ReadingTime?.number || undefined,
       likes: page.properties.Likes?.number || 0,
     };
