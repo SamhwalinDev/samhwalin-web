@@ -61,8 +61,7 @@ const config: Config = {
       // Typography
       fontFamily: {
         sans: [
-          'Pretendard Variable',
-          'Pretendard',
+          'NanumSquareRound',
           '-apple-system',
           'BlinkMacSystemFont',
           'system-ui',
