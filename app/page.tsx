@@ -30,22 +30,31 @@ export default async function HomePage() {
             {/* Left: Text */}
             <div>
               <ScrollAnimationWrapper animation="fade-up" delay={0} duration={800}>
-                <span className="inline-block px-4 py-2 bg-orange-100 text-orange-600 text-sm font-medium rounded-full mb-6">
-                  새 활서가 도착했어요
-                </span>
+                <div className="space-y-4">
+                  {/* English - Sub headline (small, one line) */}
+                  <p className="text-lg sm:text-xl md:text-2xl font-semibold">
+                    <span className="bg-gradient-to-r from-gray-700 via-orange-400 to-orange-500 bg-clip-text text-transparent">
+                      Arrive, Alive! No longer Alone.
+                    </span>
+                  </p>
+                  
+                  {/* Korean - Main headline (large) */}
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+                    잊히지 않는 삶을 잇습니다
+                  </h1>
+                  
+                  {/* Description */}
+                  <p className="text-base sm:text-lg text-gray-600 max-w-lg leading-relaxed">
+                    삼활인은 인터뷰 대상자들의 삶을 기록하고, 세대를 연결하며,
+                    함께하는 기쁨을 나누는 사회적 기업입니다.
+                  </p>
+                </div>
               </ScrollAnimationWrapper>
               
               <ScrollAnimationWrapper animation="fade-up" delay={200} duration={800}>
-                <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
-                  잊히지 않는 삶을 잇습니다
-                </h1>
-              </ScrollAnimationWrapper>
-              
-              <ScrollAnimationWrapper animation="fade-up" delay={400} duration={800}>
-                <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                  삼활인은 인터뷰 대상자들의 삶을 기록하고, 세대를 연결하며,<br />
-                  함께하는 기쁨을 나누는 사회적 기업입니다.
-                </p>
+                <span className="inline-block px-4 py-2 bg-orange-100 text-orange-600 text-sm font-medium rounded-full mb-6 mt-6">
+                  새 활서가 도착했어요
+                </span>
               </ScrollAnimationWrapper>
               
               <ScrollAnimationWrapper animation="fade-up" delay={600} duration={800}>
