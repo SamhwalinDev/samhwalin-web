@@ -70,6 +70,7 @@ export interface HwalseoCard {
   id: string;
   slug: string;
   title: string;
+  subtitle?: string;        // 부제목
   elderName: string;
   elderId?: string;
   theme: string;

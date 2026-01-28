@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { Header, Footer } from '@/components/layout';
 import JsonLd from '@/components/JsonLd';
 import '@/styles/globals.css';
@@ -65,6 +66,7 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
         <Footer />
       </body>
+      <GoogleAnalytics gaId="G-C1QYFW0EDN" />
     </html>
   );
 }

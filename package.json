@@ -12,6 +12,7 @@
     "test:notion": "node scripts/test-notion.js"
   },
   "dependencies": {
+    "@next/third-parties": "^16.1.6",
     "@notionhq/client": "^2.2.14",
     "@sentry/nextjs": "^8.55.0",
     "clsx": "^2.1.0",

@@ -51,6 +51,13 @@ export function Header({ variant = 'default' }: HeaderProps) {
                   {link.href === '/search' && <Search size={16} className="inline" />}
                 </Link>
               ))}
+              <Link
+                href="/support"
+                className="ml-4 px-4 py-2 bg-orange-400 hover:bg-orange-500 text-white rounded-full font-semibold text-sm transition-all duration-200 flex items-center gap-1"
+              >
+                <span>💛</span>
+                <span>후원하기</span>
+              </Link>
             </nav>
           )}
 
@@ -98,6 +105,13 @@ export function Header({ variant = 'default' }: HeaderProps) {
                 {link.label}
               </Link>
             ))}
+            <Link
+              href="/support"
+              className="block w-full px-4 py-3 bg-orange-400 hover:bg-orange-500 text-white rounded-xl font-semibold text-center transition-all duration-200 mt-4"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              💛 후원하기
+            </Link>
           </nav>
         )}
       </Container>

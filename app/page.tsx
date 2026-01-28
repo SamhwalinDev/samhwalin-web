@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Container, Section } from '@/components/layout';
 import { BeforeIDieBanner, MissionSection } from '@/components/features';
 import DarkSubscribeSection from '@/components/features/DarkSubscribeSection';
+import DonationSection from '@/components/features/DonationSection';
 import { ProxiedImage } from '@/components/ui';
 import ScrollAnimationWrapper from '@/components/ui/ScrollAnimationWrapper';
 import { getHwalseoList, getElderList, getEldersWithQuotes } from '@/lib/notion';
@@ -370,6 +371,9 @@ export default async function HomePage() {
           </div>
         </section>
       </ScrollAnimationWrapper>
+
+      {/* ========== DONATION SECTION ========== */}
+      <DonationSection />
 
       {/* ========== EMAIL SUBSCRIBE ========== */}
       <DarkSubscribeSection source="홈페이지" />

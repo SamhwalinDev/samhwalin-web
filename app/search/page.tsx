@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import ScrollAnimationWrapper from '@/components/ui/ScrollAnimationWrapper';
 import DarkSubscribeSection from '@/components/features/DarkSubscribeSection';
+import { ProxiedImage } from '@/components/ui';
+import { formatDate, formatTitleParts } from '@/lib/utils';
 
 // 고민 태그 목록
 const WORRY_TAGS = [
@@ -187,7 +189,7 @@ export default function SearchPage() {
               <p className="text-gray-500">활서를 불러오는 중...</p>
             </div>
           ) : filteredHwalseos.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {filteredHwalseos.map((hwalseo: any, index: number) => (
                 <ScrollAnimationWrapper 
                   key={hwalseo.id} 
@@ -197,20 +199,65 @@ export default function SearchPage() {
                 >
                   <Link 
                     href={`/hwalseo/${hwalseo.slug}`}
-                    className="block bg-white rounded-2xl p-6 shadow-sm hover:shadow-md 
-                             hover:-translate-y-1 transition-all duration-300"
+                    className="block bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl 
+                             transition-all duration-300 hover:-translate-y-1 border border-gray-100 group"
                   >
-                    <h3 className="font-bold text-lg text-gray-900 mb-2 line-clamp-2">
-                      {hwalseo.title}
-                    </h3>
-                    {hwalseo.excerpt && (
-                      <p className="text-gray-500 text-sm mb-4 line-clamp-2">
-                        {hwalseo.excerpt}
+                    {/* Cover Image */}
+                    <div className="relative h-48 bg-gray-100 overflow-hidden">
+                      {hwalseo.coverImage ? (
+                        <ProxiedImage
+                          src={hwalseo.coverImage}
+                          alt={hwalseo.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-50">
+                          <span className="text-5xl opacity-50">📜</span>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Card Content */}
+                    <div className="p-6">
+                      {/* Theme Tag */}
+                      {hwalseo.theme && (
+                        <span className="inline-block text-primary text-sm font-semibold mb-2">
+                          {hwalseo.theme}
+                        </span>
+                      )}
+                      
+                      {/* Title with // processing */}
+                      <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-primary transition-colors leading-snug">
+                        {formatTitleParts(hwalseo.title).map((part, idx) => (
+                          <span key={idx}>
+                            {idx > 0 && <br />}
+                            {part}
+                          </span>
+                        ))}
+                      </h3>
+                      
+                      {/* Subtitle */}
+                      {hwalseo.subtitle && (
+                        <p className="text-sm text-gray-500 mb-3 line-clamp-2">
+                          "{hwalseo.subtitle}"
+                        </p>
+                      )}
+                      
+                      {/* Excerpt */}
+                      {hwalseo.excerpt && !hwalseo.subtitle && (
+                        <p className="text-gray-500 text-sm mb-3 line-clamp-2">
+                          {hwalseo.excerpt}
+                        </p>
+                      )}
+                      
+                      {/* Elder Name */}
+                      <p className="text-orange-500 text-sm font-medium">
+                        {hwalseo.elderName}님의 이야기
                       </p>
-                    )}
-                    <p className="text-orange-600 text-sm font-medium">
-                      {hwalseo.elderName}님의 이야기
-                    </p>
+                    </div>
                   </Link>
                 </ScrollAnimationWrapper>
               ))}

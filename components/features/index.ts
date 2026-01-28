@@ -1,6 +1,7 @@
 export { default as AboutCTA } from './AboutCTA';
 export { default as BeforeIDieBanner } from './BeforeIDieBanner';
 export { default as DarkSubscribeSection } from './DarkSubscribeSection';
+export { default as DonationSection } from './DonationSection';
 export { ElderCard } from './ElderCard';
 export { ElderFilter } from './ElderFilter';
 export { EmailSubscribeForm } from './EmailSubscribeForm';
