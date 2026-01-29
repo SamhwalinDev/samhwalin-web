@@ -100,7 +100,7 @@ function pageToHwalseoCard(
     subtitle: page.properties.Subtitle?.rich_text?.[0]?.plain_text || undefined,
     elderName: elderData?.name || '',
     elderId,
-    theme: page.properties.Theme?.select?.name || '',
+    theme: page.properties.Theme?.multi_select?.map((t: { name: string }) => t.name) || [],
     excerpt: page.properties.Excerpt?.rich_text?.[0]?.plain_text || '',
     coverImage: getProxiedImageUrl(page.cover?.external?.url || page.cover?.file?.url || ''),
     publishedAt: page.properties.PublishedAt?.date?.start || '',
@@ -317,7 +317,7 @@ export async function getHwalseoBySlug(slug: string): Promise<Hwalseo | null> {
       subtitle: page.properties.Subtitle?.rich_text?.[0]?.plain_text || undefined,
       elderName: elderData?.name || '',
       elderId,
-      theme: page.properties.Theme?.select?.name || '',
+      theme: page.properties.Theme?.multi_select?.map((t: { name: string }) => t.name) || [],
       excerpt: page.properties.Excerpt?.rich_text?.[0]?.plain_text || '',
       content: content,
       coverImage: getProxiedImageUrl(coverImageUrl),
@@ -585,8 +585,8 @@ export async function getHwalseoThemes(): Promise<string[]> {
 
     const themeProperty = response.properties['Theme'];
 
-    if (themeProperty && themeProperty.type === 'select') {
-      const options = themeProperty.select.options;
+    if (themeProperty && themeProperty.type === 'multi_select') {
+      const options = themeProperty.multi_select.options;
       return options.map((option: { name: string }) => option.name);
     }
 
@@ -1115,7 +1115,7 @@ export async function getPreviewHwalseoBySlug(slug: string): Promise<Hwalseo | n
       subtitle: page.properties.Subtitle?.rich_text?.[0]?.plain_text || undefined,
       elderName: elderData?.name || '',
       elderId,
-      theme: page.properties.Theme?.select?.name || '',
+      theme: page.properties.Theme?.multi_select?.map((t: { name: string }) => t.name) || [],
       excerpt: page.properties.Excerpt?.rich_text?.[0]?.plain_text || '',
       content: content,
       coverImage: getProxiedImageUrl(coverImageUrl),

@@ -34,12 +34,12 @@ export function HwalseoCard({ hwalseo }: HwalseoCardProps) {
       {/* Card Content */}
       <div className="p-6">
         {/* Theme Tag */}
-        {hwalseo.theme && (
+        {hwalseo.theme && hwalseo.theme.length > 0 && (
           <span className="inline-block text-primary text-sm font-semibold mb-2">
-            {hwalseo.theme}
+            {hwalseo.theme.join(' · ')}
           </span>
         )}
-        
+
         {/* Title */}
         <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-primary transition-colors">
           {formatTitleParts(hwalseo.title).map((part, index) => (

@@ -68,7 +68,7 @@ export function HwalseoFilter({ hwalseoList, themes }: HwalseoFilterProps) {
         item.excerpt.toLowerCase().includes(searchLower);
 
       // 테마 필터
-      const matchesTheme = !selectedTheme || item.theme === selectedTheme;
+      const matchesTheme = !selectedTheme || item.theme.includes(selectedTheme);
 
       return matchesSearch && matchesTheme;
     });

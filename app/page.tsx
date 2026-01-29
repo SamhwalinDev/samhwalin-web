@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Container, Section } from '@/components/layout';
 import { BeforeIDieBanner, MissionSection } from '@/components/features';
 import DarkSubscribeSection from '@/components/features/DarkSubscribeSection';
-import DonationSection from '@/components/features/DonationSection';
+// import DonationSection from '@/components/features/DonationSection'; // 후원 기능 임시 비활성화
 import { ProxiedImage } from '@/components/ui';
 import ScrollAnimationWrapper from '@/components/ui/ScrollAnimationWrapper';
 import { getHwalseoList, getElderList, getEldersWithQuotes } from '@/lib/notion';
@@ -41,13 +41,22 @@ export default async function HomePage() {
                   
                   {/* Korean - Main headline (large) */}
                   <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                    잊히지 않는 삶을 잇습니다
+                    {'잊히지 않는 삶을//잇습니다'.split('//').map((line, i) => (
+                      <span key={i}>
+                        {line}
+                        {i < '잊히지 않는 삶을//잇습니다'.split('//').length - 1 && <br />}
+                      </span>
+                    ))}
                   </h1>
-                  
+
                   {/* Description */}
                   <p className="text-base sm:text-lg text-gray-600 max-w-lg leading-relaxed">
-                    삼활인은 인터뷰 대상자들의 삶을 기록하고, 세대를 연결하며,
-                    함께하는 기쁨을 나누는 사회적 기업입니다.
+                    {'삼활인은 인터뷰 대상자들의 삶을 기록하고, 세대를 연결하며,//함께하는 기쁨을 나누는 사회적 기업입니다.'.split('//').map((line, i) => (
+                      <span key={i}>
+                        {line}
+                        {i < '삼활인은 인터뷰 대상자들의 삶을 기록하고, 세대를 연결하며,//함께하는 기쁨을 나누는 사회적 기업입니다.'.split('//').length - 1 && <br />}
+                      </span>
+                    ))}
                   </p>
                 </div>
               </ScrollAnimationWrapper>
@@ -248,7 +257,7 @@ export default async function HomePage() {
                     )}
                   </div>
                   <div className="p-6">
-                    <span className="text-primary text-sm font-semibold">{hwalseo.theme || '활서'}</span>
+                    <span className="text-primary text-sm font-semibold">{hwalseo.theme && hwalseo.theme.length > 0 ? hwalseo.theme.join(' · ') : '활서'}</span>
                     <h3 className="text-lg font-bold text-gray-900 mt-2 mb-3 line-clamp-2 group-hover:text-primary transition-colors">
                       {formatTitleParts(hwalseo.title).map((part, index) => (
                         <span key={index}>
@@ -373,7 +382,9 @@ export default async function HomePage() {
       </ScrollAnimationWrapper>
 
       {/* ========== DONATION SECTION ========== */}
+      {/* 후원 기능 임시 비활성화
       <DonationSection />
+      */}
 
       {/* ========== EMAIL SUBSCRIBE ========== */}
       <DarkSubscribeSection source="홈페이지" />

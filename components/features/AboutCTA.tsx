@@ -28,18 +28,20 @@ export default function AboutCTA() {
             </Link>
             <button
               onClick={() => setIsSubscribeOpen(true)}
-              className="border-2 border-white text-white px-6 md:px-8 py-3 md:py-4 rounded-xl md:rounded-2xl font-semibold 
+              className="border-2 border-white text-white px-6 md:px-8 py-3 md:py-4 rounded-xl md:rounded-2xl font-semibold
                        hover:bg-white hover:text-gray-900 transition-all"
             >
               뉴스레터 구독
             </button>
+            {/* 후원 기능 임시 비활성화
             <Link
               href="/support"
-              className="border-2 border-white !text-white px-6 md:px-8 py-3 md:py-4 rounded-xl md:rounded-2xl font-semibold 
+              className="border-2 border-white !text-white px-6 md:px-8 py-3 md:py-4 rounded-xl md:rounded-2xl font-semibold
                        hover:bg-white hover:text-gray-900 transition-all"
             >
               후원하기
             </Link>
+            */}
           </div>
           
           <p className="text-gray-400 text-sm">

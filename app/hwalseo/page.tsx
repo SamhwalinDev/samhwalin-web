@@ -75,7 +75,7 @@ export default async function HwalseoListPage() {
                     </div>
                     <div className="p-6">
                       <span className="text-primary text-sm font-semibold">
-                        {hwalseo.theme || '활서'}
+                        {hwalseo.theme && hwalseo.theme.length > 0 ? hwalseo.theme.join(' · ') : '활서'}
                       </span>
                       <h3 className="text-lg font-bold text-gray-900 mt-2 mb-3 line-clamp-2 group-hover:text-primary transition-colors">
                         {formatTitleParts(hwalseo.title).map((part, index) => (

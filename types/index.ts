@@ -42,7 +42,7 @@ export interface Hwalseo {
   elderName: string;        // 어르신 이름 (레거시, elderId 사용 권장)
   elderId?: string;         // 어르신 DB 참조
   elder?: Elder;            // 어르신 데이터 (상세 조회 시)
-  theme: string;            // 테마 (예: 전쟁의 기억, 인생의 지혜)
+  theme: string[];          // 테마 (예: ['전쟁의 기억', '인생의 지혜'])
   excerpt: string;          // 요약
   content: string;          // 본문 (Markdown 또는 HTML)
   coverImage: string;       // 대표 이미지 URL
@@ -73,7 +73,7 @@ export interface HwalseoCard {
   subtitle?: string;        // 부제목
   elderName: string;
   elderId?: string;
-  theme: string;
+  theme: string[];
   excerpt: string;
   coverImage: string;
   publishedAt: string;
