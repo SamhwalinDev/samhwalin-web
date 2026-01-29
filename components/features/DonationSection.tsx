@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Heart, Coffee, Utensils, BookOpen, Camera, Video } from 'lucide-react';
+import { Heart, Coffee, Utensils, Mic, Camera, BookOpen } from 'lucide-react';
 
 interface Stats {
   elderCount: number;
@@ -9,11 +9,11 @@ interface Stats {
 }
 
 const donationAmounts = [
-  { amount: 5000, label: '인터뷰 교통비', icon: Coffee },
-  { amount: 10000, label: '따뜻한 식사 한 끼', icon: Utensils },
-  { amount: 30000, label: '활서 1편 제작', icon: BookOpen },
-  { amount: 50000, label: '사진 한 장의 기록', icon: Camera },
-  { amount: 100000, label: '영상으로 남기는 삶', icon: Video },
+  { amount: 5000, label: '어르신을 만나러\n갑니다', icon: Coffee },
+  { amount: 10000, label: '따뜻한 식사를\n함께합니다', icon: Utensils },
+  { amount: 30000, label: '한 분의 인터뷰가\n시작됩니다', icon: Mic },
+  { amount: 50000, label: '평생의 증명사진을\n선물합니다', icon: Camera },
+  { amount: 100000, label: '실물 활서 한 권이\n만들어집니다', icon: BookOpen },
 ];
 
 console.log('donationAmounts:', donationAmounts);
@@ -102,7 +102,7 @@ export default function DonationSection() {
                   setSelectedAmount(amount);
                   setCustomAmount('');
                 }}
-                className={`p-3 md:p-4 rounded-xl border-2 transition-all duration-200 ${
+                className={`p-3 md:p-4 rounded-xl border-2 transition-all duration-200 min-h-[120px] flex flex-col items-center justify-center ${
                   selectedAmount === amount
                     ? 'border-orange-400 bg-orange-50'
                     : 'border-gray-200 hover:border-orange-300'
@@ -116,7 +116,7 @@ export default function DonationSection() {
                 }`}>
                   {amount.toLocaleString()}원
                 </p>
-                <p className="text-xs text-gray-500 mt-1 line-clamp-1">{label}</p>
+                <p className="text-xs text-gray-500 mt-1 leading-tight whitespace-pre-line">{label}</p>
               </button>
             ))}
           </div>

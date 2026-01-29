@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { useEffect } from 'react';
-import { Coffee, Utensils, BookOpen, Camera, Video } from 'lucide-react';
 import ScrollAnimationWrapper from '@/components/ui/ScrollAnimationWrapper';
 
 export default function SupportPage() {
@@ -66,7 +65,7 @@ export default function SupportPage() {
                 <span className="text-4xl mb-4 block">🚗</span>
                 <h3 className="font-bold text-lg mb-2">인터뷰 운영</h3>
                 <p className="text-gray-600 text-sm">
-                  강화도 방문 교통비 및<br/>
+                  어르신 방문 교통비 및<br/>
                   인터뷰 운영 비용
                 </p>
               </div>
@@ -116,54 +115,87 @@ export default function SupportPage() {
         </div>
       </section>
 
-      {/* Suggested Amounts */}
+      {/* Impact Section */}
       <section className="py-16 bg-white">
-        <div className="max-w-2xl mx-auto px-6">
+        <div className="max-w-2xl mx-auto px-4">
           <ScrollAnimationWrapper animation="fade" duration={800}>
-            <h2 className="text-2xl font-bold text-center mb-8">
+            <h2 className="text-2xl font-bold text-center text-gray-900 mb-10">
               이만큼이면 이런 일이 가능해요
             </h2>
           </ScrollAnimationWrapper>
-          
+
           <div className="space-y-4">
-            {[
-              { amount: '5,000원', description: '인터뷰 교통비', icon: Coffee, color: 'orange' },
-              { amount: '10,000원', description: '따뜻한 식사 한 끼', icon: Utensils, color: 'green' },
-              { amount: '30,000원', description: '활서 1편 제작', icon: BookOpen, color: 'blue' },
-              { amount: '50,000원', description: '사진 한 장의 기록', icon: Camera, color: 'purple' },
-              { amount: '100,000원', description: '영상으로 남기는 삶', icon: Video, color: 'pink' },
-            ].map((item, index) => {
-              const Icon = item.icon;
-              const bgColorMap: Record<string, string> = {
-                orange: 'bg-orange-50',
-                green: 'bg-green-50',
-                blue: 'bg-blue-50',
-                purple: 'bg-purple-50',
-                pink: 'bg-pink-50',
-              };
-              const textColorMap: Record<string, string> = {
-                orange: 'text-orange-600',
-                green: 'text-green-600',
-                blue: 'text-blue-600',
-                purple: 'text-purple-600',
-                pink: 'text-pink-600',
-              };
-              
-              return (
-                <ScrollAnimationWrapper key={item.amount} animation="fade-left" delay={index * 100} duration={600}>
-                  <div className={`flex items-center gap-4 p-4 ${bgColorMap[item.color]} rounded-2xl`}>
-                    <div className="flex-shrink-0">
-                      <Icon className={`w-8 h-8 ${textColorMap[item.color]}`} />
-                    </div>
-                    <div>
-                      <span className={`font-bold ${textColorMap[item.color]}`}>{item.amount}</span>
-                      <span className="text-gray-600 ml-2">{item.description}</span>
-                    </div>
-                  </div>
-                </ScrollAnimationWrapper>
-              );
-            })}
+            {/* 5,000원 */}
+            <ScrollAnimationWrapper animation="fade-left" delay={0} duration={600}>
+              <div className="flex items-center gap-4 p-4 bg-orange-50 rounded-xl">
+                <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-xl">
+                  ☕
+                </div>
+                <div>
+                  <span className="font-bold text-orange-500">5,000원</span>
+                  <p className="text-gray-700">어르신을 만나러 갑니다</p>
+                </div>
+              </div>
+            </ScrollAnimationWrapper>
+
+            {/* 10,000원 */}
+            <ScrollAnimationWrapper animation="fade-left" delay={100} duration={600}>
+              <div className="flex items-center gap-4 p-4 bg-orange-50 rounded-xl">
+                <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-xl">
+                  🍚
+                </div>
+                <div>
+                  <span className="font-bold text-orange-500">10,000원</span>
+                  <p className="text-gray-700"><span className="text-orange-400">+</span> 따뜻한 식사를 함께합니다</p>
+                </div>
+              </div>
+            </ScrollAnimationWrapper>
+
+            {/* 30,000원 */}
+            <ScrollAnimationWrapper animation="fade-left" delay={200} duration={600}>
+              <div className="flex items-center gap-4 p-4 bg-orange-50 rounded-xl">
+                <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-xl">
+                  🎤
+                </div>
+                <div>
+                  <span className="font-bold text-orange-500">30,000원</span>
+                  <p className="text-gray-700"><span className="text-orange-400">+</span> 한 분의 인터뷰가 시작됩니다</p>
+                </div>
+              </div>
+            </ScrollAnimationWrapper>
+
+            {/* 50,000원 */}
+            <ScrollAnimationWrapper animation="fade-left" delay={300} duration={600}>
+              <div className="flex items-center gap-4 p-4 bg-orange-50 rounded-xl">
+                <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-xl">
+                  📸
+                </div>
+                <div>
+                  <span className="font-bold text-orange-500">50,000원</span>
+                  <p className="text-gray-700"><span className="text-orange-400">+</span> 평생의 증명사진을 선물합니다</p>
+                </div>
+              </div>
+            </ScrollAnimationWrapper>
+
+            {/* 100,000원 */}
+            <ScrollAnimationWrapper animation="fade-left" delay={400} duration={600}>
+              <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl border-2 border-orange-200">
+                <div className="w-12 h-12 bg-orange-200 rounded-full flex items-center justify-center text-xl">
+                  📚
+                </div>
+                <div>
+                  <span className="font-bold text-orange-600">100,000원</span>
+                  <p className="text-gray-700"><span className="text-orange-400">+</span> 실물 활서 한 권이 만들어집니다</p>
+                </div>
+              </div>
+            </ScrollAnimationWrapper>
           </div>
+
+          <ScrollAnimationWrapper animation="fade-up" delay={500} duration={600}>
+            <p className="text-center text-gray-500 text-sm mt-8">
+              당신의 후원이 한 분의 삶을 영원히 만듭니다
+            </p>
+          </ScrollAnimationWrapper>
         </div>
       </section>
 
@@ -437,7 +469,7 @@ export default function SupportPage() {
               <div className="space-y-4">
                 <div className="flex items-center justify-center gap-3">
                   <span className="text-2xl">📧</span>
-                  <a href="mailto:info@samhwalin.org" className="text-gray-300 hover:text-white hover:underline">
+                  <a href="mailto:info@samhwalin.org" className="!text-white hover:underline no-underline">
                     info@samhwalin.org
                   </a>
                 </div>
