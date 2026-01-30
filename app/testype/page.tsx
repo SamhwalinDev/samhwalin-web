@@ -125,6 +125,7 @@ export default async function TestypePage() {
               <ScrollAnimationWrapper animation="fade-up" delay={600} duration={800}>
                 <p className="text-center">
                   정확히는 <strong>{elderCount}개의 인생</strong>을 살아봤지.
+                  <br/>
                   사업도 해봤고, 망해도 봤고, 자식 키우면서 울기도 했고,
                   부모님 떠나보내기도 했어.
                 </p>
