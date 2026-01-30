@@ -19,7 +19,7 @@ export default function AboutPage() {
       {/* Section 1: HOOK (Hero) - Green tint */}
       <section className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#F5F8F5' }}>
         <div className="max-w-5xl mx-auto px-6 text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-text mb-6 leading-tight">
             <span className="animate-fade-in-up opacity-0" style={{ animationDelay: '0ms' }}>
               Arrive, Alive!
             </span>
@@ -28,7 +28,7 @@ export default function AboutPage() {
               No longer Alone.
             </span>
           </h1>
-          <p className="text-2xl md:text-3xl text-gray-700 mb-4 font-medium animate-fade-in-up opacity-0" style={{ animationDelay: '400ms' }}>
+          <p className="text-2xl md:text-3xl text-text mb-4 font-medium animate-fade-in-up opacity-0" style={{ animationDelay: '400ms' }}>
             Making People Alive and Connected
           </p>
           <p className="text-lg text-gray-600 mb-12 max-w-4xl mx-auto leading-relaxed animate-fade-in-up opacity-0" style={{ animationDelay: '600ms' }}>
@@ -44,7 +44,7 @@ export default function AboutPage() {
             </Link>
             <Link 
               href="/testype"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-semibold border-2 border-gray-300 text-gray-700 hover:bg-gray-100 transition-all shadow-lg hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-semibold border-2 border-border text-text hover:bg-gray-100 transition-all shadow-lg hover:-translate-y-0.5"
             >
               테스형 만나기
             </Link>
@@ -125,7 +125,7 @@ export default function AboutPage() {
             </ScrollAnimationWrapper>
             
             <ScrollAnimationWrapper animation="fade-up" delay={400} duration={1000}>
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8 leading-tight">
+              <h2 className="text-4xl md:text-5xl font-bold text-text mb-8 leading-tight">
                 황혼에 다다른 분들의 삶 속에<br />
                 <span className="text-primary">청년들이 찾는 답</span>이<br />
                 있었습니다
@@ -140,8 +140,8 @@ export default function AboutPage() {
             </ScrollAnimationWrapper>
             
             <ScrollAnimationWrapper animation="scale" delay={800} duration={900}>
-              <div className="bg-gray-50 rounded-2xl p-8">
-                <p className="text-2xl font-bold text-gray-900">
+              <div className="bg-background rounded-2xl p-8">
+                <p className="text-2xl font-bold text-text">
                   문제는 단 하나.<br />
                   <span className="text-red-600">아무도 기록하지 않고 공유하지 않았다는 것.</span>
                 </p>
@@ -156,7 +156,7 @@ export default function AboutPage() {
         <div className="max-w-5xl mx-auto px-6">
           <ScrollAnimationWrapper animation="fade" duration={800}>
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              <h2 className="text-4xl md:text-5xl font-bold text-text mb-6">
                 삼활인의 철학
               </h2>
               <p className="text-lg text-gray-600">
@@ -190,7 +190,7 @@ export default function AboutPage() {
                 <ScrollAnimationWrapper animation="scale" delay={index * 200} duration={700}>
                   <div className="bg-white rounded-3xl p-8 shadow-md max-w-xs text-center">
                     <div className="text-5xl mb-4">{item.icon}</div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">{item.title}</h3>
+                    <h3 className="text-xl font-bold text-text mb-2">{item.title}</h3>
                     <p className="text-primary font-semibold mb-3">{item.subtitle}</p>
                     <p className="text-gray-600 text-sm leading-relaxed">{item.desc}</p>
                   </div>
@@ -213,7 +213,7 @@ export default function AboutPage() {
           <ScrollAnimationWrapper animation="fade-up" duration={800}>
             <div className="text-center mb-16">
               <p className="text-primary font-medium mb-2">Our Solution</p>
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              <h2 className="text-4xl md:text-5xl font-bold text-text mb-4">
                 어라이브 프로젝트
               </h2>
               <p className="text-lg text-gray-600">
@@ -249,7 +249,7 @@ export default function AboutPage() {
                       <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold text-sm">
                         {index + 1}
                       </div>
-                      <h3 className="text-xl font-bold text-gray-900">{step.title}</h3>
+                      <h3 className="text-xl font-bold text-text">{step.title}</h3>
                     </div>
                     <p className="text-gray-600 ml-12">{step.desc}</p>
                   </div>
@@ -265,12 +265,12 @@ export default function AboutPage() {
                 <div className="flex items-center gap-3 mb-6">
                   <span className="text-3xl">📖</span>
                   <div>
-                    <h3 className="text-2xl font-bold text-gray-900">활서 (活書)</h3>
+                    <h3 className="text-2xl font-bold text-text">활서 (活書)</h3>
                     <p className="text-gray-600">活(살 활) + 書(글 서)</p>
                   </div>
                 </div>
                 <p className="text-lg font-semibold text-primary mb-3">사람을 살리는 글</p>
-                <p className="text-gray-700 mb-6 leading-relaxed">
+                <p className="text-text mb-6 leading-relaxed">
                   인터뷰 대상자의 삶을 기록한 웹/영상/실물 콘텐츠입니다
                 </p>
                 <Link 
@@ -284,17 +284,17 @@ export default function AboutPage() {
 
             <ScrollAnimationWrapper animation="fade-left" delay={150} duration={900}>
               <div className="rounded-3xl p-8 shadow-lg border border-gray-100 relative" style={{ backgroundColor: '#F5F8F5' }}>
-                <div className="absolute top-4 right-4 bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                <div className="absolute top-4 right-4 bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">
                   Coming Soon
                 </div>
                 <div className="flex items-center gap-3 mb-6">
                   <span className="text-3xl">💬</span>
                   <div>
-                    <h3 className="text-2xl font-bold text-gray-900">테스형 AI</h3>
+                    <h3 className="text-2xl font-bold text-text">테스형 AI</h3>
                   </div>
                 </div>
                 <p className="text-lg font-semibold text-green-700 mb-3">100명 인터뷰 대상자의 지혜가 담긴 AI</p>
-                <p className="text-gray-700 mb-6 leading-relaxed">
+                <p className="text-text mb-6 leading-relaxed">
                   실제 삶의 이야기에서 답을 찾습니다
                 </p>
                 <Link 
@@ -315,7 +315,7 @@ export default function AboutPage() {
           <ScrollAnimationWrapper animation="fade" duration={800}>
             <div className="text-center mb-16">
               <p className="text-primary font-medium mb-2">Our Goals</p>
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-12">
+              <h2 className="text-4xl md:text-5xl font-bold text-text mb-12">
                 우리의 목표
               </h2>
             </div>
@@ -333,7 +333,7 @@ export default function AboutPage() {
                   <div className="text-5xl md:text-6xl font-bold text-primary mb-4">
                     {goal.number}
                   </div>
-                  <p className="text-lg text-gray-700 font-medium">{goal.desc}</p>
+                  <p className="text-lg text-text font-medium">{goal.desc}</p>
                 </div>
               </ScrollAnimationWrapper>
             ))}
@@ -353,7 +353,7 @@ export default function AboutPage() {
                   className="bg-white px-6 py-4 rounded-2xl shadow-sm flex items-center gap-3"
                 >
                   <span className="text-2xl">{value.icon}</span>
-                  <span className="font-semibold text-gray-900">{value.label}</span>
+                  <span className="font-semibold text-text">{value.label}</span>
                 </div>
               ))}
             </div>
@@ -366,7 +366,7 @@ export default function AboutPage() {
         <div className="max-w-5xl mx-auto px-6">
           <ScrollAnimationWrapper animation="fade-up" duration={800}>
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-12">
+              <h2 className="text-4xl md:text-5xl font-bold text-text mb-12">
                 우리가 꿈꾸는 미래
               </h2>
             </div>
@@ -414,7 +414,7 @@ export default function AboutPage() {
                     }`}>
                       📍
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-3">
+                    <h3 className="text-xl font-bold text-text mb-3">
                       {milestone.year}
                     </h3>
                     <p className="text-gray-600 whitespace-pre-line leading-relaxed">
@@ -428,7 +428,7 @@ export default function AboutPage() {
 
           <ScrollAnimationWrapper animation="fade-up" delay={1000} duration={1000}>
             <div className="text-center mt-16">
-              <p className="text-2xl font-bold text-gray-900 mb-4">
+              <p className="text-2xl font-bold text-text mb-4">
                 한 세대의 이야기가 다음 세대의 지혜가 되는 세상
               </p>
               <p className="text-xl text-primary font-semibold">

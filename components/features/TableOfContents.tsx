@@ -66,7 +66,7 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
 
   return (
     <nav className="hidden lg:block sticky top-24 ml-8 w-64">
-      <p className="text-sm font-semibold text-gray-900 mb-4">목차</p>
+      <p className="text-sm font-semibold text-text mb-4">목차</p>
       <ul className="space-y-2 text-sm">
         {headings.map((heading) => (
           <li key={heading.id}>
@@ -76,8 +76,8 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
                 heading.level === 3 ? 'pl-4' : ''
               } ${
                 activeId === heading.id
-                  ? 'text-orange-600 font-medium'
-                  : 'text-gray-500 hover:text-gray-900'
+                  ? 'text-primary-dark font-medium'
+                  : 'text-muted-foreground hover:text-text'
               }`}
             >
               {heading.text}

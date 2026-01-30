@@ -18,9 +18,9 @@ export default async function PreviewPage() {
   const previewHwalseos = await getPreviewHwalseos();
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-gradient-to-r from-orange-400 to-amber-400 text-white">
+      <div className="bg-gradient-to-r from-primary to-amber-400 text-white">
         <div className="max-w-6xl mx-auto px-4 py-12">
           <Link 
             href="/hwalseo" 
@@ -52,7 +52,7 @@ export default async function PreviewPage() {
         {previewHwalseos.length === 0 ? (
           <div className="text-center py-16">
             <div className="text-6xl mb-4">📭</div>
-            <h2 className="text-xl font-bold text-gray-900 mb-2">
+            <h2 className="text-xl font-bold text-text mb-2">
               아직 미리보기 활서가 없습니다
             </h2>
             <p className="text-gray-500">
@@ -83,19 +83,19 @@ export default async function PreviewPage() {
                         sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center">
+                      <div className="w-full h-full bg-gradient-to-br from-primary-extra-light to-primary-light flex items-center justify-center">
                         <span className="text-4xl">📖</span>
                       </div>
                     )}
                     {/* Preview Badge */}
-                    <div className="absolute top-3 left-3 bg-orange-400 text-white text-xs font-bold px-3 py-1 rounded-full">
+                    <div className="absolute top-3 left-3 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">
                       미리보기
                     </div>
                   </div>
                   
                   {/* Content */}
                   <div className="p-5">
-                    <h3 className="font-bold text-lg text-gray-900 mb-2 group-hover:text-orange-500 transition-colors line-clamp-2">
+                    <h3 className="font-bold text-lg text-text mb-2 group-hover:text-primary transition-colors line-clamp-2">
                       {hwalseo.title.split('//').map((part, i) => (
                         <span key={i}>
                           {part.trim()}
@@ -108,7 +108,7 @@ export default async function PreviewPage() {
                         "{hwalseo.subtitle}"
                       </p>
                     )}
-                    <p className="text-orange-500 text-sm font-medium">
+                    <p className="text-primary text-sm font-medium">
                       {hwalseo.elderName}님의 이야기
                     </p>
                   </div>

@@ -54,7 +54,7 @@ export function Header({ variant = 'default' }: HeaderProps) {
               {/* 후원 기능 임시 비활성화
               <Link
                 href="/support"
-                className="ml-4 px-4 py-2 bg-orange-400 hover:bg-orange-500 text-white rounded-full font-semibold text-sm transition-all duration-200 flex items-center gap-1"
+                className="ml-4 px-4 py-2 bg-primary hover:bg-primary-dark text-white rounded-full font-semibold text-sm transition-all duration-200 flex items-center gap-1"
               >
                 <span>💛</span>
                 <span>후원하기</span>
@@ -69,7 +69,7 @@ export function Header({ variant = 'default' }: HeaderProps) {
               {/* Search Icon (Mobile - links to search page) */}
               <Link 
                 href="/search" 
-                className="md:hidden p-2 text-gray-600 hover:text-orange-500 hover:bg-orange-50 rounded-full transition-all duration-200"
+                className="md:hidden p-2 text-gray-600 hover:text-primary hover:bg-primary-extra-light rounded-full transition-all duration-200"
                 aria-label="해답 찾기"
                 title="해답 찾기"
               >
@@ -110,7 +110,7 @@ export function Header({ variant = 'default' }: HeaderProps) {
             {/* 후원 기능 임시 비활성화
             <Link
               href="/support"
-              className="block w-full px-4 py-3 bg-orange-400 hover:bg-orange-500 text-white rounded-xl font-semibold text-center transition-all duration-200 mt-4"
+              className="block w-full px-4 py-3 bg-primary hover:bg-primary-dark text-white rounded-xl font-semibold text-center transition-all duration-200 mt-4"
               onClick={() => setIsMenuOpen(false)}
             >
               💛 후원하기

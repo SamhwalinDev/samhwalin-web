@@ -33,15 +33,26 @@ export function HwalseoCard({ hwalseo }: HwalseoCardProps) {
       
       {/* Card Content */}
       <div className="p-6">
-        {/* Theme Tag */}
-        {hwalseo.theme && hwalseo.theme.length > 0 && (
-          <span className="inline-block text-primary text-sm font-semibold mb-2">
-            {hwalseo.theme.join(' · ')}
-          </span>
-        )}
+        {/* Theme Tags */}
+        <div className="flex flex-wrap gap-2 mb-2">
+          {hwalseo.theme && hwalseo.theme.length > 0 ? (
+            hwalseo.theme.map((t, i) => (
+              <span
+                key={i}
+                className="inline-block px-2 py-1 bg-primary-extra-light text-primary text-xs font-semibold rounded-full"
+              >
+                {t}
+              </span>
+            ))
+          ) : (
+            <span className="inline-block px-2 py-1 bg-primary-extra-light text-primary text-xs font-semibold rounded-full">
+              활서
+            </span>
+          )}
+        </div>
 
         {/* Title */}
-        <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+        <h3 className="text-lg font-bold text-text mb-2 line-clamp-2 group-hover:text-primary transition-colors">
           {formatTitleParts(hwalseo.title).map((part, index) => (
             <span key={index}>
               {index > 0 && <br />}

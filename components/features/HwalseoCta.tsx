@@ -54,7 +54,7 @@ export function HwalseoCta({ elderName, hwalseoSlug, shareTitle, shareUrl }: Hwa
               href="https://www.instagram.com/samhwalin/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 whitespace-nowrap border border-gray-300 text-gray-700 px-6 py-3 rounded-md font-medium hover:bg-gray-50 hover:border-gray-400 transition-colors"
+              className="inline-flex items-center justify-center gap-2 whitespace-nowrap border border-border text-text px-6 py-3 rounded-md font-medium hover:bg-muted hover:border-border transition-colors"
             >
               <svg
                 width="18"

@@ -117,7 +117,7 @@ export default async function ElderDetailPage({
                 {/* Introduction - as a styled quote */}
                 {elder.introduction && (
                   <blockquote 
-                    className="text-xl md:text-2xl text-gray-700 mb-6 leading-relaxed"
+                    className="text-xl md:text-2xl text-text mb-6 leading-relaxed"
                     dangerouslySetInnerHTML={{ __html: `&ldquo;${processNotionText(elder.introduction)}&rdquo;` }}
                   />
                 )}

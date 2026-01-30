@@ -121,7 +121,7 @@ export function MobileTableOfContents({ content }: MobileTableOfContentsProps) {
                           'w-full text-left flex items-center py-2 transition-colors break-keep',
                           isH1 && 'font-bold text-foreground hover:text-primary text-base',
                           isH2 && 'font-medium text-muted-foreground hover:text-primary pl-4 border-l-2 border-border active:border-primary text-[15px]',
-                          isH3 && 'text-muted-foreground hover:text-gray-700 text-sm pl-4'
+                          isH3 && 'text-muted-foreground hover:text-text text-sm pl-4'
                         )}
                       >
                         {isH1 && <span className="text-primary mr-2.5 text-sm">■</span>}

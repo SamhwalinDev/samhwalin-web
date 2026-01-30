@@ -60,7 +60,7 @@ export default function BeforeIDieBanner({ elders }: BeforeIDieBannerProps) {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="bg-gradient-to-r from-orange-50 via-amber-50 to-orange-100 rounded-3xl p-8 md:p-10 shadow-lg border border-orange-100/50">
+      <div className="bg-gradient-to-r from-primary-extra-light via-amber-50 to-primary-extra-light rounded-3xl p-8 md:p-10 shadow-lg border border-primary-extra-light/50">
         <Link 
           href={`/elders/${currentElder.slug}`}
           className="block group"
@@ -74,7 +74,7 @@ export default function BeforeIDieBanner({ elders }: BeforeIDieBannerProps) {
             {/* Content */}
             <div className={`flex-1 min-w-0 transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
               <p 
-                className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 leading-snug group-hover:text-primary transition-colors"
+                className="text-xl md:text-2xl lg:text-3xl font-bold text-text mb-4 leading-snug group-hover:text-primary transition-colors"
                 dangerouslySetInnerHTML={{ __html: `"${processNotionText(currentElder.quote)}"` }}
               />
               <p className="text-base md:text-lg text-gray-600">

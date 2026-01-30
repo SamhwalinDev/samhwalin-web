@@ -217,7 +217,7 @@ export function PostcardModal({ isOpen, onClose, elderName, hwalseoSlug = '' }: 
           <form onSubmit={handleSubmit} className="p-4 space-y-4">
             {/* 이름 */}
             <div>
-              <label className="block text-body-sm font-medium text-gray-700 mb-1">
+              <label className="block text-body-sm font-medium text-text mb-1">
                 보내는 분 이름 *
               </label>
               <input
@@ -225,14 +225,14 @@ export function PostcardModal({ isOpen, onClose, elderName, hwalseoSlug = '' }: 
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 placeholder="홍길동"
               />
             </div>
 
             {/* 이메일 */}
             <div>
-              <label className="block text-body-sm font-medium text-gray-700 mb-1">
+              <label className="block text-body-sm font-medium text-text mb-1">
                 이메일 *
               </label>
               <input
@@ -242,7 +242,7 @@ export function PostcardModal({ isOpen, onClose, elderName, hwalseoSlug = '' }: 
                 onChange={(e) => handleEmailChange(e.target.value)}
                 className={cn(
                   "w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent",
-                  (emailError || emailSuggestion) ? "border-warning" : "border-gray-300"
+                  (emailError || emailSuggestion) ? "border-warning" : "border-border"
                 )}
                 placeholder="example@email.com"
               />
@@ -268,7 +268,7 @@ export function PostcardModal({ isOpen, onClose, elderName, hwalseoSlug = '' }: 
 
             {/* 메시지 */}
             <div>
-              <label className="block text-body-sm font-medium text-gray-700 mb-1">
+              <label className="block text-body-sm font-medium text-text mb-1">
                 엽서 내용 *
               </label>
               <textarea
@@ -276,14 +276,14 @@ export function PostcardModal({ isOpen, onClose, elderName, hwalseoSlug = '' }: 
                 rows={4}
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+                className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
                 placeholder={`${elderName}님께 전하고 싶은 이야기를 적어주세요.`}
               />
             </div>
 
             {/* 금액 선택 */}
             <div>
-              <label className="block text-body-sm font-medium text-gray-700 mb-2">
+              <label className="block text-body-sm font-medium text-text mb-2">
                 엽서 금액 선택 *
               </label>
               <div className="grid grid-cols-3 gap-2">
@@ -296,7 +296,7 @@ export function PostcardModal({ isOpen, onClose, elderName, hwalseoSlug = '' }: 
                       'py-3 px-4 rounded-lg border text-body-sm font-medium transition-colors',
                       formData.amount === option.value
                         ? 'border-primary bg-primary-extra-light text-primary'
-                        : 'border-gray-300 text-gray-700 hover:border-gray-400'
+                        : 'border-border text-text hover:border-border'
                     )}
                   >
                     {option.label}

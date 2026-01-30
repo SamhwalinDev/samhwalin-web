@@ -46,7 +46,7 @@ export default function QnAList({ hwalseoId, elderName }: QnAListProps) {
 
   return (
     <div className="space-y-6">
-      <h3 className="text-xl font-bold text-gray-900">
+      <h3 className="text-xl font-bold text-text">
         💬 독자 Q&A
       </h3>
       
@@ -62,20 +62,20 @@ export default function QnAList({ hwalseoId, elderName }: QnAListProps) {
                 <p className="text-sm text-gray-500 mb-1">
                   {qna.nickname}님의 질문
                 </p>
-                <p className="text-gray-900">{qna.question}</p>
+                <p className="text-text">{qna.question}</p>
               </div>
             </div>
             
             {/* Answer */}
             <div className="flex items-start gap-3 pl-9 pt-4 border-t border-gray-100">
-              <span className="w-6 h-6 bg-orange-100 rounded-full flex items-center justify-center text-xs font-bold text-orange-600 flex-shrink-0">
+              <span className="w-6 h-6 bg-primary-extra-light rounded-full flex items-center justify-center text-xs font-bold text-primary-dark flex-shrink-0">
                 A
               </span>
               <div className="flex-1">
-                <p className="text-sm text-orange-600 mb-1">
+                <p className="text-sm text-primary-dark mb-1">
                   {elderName}님의 답변
                 </p>
-                <p className="text-gray-900 whitespace-pre-line">{qna.answer}</p>
+                <p className="text-text whitespace-pre-line">{qna.answer}</p>
               </div>
             </div>
           </div>

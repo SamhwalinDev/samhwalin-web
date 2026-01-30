@@ -80,13 +80,13 @@ export default function SearchPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-background">
       
       {/* Hero Section */}
       <section className="py-20 bg-[#F5F8F5]">
         <div className="max-w-3xl mx-auto px-6 text-center">
           <ScrollAnimationWrapper animation="fade" duration={800}>
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-text mb-4">
               어떤 고민이 있으세요?
             </h1>
             <p className="text-xl text-gray-600 mb-8">
@@ -102,11 +102,11 @@ export default function SearchPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="고민을 입력해보세요... (예: 퇴사, 부모님과 갈등)"
-                className="w-full px-6 py-4 pr-12 rounded-2xl border-2 border-gray-200 
-                         text-lg focus:outline-none focus:border-orange-400 focus:ring-4 focus:ring-orange-100
+                className="w-full px-6 py-4 pr-12 rounded-2xl border-2 border-border 
+                         text-lg focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary-extra-light
                          transition-all duration-200 shadow-sm"
               />
-              <button className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-orange-500 transition-colors">
+              <button className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
@@ -141,8 +141,8 @@ export default function SearchPage() {
                   onClick={() => handleTagClick(tag.id)}
                   className={`px-5 py-3 rounded-full font-medium transition-all duration-200 hover:scale-105 hover:shadow-sm
                     ${selectedTag === tag.id 
-                      ? 'bg-orange-500 text-white shadow-md' 
-                      : 'bg-gray-100 text-gray-700 hover:bg-orange-100 hover:text-orange-700'
+                      ? 'bg-primary text-white shadow-md' 
+                      : 'bg-muted text-text hover:bg-primary-extra-light hover:text-primary-dark'
                     }`}
                 >
                   <span className="mr-2">{tag.emoji}</span>
@@ -157,7 +157,7 @@ export default function SearchPage() {
             <div className="text-center mt-6">
               <button
                 onClick={() => setSelectedTag(null)}
-                className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
+                className="text-sm text-muted-foreground hover:text-text transition-colors"
               >
                 ✕ 필터 초기화
               </button>
@@ -167,7 +167,7 @@ export default function SearchPage() {
       </section>
 
       {/* Results Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-background">
         <div className="max-w-5xl mx-auto px-6">
           <ScrollAnimationWrapper animation="fade" duration={800}>
             <h2 className="text-2xl font-bold mb-2">
@@ -185,7 +185,7 @@ export default function SearchPage() {
           
           {isLoading ? (
             <div className="text-center py-12">
-              <div className="animate-spin w-8 h-8 border-4 border-orange-200 border-t-orange-500 rounded-full mx-auto mb-4"></div>
+              <div className="animate-spin w-8 h-8 border-4 border-primary-extra-light border-t-primary rounded-full mx-auto mb-4"></div>
               <p className="text-gray-500">활서를 불러오는 중...</p>
             </div>
           ) : filteredHwalseos.length > 0 ? (
@@ -222,15 +222,26 @@ export default function SearchPage() {
                     
                     {/* Card Content */}
                     <div className="p-6">
-                      {/* Theme Tag */}
-                      {hwalseo.theme && hwalseo.theme.length > 0 && (
-                        <span className="inline-block text-primary text-sm font-semibold mb-2">
-                          {hwalseo.theme.join(' · ')}
-                        </span>
-                      )}
+                      {/* Theme Tags */}
+                      <div className="flex flex-wrap gap-2 mb-2">
+                        {hwalseo.theme && hwalseo.theme.length > 0 ? (
+                          hwalseo.theme.map((t: string, i: number) => (
+                            <span
+                              key={i}
+                              className="inline-block px-2 py-1 bg-primary-extra-light text-primary text-xs font-semibold rounded-full"
+                            >
+                              {t}
+                            </span>
+                          ))
+                        ) : (
+                          <span className="inline-block px-2 py-1 bg-primary-extra-light text-primary text-xs font-semibold rounded-full">
+                            활서
+                          </span>
+                        )}
+                      </div>
 
                       {/* Title with // processing */}
-                      <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-primary transition-colors leading-snug">
+                      <h3 className="text-lg font-bold text-text mb-2 line-clamp-2 group-hover:text-primary transition-colors leading-snug">
                         {formatTitleParts(hwalseo.title).map((part, idx) => (
                           <span key={idx}>
                             {idx > 0 && <br />}
@@ -254,7 +265,7 @@ export default function SearchPage() {
                       )}
                       
                       {/* Elder Name */}
-                      <p className="text-orange-500 text-sm font-medium">
+                      <p className="text-primary text-sm font-medium">
                         {hwalseo.elderName}님의 이야기
                       </p>
                     </div>
@@ -298,10 +309,10 @@ export default function SearchPage() {
       <section className="py-16 bg-[#FFF8F3]">
         <div className="max-w-3xl mx-auto px-6 text-center">
           <ScrollAnimationWrapper animation="blur" duration={1000}>
-            <span className="inline-block px-4 py-1 bg-orange-200 text-orange-700 rounded-full text-sm font-semibold mb-4">
+            <span className="inline-block px-4 py-1 bg-primary-extra-light text-primary-dark rounded-full text-sm font-semibold mb-4">
               Coming Soon
             </span>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl font-bold text-text mb-4">
               더 깊은 대화가 필요하다면
             </h2>
             <p className="text-xl text-gray-600 mb-8">
@@ -310,8 +321,8 @@ export default function SearchPage() {
             </p>
             <Link 
               href="/testype" 
-              className="inline-block px-8 py-4 bg-orange-500 text-white rounded-xl 
-                       font-semibold hover:bg-orange-600 transition-colors"
+              className="inline-block px-8 py-4 bg-primary text-white rounded-xl 
+                       font-semibold hover:bg-primary-dark transition-colors"
             >
               테스형 AI 알아보기 →
             </Link>

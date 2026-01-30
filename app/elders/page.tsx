@@ -26,7 +26,7 @@ export default async function EldersPage() {
       <section className="bg-white border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-6 py-16 md:py-20">
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-text mb-4">
               프로필
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -40,7 +40,7 @@ export default async function EldersPage() {
       <section style={{ backgroundColor: '#F5F8F5' }}>
         <div className="max-w-6xl mx-auto px-6 py-4">
           <p className="text-sm text-gray-600">
-            총 <span className="font-bold text-gray-900">{elders.length}명</span>의 인터뷰 대상자
+            총 <span className="font-bold text-text">{elders.length}명</span>의 인터뷰 대상자
           </p>
         </div>
       </section>
@@ -74,7 +74,7 @@ export default async function EldersPage() {
                   </div>
                   <div className="p-6">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
+                      <h3 className="text-xl font-bold text-text group-hover:text-primary transition-colors">
                         {elder.name}
                       </h3>
                       {elder.birthYear && (
@@ -101,7 +101,7 @@ export default async function EldersPage() {
           ) : (
             <div className="text-center py-20">
               <span className="text-6xl mb-6 block">👴</span>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">
+              <h3 className="text-xl font-bold text-text mb-2">
                 아직 등록된 프로필이 없습니다
               </h3>
               <p className="text-gray-500">

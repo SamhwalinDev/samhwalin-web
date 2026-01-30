@@ -16,6 +16,7 @@ const config: Config = {
           light: '#F5A364',
           dark: '#E07A2E',
           'extra-light': '#FCE0CC',
+          'very-light': '#FCE0CC',
         },
         // Secondary (Purple-Gray)
         secondary: {
@@ -23,6 +24,7 @@ const config: Config = {
           light: '#9FA3C7',
           dark: '#5B5F8F',
           'extra-light': '#E8E9F3',
+          'very-light': '#E8E9F3',
         },
         // Accent (Green)
         accent: {
@@ -30,10 +32,11 @@ const config: Config = {
           light: '#9BB89F',
           dark: '#5A7A5E',
           'extra-light': '#E8F2E9',
+          'very-light': '#E8F2E9',
         },
         // Background
         background: {
-          DEFAULT: '#FFFFFE',
+          DEFAULT: '#FFFEF9',
           light: '#FFFFFE',
           dark: '#F6F6FE',
         },
@@ -47,7 +50,11 @@ const config: Config = {
         // Semantic status colors
         success: '#7A9B7E',
         warning: '#F4B449',
-        error: '#E85D5D',
+        alert: '#F4B449',
+        error: {
+          DEFAULT: '#E85D5D',
+          light: '#F08C8C',
+        },
         info: '#7B7FA8',
         // Semantic gray tokens
         muted: {

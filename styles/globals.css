@@ -8,14 +8,33 @@
    CSS Variables
    ======================================== */
 :root {
-  /* Colors */
+  /* Primary */
   --color-primary: #F49249;
   --color-primary-light: #F5A364;
   --color-primary-dark: #E07A2E;
+  --color-primary-very-light: #FCE0CC;
+
+  /* Secondary */
   --color-secondary: #7B7FA8;
+  --color-secondary-light: #9FA3C7;
+  --color-secondary-dark: #5B5F8F;
+  --color-secondary-very-light: #E8E9F3;
+
+  /* Accent */
   --color-accent: #7A9B7E;
-  --color-base: #FFFFFE;
+  --color-accent-light: #9BB89F;
+  --color-accent-dark: #5A7A5E;
+  --color-accent-very-light: #E8F2E9;
+
+  /* Text & Background */
   --color-text: #2D3748;
+  --color-background: #FFFEF9;
+  --color-base: #FFFFFE;
+
+  /* Semantic */
+  --color-alert: #F4B449;
+  --color-error: #E85D5D;
+  --color-error-light: #F08C8C;
 
   /* Notion Colors (for rich text) */
   --notion-gray: #787774;
@@ -61,22 +80,22 @@
   }
 
   body {
-    @apply font-sans text-text bg-base;
+    @apply font-sans text-text bg-background;
     font-size: 1.0625rem;
     line-height: 1.75;
   }
 
   /* Headings */
   h1 {
-    @apply text-h1 text-gray-900;
+    @apply text-h1 text-text;
   }
 
   h2 {
-    @apply text-h2 text-gray-800;
+    @apply text-h2 text-text;
   }
 
   h3 {
-    @apply text-h3 text-gray-800;
+    @apply text-h3 text-text;
   }
 
   /* Links */
@@ -135,8 +154,8 @@
 
   .btn-secondary {
     @apply bg-white text-text;
-    @apply border border-gray-300;
-    @apply hover:bg-gray-50 hover:border-gray-400;
+    @apply border border-border;
+    @apply hover:bg-muted hover:border-border;
   }
 
   .btn-ghost {
@@ -177,7 +196,7 @@
 
   /* Divider */
   .divider {
-    @apply border-t border-gray-200;
+    @apply border-t border-border;
   }
 
   /* Amount Button (후원 금액) */
@@ -185,9 +204,9 @@
     @apply flex flex-col items-start gap-1;
     @apply w-full p-4;
     @apply bg-white text-text text-left;
-    @apply border border-gray-200 rounded-lg shadow-sm;
+    @apply border border-border rounded-lg shadow-sm;
     @apply transition-all duration-fast ease-out;
-    @apply hover:border-gray-300 hover:shadow-md;
+    @apply hover:border-border hover:shadow-md;
   }
 
   .btn-amount.selected {
@@ -218,11 +237,11 @@
   }
 
   .btn-like-inactive {
-    @apply bg-gray-100 text-gray-600 hover:bg-orange-50 hover:text-orange-500;
+    @apply bg-gray-100 text-gray-600 hover:bg-primary-extra-light hover:text-primary;
   }
 
   .btn-like-active {
-    @apply bg-orange-50 text-orange-500;
+    @apply bg-primary-extra-light text-primary;
   }
 
   /* Toss-style section spacing (override existing) */

@@ -22,7 +22,7 @@ export default function DarkSubscribeSection({ source = '홈페이지' }: DarkSu
           </p>
           <button
             onClick={() => setIsOpen(true)}
-            className="bg-orange-400 hover:bg-orange-500 text-white 
+            className="bg-primary hover:bg-primary-dark text-white 
                      px-8 py-3.5 rounded-xl font-semibold transition-all duration-200"
           >
             소식 받기

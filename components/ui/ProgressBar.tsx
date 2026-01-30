@@ -41,7 +41,7 @@ export function ProgressBar({
     <div className={cn('w-full', className)}>
       {showLabel && (
         <div className="flex justify-between items-center mb-2">
-          <span className="text-body-sm font-medium text-gray-700">{label}</span>
+          <span className="text-body-sm font-medium text-text">{label}</span>
           <span className={cn('text-body-sm font-semibold', color === 'accent' ? 'text-accent' : 'text-primary')}>
             {percentage}%
           </span>

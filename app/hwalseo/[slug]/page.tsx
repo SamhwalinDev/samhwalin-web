@@ -80,7 +80,7 @@ function processContent(content: string): string {
     });
   
   // Process blockquotes (before paragraph wrapping)
-  processed = processed.replace(/^> (.+)$/gm, '<blockquote class="border-l-4 border-orange-400 bg-orange-50 py-4 px-6 rounded-r-lg my-8 font-medium text-gray-700">$1</blockquote>');
+  processed = processed.replace(/^> (.+)$/gm, '<blockquote class="border-l-4 border-primary bg-primary-extra-light py-4 px-6 rounded-r-lg my-8 font-medium text-text">$1</blockquote>');
   
   // Process images
   processed = processed.replace(/\[IMG\](.+?)\[\/IMG\](?:\[CAP\](.+?)\[\/CAP\])?/g, (_, url, caption) => {
@@ -149,14 +149,14 @@ export default async function HwalseoDetailPage({ params }: Props) {
   const formattedContent = processContent(hwalseo.content);
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-background">
       
       {/* 상단 네비게이션 */}
       <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-3xl mx-auto px-6 py-4">
           <Link 
             href="/hwalseo" 
-            className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+            className="inline-flex items-center gap-2 text-muted-foreground hover:text-text transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>활서 목록</span>
@@ -174,9 +174,9 @@ export default async function HwalseoDetailPage({ params }: Props) {
         <section className="mb-16">
           {hwalseo.hook && (
             <div className="bg-[#FFF8F3] rounded-3xl p-8 mb-8">
-              <Quote className="w-8 h-8 text-orange-400 mb-4" />
+              <Quote className="w-8 h-8 text-primary mb-4" />
               <p 
-                className="text-2xl md:text-3xl font-medium text-gray-900 leading-relaxed"
+                className="text-2xl md:text-3xl font-medium text-text leading-relaxed"
                 dangerouslySetInnerHTML={{ __html: `"${processNotionText(hwalseo.hook)}"` }}
               />
             </div>
@@ -184,7 +184,7 @@ export default async function HwalseoDetailPage({ params }: Props) {
           
           {/* 제목 & 메타 */}
           <h1 
-            className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight"
+            className="text-3xl md:text-4xl font-bold text-text mb-4 leading-tight"
             dangerouslySetInnerHTML={{ __html: processNotionText(hwalseo.title) }}
           />
           
@@ -195,7 +195,7 @@ export default async function HwalseoDetailPage({ params }: Props) {
           )}
           
           <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
-            <span className="font-medium text-orange-600">{hwalseo.elderName}님의 이야기</span>
+            <span className="font-medium text-primary-dark">{hwalseo.elderName}님의 이야기</span>
             {hwalseo.region && (
               <span className="flex items-center gap-1">
                 <MapPin className="w-4 h-4" />
@@ -215,11 +215,11 @@ export default async function HwalseoDetailPage({ params }: Props) {
         {/* 이 분은 어떤 삶을 살았는가 */}
         {hwalseo.bio && (
           <section className="mb-16">
-            <h2 className="text-sm font-semibold text-orange-600 uppercase tracking-wider mb-4">
+            <h2 className="text-sm font-semibold text-primary-dark uppercase tracking-wider mb-4">
               이 분의 삶
             </h2>
             <div className="bg-white rounded-2xl p-6 shadow-sm">
-              <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+              <p className="text-text leading-relaxed whitespace-pre-line">
                 {hwalseo.bio}
               </p>
             </div>
@@ -229,20 +229,20 @@ export default async function HwalseoDetailPage({ params }: Props) {
         {/* ========== 3. LESSON (가르침) ========== */}
         {/* 본문 - 핵심 이야기 */}
         <section className="mb-16">
-          <h2 className="text-sm font-semibold text-orange-600 uppercase tracking-wider mb-4">
+          <h2 className="text-sm font-semibold text-primary-dark uppercase tracking-wider mb-4">
             이야기
           </h2>
           <div 
             className="prose prose-lg max-w-none
-                     prose-headings:font-bold prose-headings:text-gray-900
-                     prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-6
-                     prose-a:text-orange-600 prose-a:no-underline hover:prose-a:underline
-                     prose-blockquote:border-l-4 prose-blockquote:border-l-orange-400 prose-blockquote:bg-orange-50
+                     prose-headings:font-bold prose-headings:text-text
+                     prose-p:text-text prose-p:leading-relaxed prose-p:mb-6
+                     prose-a:text-primary-dark prose-a:no-underline hover:prose-a:underline
+                     prose-blockquote:border-l-4 prose-blockquote:border-l-primary prose-blockquote:bg-primary-extra-light
                      prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:my-8
-                     prose-blockquote:not-italic prose-blockquote:text-gray-700 prose-blockquote:font-medium
-                     prose-strong:text-gray-900 prose-strong:font-semibold
+                     prose-blockquote:not-italic prose-blockquote:text-text prose-blockquote:font-medium
+                     prose-strong:text-text prose-strong:font-semibold
                      prose-ul:my-6 prose-ol:my-6
-                     prose-li:text-gray-700 prose-li:leading-relaxed
+                     prose-li:text-text prose-li:leading-relaxed
                      prose-h1:text-2xl prose-h1:mb-6 prose-h1:mt-8
                      prose-h2:text-xl prose-h2:mb-4 prose-h2:mt-6
                      prose-h3:text-lg prose-h3:mb-3 prose-h3:mt-4"
@@ -254,7 +254,7 @@ export default async function HwalseoDetailPage({ params }: Props) {
         {hwalseo.keyTakeaway && (
           <section className="mb-16">
             <div className="bg-gray-900 text-white rounded-3xl p-8 text-center">
-              <p className="text-sm font-semibold text-orange-400 uppercase tracking-wider mb-4">
+              <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-4">
                 핵심 교훈
               </p>
               <p className="text-xl md:text-2xl font-medium leading-relaxed">
@@ -270,11 +270,11 @@ export default async function HwalseoDetailPage({ params }: Props) {
         {/* ========== 5. BEHIND (뒷이야기) ========== */}
         {hwalseo.behind && (
           <section className="mb-16">
-            <h2 className="text-sm font-semibold text-orange-600 uppercase tracking-wider mb-4">
+            <h2 className="text-sm font-semibold text-primary-dark uppercase tracking-wider mb-4">
               인터뷰 뒷이야기
             </h2>
             <div className="bg-[#F5F8F5] rounded-2xl p-6">
-              <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+              <p className="text-text leading-relaxed whitespace-pre-line">
                 {hwalseo.behind}
               </p>
             </div>
@@ -284,11 +284,11 @@ export default async function HwalseoDetailPage({ params }: Props) {
         {/* ========== 6. TO READER (독자에게) ========== */}
         {hwalseo.toReader && (
           <section className="mb-16">
-            <h2 className="text-sm font-semibold text-orange-600 uppercase tracking-wider mb-4">
+            <h2 className="text-sm font-semibold text-primary-dark uppercase tracking-wider mb-4">
               {hwalseo.elderName}님이 당신에게
             </h2>
-            <div className="border-2 border-orange-200 rounded-2xl p-6 bg-white">
-              <p className="text-lg text-gray-800 leading-relaxed italic">
+            <div className="border-2 border-primary-extra-light rounded-2xl p-6 bg-white">
+              <p className="text-lg text-text leading-relaxed italic">
                 "{hwalseo.toReader}"
               </p>
             </div>
@@ -307,7 +307,7 @@ export default async function HwalseoDetailPage({ params }: Props) {
         </div>
 
         {/* ========== 구분선 ========== */}
-        <hr className="border-gray-200 mb-16" />
+        <hr className="border-border mb-16" />
 
         {/* ========== Q&A Section ========== */}
         <section className="mb-16">
@@ -328,11 +328,11 @@ export default async function HwalseoDetailPage({ params }: Props) {
         </section>
 
         {/* ========== 하단 네비게이션 ========== */}
-        <div className="pt-8 border-t border-gray-200">
+        <div className="pt-8 border-t border-border">
           <div className="flex justify-between items-center">
             <Link 
               href="/hwalseo" 
-              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+              className="flex items-center gap-2 text-muted-foreground hover:text-text transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>활서 목록으로</span>
@@ -342,7 +342,7 @@ export default async function HwalseoDetailPage({ params }: Props) {
               <p>이 활서가 도움이 되셨나요?</p>
               <a 
                 href="mailto:info@samhwalin.org?subject=인터뷰 참여 문의"
-                className="text-orange-500 hover:text-orange-600 hover:underline cursor-pointer font-medium mt-1 inline-block"
+                className="text-primary hover:text-primary-dark hover:underline cursor-pointer font-medium mt-1 inline-block"
               >
                 당신의 이야기도 들려주세요 →
               </a>
@@ -375,7 +375,7 @@ export default async function HwalseoDetailPage({ params }: Props) {
                   )}
                   
                   {/* Name & Birth Year */}
-                  <h3 className="text-lg font-bold text-center text-gray-900">
+                  <h3 className="text-lg font-bold text-center text-text">
                     {hwalseo.elder.name}
                   </h3>
                   {hwalseo.elder.birthYear && (
@@ -386,7 +386,7 @@ export default async function HwalseoDetailPage({ params }: Props) {
                   
                   {/* Region */}
                   {hwalseo.elder.region && (
-                    <p className="text-sm text-orange-600 text-center mb-3">
+                    <p className="text-sm text-primary-dark text-center mb-3">
                       📍 {hwalseo.elder.region}
                     </p>
                   )}
@@ -400,7 +400,7 @@ export default async function HwalseoDetailPage({ params }: Props) {
                   
                   {/* Bio - Collapsible or truncated */}
                   {hwalseo.elder.bio && (
-                    <div className="text-xs text-gray-500 leading-relaxed border-t border-orange-100 pt-4 mt-4">
+                    <div className="text-xs text-gray-500 leading-relaxed border-t border-primary-extra-light pt-4 mt-4">
                       <p className="whitespace-pre-line line-clamp-6">
                         {hwalseo.elder.bio}
                       </p>
@@ -410,7 +410,7 @@ export default async function HwalseoDetailPage({ params }: Props) {
                   {/* Link to full profile */}
                   <Link 
                     href={`/elders/${hwalseo.elder.slug}`}
-                    className="block text-center text-orange-500 text-sm mt-4 hover:underline font-medium"
+                    className="block text-center text-primary text-sm mt-4 hover:underline font-medium"
                   >
                     프로필 더보기 →
                   </Link>

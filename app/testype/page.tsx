@@ -15,7 +15,7 @@ export default async function TestypePage() {
   // 모든 프로필 개수 가져오기 (Published + Draft)
   const elderCount = await getElderCount(false);
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-background">
       
       {/* Hero Section */}
       <ScrollAnimationWrapper animation="fade" duration={1000}>
@@ -25,7 +25,7 @@ export default async function TestypePage() {
             {/* Funny Hook */}
             <ScrollAnimationWrapper animation="fade" duration={800}>
               <div className="text-center mb-12">
-                <p className="text-2xl md:text-3xl text-gray-700 font-medium">
+                <p className="text-2xl md:text-3xl text-text font-medium">
                   "아 테스형! 세상이 왜 이래!"
                 </p>
                 <p className="text-gray-500 mt-2">
@@ -52,13 +52,13 @@ export default async function TestypePage() {
               {/* Right: Text Content */}
               <div className="text-center md:text-left">
                 <ScrollAnimationWrapper animation="fade-up" delay={500} duration={800}>
-                  <span className="inline-block px-4 py-1 bg-orange-100 text-orange-600 rounded-full text-sm font-semibold mb-4">
+                  <span className="inline-block px-4 py-1 bg-primary-extra-light text-primary-dark rounded-full text-sm font-semibold mb-4">
                     Coming Soon
                   </span>
                 </ScrollAnimationWrapper>
                 
                 <ScrollAnimationWrapper animation="fade-up" delay={700} duration={800}>
-                  <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
+                  <h1 className="text-4xl md:text-5xl font-bold text-text mb-2">
                     테스형
                   </h1>
                   <p className="text-lg text-gray-500 mb-4">
@@ -92,13 +92,13 @@ export default async function TestypePage() {
           <ScrollAnimationWrapper animation="fade-up" duration={800}>
             <div className="bg-[#F8F8FB] rounded-3xl p-8 text-center">
               <span className="text-4xl mb-4 block">🤫</span>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
+              <h3 className="text-xl font-bold text-text mb-3">
                 활서에 없는 이야기도 있어
               </h3>
               <p className="text-gray-600 leading-relaxed">
                 아직 활서로 공개되지 않은 인터뷰들도 많아.<br/>
                 근데 나는 다 기억하고 있지.<br/>
-                <span className="text-orange-600 font-medium">
+                <span className="text-primary-dark font-medium">
                   공개된 이야기보다 더 많은 경험이 내 안에 있어.
                 </span>
               </p>
@@ -115,7 +115,7 @@ export default async function TestypePage() {
               <h2 className="text-3xl font-bold text-center mb-12">테스형이 누구야?</h2>
             </ScrollAnimationWrapper>
             
-            <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
+            <div className="space-y-6 text-lg text-text leading-relaxed">
               <ScrollAnimationWrapper animation="fade-up" delay={400} duration={800}>
                 <p className="text-center">
                   나? 그냥 인생 좀 많이 살아본 사람이야.
@@ -176,7 +176,7 @@ export default async function TestypePage() {
             ].map((item, index) => (
               <ScrollAnimationWrapper key={index} animation="scale" delay={index * 200} duration={700}>
                 <div className="text-center">
-                  <div className="w-16 h-16 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                  <div className="w-16 h-16 rounded-full bg-primary-extra-light text-primary-dark flex items-center justify-center text-2xl font-bold mx-auto mb-4">
                     {item.step}
                   </div>
                   <h3 className="font-bold text-lg mb-2">{item.title}</h3>
@@ -214,14 +214,14 @@ export default async function TestypePage() {
             
             {/* Testype */}
             <ScrollAnimationWrapper animation="fade-left" delay={200} duration={800}>
-              <div className="bg-[#FFF8F3] rounded-2xl p-8 border-2 border-orange-200">
-                <h3 className="font-bold text-lg mb-4 text-orange-600">테스형</h3>
-                <p className="text-gray-800 mb-4">
+              <div className="bg-[#FFF8F3] rounded-2xl p-8 border-2 border-primary-extra-light">
+                <h3 className="font-bold text-lg mb-4 text-primary-dark">테스형</h3>
+                <p className="text-text mb-4">
                   "야, 나도 사업 3번 망해봤어.<br/>
                   첫 번째 망했을 때 진짜 하늘이 무너지는 줄 알았지.<br/>
                   근데 지금 생각하면..."
                 </p>
-                <p className="text-sm text-orange-500">
+                <p className="text-sm text-primary">
                   → 직접 겪어본 이야기
                 </p>
               </div>
@@ -238,7 +238,7 @@ export default async function TestypePage() {
               <h2 className="text-3xl font-bold mb-8">왜 소크라테스냐고?</h2>
             </ScrollAnimationWrapper>
             
-            <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
+            <div className="space-y-6 text-lg text-text leading-relaxed">
               <ScrollAnimationWrapper animation="fade-up" delay={400} duration={800}>
                 <p>
                   소크라테스가 뭘 했는지 알아?
@@ -261,7 +261,7 @@ export default async function TestypePage() {
               
               <ScrollAnimationWrapper animation="scale" delay={1000} duration={900}>
                 <div className="bg-white rounded-3xl p-8 mt-8">
-                  <p className="text-2xl font-bold text-gray-900 mb-2">
+                  <p className="text-2xl font-bold text-text mb-2">
                     "검토되지 않은 삶은 살 가치가 없다"
                   </p>
                   <p className="text-base font-normal text-gray-500">- 소크라테스</p>
@@ -291,9 +291,9 @@ export default async function TestypePage() {
                 <input
                   type="email"
                   placeholder="이메일 주소"
-                  className="px-6 py-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:border-orange-400 w-full sm:w-80"
+                  className="px-6 py-4 rounded-xl border border-border focus:outline-none focus:ring-2 focus:ring-primary-extra-light focus:border-primary w-full sm:w-80"
                 />
-                <button className="px-8 py-4 bg-orange-500 text-white rounded-xl font-semibold hover:bg-orange-600 transition-colors">
+                <button className="px-8 py-4 bg-primary text-white rounded-xl font-semibold hover:bg-primary-dark transition-colors">
                   알림 받기
                 </button>
               </div>
@@ -328,7 +328,7 @@ export default async function TestypePage() {
             <ScrollAnimationWrapper animation="scale" delay={800} duration={800}>
               <Link 
                 href="/hwalseo" 
-                className="inline-block px-8 py-4 bg-white text-gray-900 rounded-xl font-semibold hover:bg-gray-100 transition-colors"
+                className="inline-block px-8 py-4 bg-white text-text rounded-xl font-semibold hover:bg-muted transition-colors"
               >
                 활서 읽으러 가기 →
               </Link>

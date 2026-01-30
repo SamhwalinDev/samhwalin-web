@@ -141,7 +141,7 @@ export function HeaderSearch() {
           onKeyDown={handleKeyDown}
           placeholder="활서 검색..."
           className={cn(
-            'w-64 pl-10 pr-10 py-2 rounded-full border border-gray-300',
+            'w-64 pl-10 pr-10 py-2 rounded-full border border-border',
             'text-body-sm placeholder:text-gray-400',
             'focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary',
             'transition-colors',
@@ -163,7 +163,7 @@ export function HeaderSearch() {
       {isOpen && (query.trim() || results.length > 0) && (
         <div
           ref={dropdownRef}
-          className="absolute top-full left-0 right-0 mt-0 bg-white border border-gray-300 border-t-0 rounded-b-xl shadow-lg z-50 max-h-96 overflow-y-auto"
+          className="absolute top-full left-0 right-0 mt-0 bg-white border border-border border-t-0 rounded-b-xl shadow-lg z-50 max-h-96 overflow-y-auto"
         >
           {isLoading ? (
             <div className="flex items-center justify-center py-8">
@@ -176,9 +176,9 @@ export function HeaderSearch() {
                   key={result.id}
                   onClick={() => handleResultClick(result)}
                   className={cn(
-                    'w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors',
+                    'w-full text-left px-4 py-3 hover:bg-muted transition-colors',
                     'border-b border-gray-100 last:border-b-0',
-                    selectedIndex === index && 'bg-gray-50'
+                    selectedIndex === index && 'bg-muted'
                   )}
                 >
                   <div className="font-semibold text-foreground text-body-sm mb-1 line-clamp-1">

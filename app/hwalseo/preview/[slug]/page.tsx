@@ -34,7 +34,7 @@ function processContent(content: string): string {
     });
   
   // Process blockquotes (before paragraph wrapping)
-  processed = processed.replace(/^> (.+)$/gm, '<blockquote class="border-l-4 border-orange-400 bg-orange-50 py-4 px-6 rounded-r-lg my-8 font-medium text-gray-700">$1</blockquote>');
+  processed = processed.replace(/^> (.+)$/gm, '<blockquote class="border-l-4 border-primary bg-primary-extra-light py-4 px-6 rounded-r-lg my-8 font-medium text-text">$1</blockquote>');
   
   // Process images
   processed = processed.replace(/\[IMG\](.+?)\[\/IMG\](?:\[CAP\](.+?)\[\/CAP\])?/g, (_, url, caption) => {
@@ -119,9 +119,9 @@ export default async function PreviewHwalseoPage({ params }: Props) {
   const formattedContent = processContent(hwalseo.content);
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-background">
       {/* Preview Banner */}
-      <div className="bg-gradient-to-r from-orange-400 to-amber-400 text-white">
+      <div className="bg-gradient-to-r from-primary to-amber-400 text-white">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -141,7 +141,7 @@ export default async function PreviewHwalseoPage({ params }: Props) {
         <div className="max-w-4xl mx-auto px-4 py-4">
           <Link 
             href="/hwalseo/preview" 
-            className="inline-flex items-center gap-2 text-gray-600 hover:text-orange-500 transition-colors"
+            className="inline-flex items-center gap-2 text-gray-600 hover:text-primary transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             미리보기 목록
@@ -168,17 +168,24 @@ export default async function PreviewHwalseoPage({ params }: Props) {
         {/* Header */}
         <header className="mb-8">
           <div className="flex items-center gap-2 mb-4">
-            <span className="bg-orange-100 text-orange-600 text-sm font-medium px-3 py-1 rounded-full">
+            <span className="bg-primary-extra-light text-primary-dark text-sm font-medium px-3 py-1 rounded-full">
               미리보기
             </span>
-            {hwalseo.theme && (
-              <span className="bg-gray-100 text-gray-600 text-sm px-3 py-1 rounded-full">
-                {hwalseo.theme}
-              </span>
+            {hwalseo.theme && (Array.isArray(hwalseo.theme) ? hwalseo.theme : [hwalseo.theme]).length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {(Array.isArray(hwalseo.theme) ? hwalseo.theme : [hwalseo.theme]).map((t, i) => (
+                  <span
+                    key={i}
+                    className="inline-block px-2 py-1 bg-primary-extra-light text-primary text-xs font-semibold rounded-full"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
             )}
           </div>
           
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
+          <h1 className="text-3xl md:text-4xl font-bold text-text mb-4 leading-tight">
             {hwalseo.title.split('//').map((part, i) => (
               <span key={i}>
                 {part.trim()}
@@ -194,7 +201,7 @@ export default async function PreviewHwalseoPage({ params }: Props) {
           )}
           
           <div className="flex items-center gap-4 text-sm text-gray-500">
-            <span className="font-medium text-gray-900">{hwalseo.elderName}</span>
+            <span className="font-medium text-text">{hwalseo.elderName}</span>
             {hwalseo.region && <span>{hwalseo.region}</span>}
           </div>
         </header>
@@ -202,20 +209,20 @@ export default async function PreviewHwalseoPage({ params }: Props) {
         {/* Body */}
         <div 
           className="prose prose-lg max-w-none
-                   prose-headings:font-bold prose-headings:text-gray-900
-                   prose-p:text-gray-700 prose-p:leading-relaxed
-                   prose-a:text-orange-500 prose-a:no-underline hover:prose-a:underline
-                   prose-blockquote:border-l-orange-400 prose-blockquote:bg-orange-50
+                   prose-headings:font-bold prose-headings:text-text
+                   prose-p:text-text prose-p:leading-relaxed
+                   prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+                   prose-blockquote:border-l-primary prose-blockquote:bg-primary-extra-light
                    prose-blockquote:py-1 prose-blockquote:px-4 prose-blockquote:rounded-r-lg"
           dangerouslySetInnerHTML={{ __html: formattedContent }}
         />
 
         {/* Footer Notice */}
-        <div className="mt-12 p-6 bg-orange-50 rounded-2xl border border-orange-200">
+        <div className="mt-12 p-6 bg-primary-extra-light rounded-2xl border border-primary-extra-light">
           <div className="flex items-start gap-4">
             <div className="text-2xl">🌿</div>
             <div>
-              <h3 className="font-bold text-gray-900 mb-1">후원자 미리보기</h3>
+              <h3 className="font-bold text-text mb-1">후원자 미리보기</h3>
               <p className="text-sm text-gray-600">
                 이 활서는 아직 정식 발행 전입니다.<br />
                 후원자님께 먼저 공개해드리는 특별한 콘텐츠예요.<br />

@@ -94,7 +94,7 @@ export function EmailSubscribeForm({
           placeholder="이메일 주소"
           disabled={isDisabled}
           className={cn(
-            'flex-1 px-4 py-2.5 rounded-lg border border-gray-300',
+            'flex-1 px-4 py-2.5 rounded-lg border border-border',
             'text-body-sm placeholder:text-gray-400',
             'focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary',
             'disabled:bg-gray-100 disabled:cursor-not-allowed',

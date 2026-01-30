@@ -55,7 +55,7 @@ function PostcardThankYouContent() {
           </p>
 
           <div className="bg-muted rounded-xl p-6 mb-8">
-            <p className="text-body text-gray-700 mb-2">
+            <p className="text-body text-text mb-2">
               💌 <strong>{formatCurrency(parseInt(amount))}</strong> 엽서 신청 완료
             </p>
             <p className="text-body-sm text-muted-foreground">
@@ -73,7 +73,7 @@ function PostcardThankYouContent() {
             </Link>
             <Link
               href="/"
-              className="inline-flex items-center justify-center gap-2 whitespace-nowrap bg-white text-foreground border border-gray-300 px-8 py-4 rounded-md font-semibold hover:bg-muted transition-colors"
+              className="inline-flex items-center justify-center gap-2 whitespace-nowrap bg-white text-foreground border border-border px-8 py-4 rounded-md font-semibold hover:bg-muted transition-colors"
             >
               홈으로
             </Link>

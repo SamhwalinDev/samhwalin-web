@@ -57,11 +57,11 @@ export default async function QnAPage() {
   const qnas = await getAllQnAs();
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-background">
       {/* Header */}
       <section className="py-16 bg-[#FFF8F3]">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl font-bold text-text mb-4">
             💬 Q&A 아카이브
           </h1>
           <p className="text-xl text-gray-600">
@@ -86,17 +86,17 @@ export default async function QnAPage() {
                       <p className="text-sm text-gray-500 mb-1">
                         {qna.nickname}님의 질문
                       </p>
-                      <p className="text-lg text-gray-900">{qna.question}</p>
+                      <p className="text-lg text-text">{qna.question}</p>
                     </div>
                   </div>
                   
                   {/* Answer */}
                   <div className="flex items-start gap-3 pl-11 pt-4 border-t border-gray-100">
-                    <span className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center text-sm font-bold text-orange-600 flex-shrink-0">
+                    <span className="w-8 h-8 bg-primary-extra-light rounded-full flex items-center justify-center text-sm font-bold text-primary-dark flex-shrink-0">
                       A
                     </span>
                     <div className="flex-1">
-                      <p className="text-gray-900 whitespace-pre-line">{qna.answer}</p>
+                      <p className="text-text whitespace-pre-line">{qna.answer}</p>
                     </div>
                   </div>
                 </div>

@@ -62,19 +62,19 @@ export default function DonationSection() {
   };
 
   return (
-    <section className="py-16 md:py-20 bg-gradient-to-b from-orange-50 to-white">
+    <section className="py-16 md:py-20 bg-gradient-to-b from-primary-extra-light to-white">
       <div className="max-w-4xl mx-auto px-4">
         {/* Stats */}
         <div className="flex justify-center gap-8 md:gap-16 mb-10">
           <div className="text-center">
-            <p className="text-3xl md:text-4xl font-bold text-orange-500">
+            <p className="text-3xl md:text-4xl font-bold text-primary">
               {isLoading ? '-' : stats.elderCount}
             </p>
             <p className="text-gray-600 text-sm mt-1">명의 이야기</p>
           </div>
           <div className="w-px bg-gray-300" />
           <div className="text-center">
-            <p className="text-3xl md:text-4xl font-bold text-orange-500">
+            <p className="text-3xl md:text-4xl font-bold text-primary">
               {isLoading ? '-' : formatNumber(stats.visitorCount)}
             </p>
             <p className="text-gray-600 text-sm mt-1">명의 독자</p>
@@ -83,7 +83,7 @@ export default function DonationSection() {
 
         {/* CTA Text */}
         <div className="text-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
+          <h2 className="text-2xl md:text-3xl font-bold text-text mb-3">
             💛 다음 이야기를 함께 만들어주세요
           </h2>
           <p className="text-gray-600">
@@ -104,15 +104,15 @@ export default function DonationSection() {
                 }}
                 className={`p-3 md:p-4 rounded-xl border-2 transition-all duration-200 min-h-[120px] flex flex-col items-center justify-center ${
                   selectedAmount === amount
-                    ? 'border-orange-400 bg-orange-50'
-                    : 'border-gray-200 hover:border-orange-300'
+                    ? 'border-primary bg-primary-extra-light'
+                    : 'border-border hover:border-primary-light'
                 }`}
               >
                 <Icon className={`w-5 h-5 md:w-6 md:h-6 mx-auto mb-1 md:mb-2 ${
-                  selectedAmount === amount ? 'text-orange-500' : 'text-gray-400'
+                  selectedAmount === amount ? 'text-primary' : 'text-gray-400'
                 }`} />
                 <p className={`font-bold text-base md:text-lg ${
-                  selectedAmount === amount ? 'text-orange-500' : 'text-gray-900'
+                  selectedAmount === amount ? 'text-primary' : 'text-text'
                 }`}>
                   {amount.toLocaleString()}원
                 </p>
@@ -132,7 +132,7 @@ export default function DonationSection() {
                   setSelectedAmount(null);
                 }}
                 placeholder="직접 입력"
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none transition-colors"
+                className="w-full px-4 py-3 border-2 border-border rounded-xl focus:border-primary focus:outline-none transition-colors"
               />
               <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500">
                 원
@@ -143,7 +143,7 @@ export default function DonationSection() {
           {/* Donate Button */}
           <button
             onClick={handleDonate}
-            className="w-full bg-orange-400 hover:bg-orange-500 text-white py-4 rounded-xl font-bold text-lg transition-all duration-200 flex items-center justify-center gap-2"
+            className="w-full bg-primary hover:bg-primary-dark text-white py-4 rounded-xl font-bold text-lg transition-all duration-200 flex items-center justify-center gap-2"
           >
             <Heart className="w-5 h-5" />
             일시 후원하기
@@ -152,7 +152,7 @@ export default function DonationSection() {
           {/* Divider */}
           <div className="relative my-8">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-200" />
+              <div className="w-full border-t border-border" />
             </div>
             <div className="relative flex justify-center text-sm">
               <span className="px-4 bg-white text-gray-500">또는</span>
@@ -160,35 +160,35 @@ export default function DonationSection() {
           </div>
 
           {/* Monthly Donation Section */}
-          <div className="bg-gradient-to-r from-orange-50 to-amber-50 rounded-2xl p-6 border-2 border-orange-200">
+          <div className="bg-gradient-to-r from-primary-extra-light to-amber-50 rounded-2xl p-6 border-2 border-primary-extra-light">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-                <Heart className="w-6 h-6 text-orange-500" />
+              <div className="w-12 h-12 bg-primary-extra-light rounded-full flex items-center justify-center">
+                <Heart className="w-6 h-6 text-primary" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900">정기 후원</h3>
+                <h3 className="font-bold text-text">정기 후원</h3>
                 <p className="text-sm text-gray-600">매월 함께해주시면 더 큰 힘이 됩니다</p>
               </div>
             </div>
             
             <ul className="space-y-2 mb-4 text-sm text-gray-600">
               <li className="flex items-center gap-2">
-                <span className="text-orange-500">✓</span>
+                <span className="text-primary">✓</span>
                 매월 자동으로 후원되어 편리해요
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-orange-500">✓</span>
+                <span className="text-primary">✓</span>
                 정기 후원자 전용 뉴스레터를 받아보세요
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-orange-500">✓</span>
+                <span className="text-primary">✓</span>
                 언제든 해지 가능해요
               </li>
             </ul>
             
             <a
               href="/support#monthly"
-              className="block w-full bg-white hover:bg-orange-50 text-orange-500 border-2 border-orange-400 py-3 rounded-xl font-bold text-center transition-all duration-200"
+              className="block w-full bg-white hover:bg-primary-extra-light text-primary border-2 border-primary py-3 rounded-xl font-bold text-center transition-all duration-200"
             >
               정기 후원 시작하기 →
             </a>

@@ -41,7 +41,7 @@ export function ElderFilter({ elders }: ElderFilterProps) {
             placeholder="이름, 소개, 지역으로 검색..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-full text-body-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+            className="w-full pl-12 pr-4 py-3 border border-border rounded-full text-body-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
           />
         </div>
       </div>

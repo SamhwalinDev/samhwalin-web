@@ -86,7 +86,7 @@ export default function SubscribeModal({ isOpen, onClose, source = '홈페이지
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-8 h-8 text-green-500" />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">
+            <h3 className="text-xl font-bold text-text mb-2">
               구독 완료!
             </h3>
             <p className="text-gray-600 mb-6">
@@ -104,10 +104,10 @@ export default function SubscribeModal({ isOpen, onClose, source = '홈페이지
           /* Form State */
           <>
             <div className="text-center mb-6">
-              <div className="w-14 h-14 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Mail className="w-7 h-7 text-orange-500" />
+              <div className="w-14 h-14 bg-primary-extra-light rounded-full flex items-center justify-center mx-auto mb-4">
+                <Mail className="w-7 h-7 text-primary" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">
+              <h3 className="text-xl font-bold text-text mb-2">
                 삼활인 소식 받기
               </h3>
               <p className="text-gray-600 text-sm">
@@ -129,7 +129,7 @@ export default function SubscribeModal({ isOpen, onClose, source = '홈페이지
                            focus:outline-none focus:ring-2 transition-all duration-200
                            ${status === 'error' 
                              ? 'border-red-300 focus:ring-red-200 focus:border-red-400' 
-                             : 'border-gray-200 focus:ring-primary/20 focus:border-primary'
+                             : 'border-border focus:ring-primary/20 focus:border-primary'
                            }`}
                   disabled={status === 'loading'}
                 />
