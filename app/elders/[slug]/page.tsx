@@ -6,7 +6,7 @@ import { Container, Section } from '@/components/layout';
 import { HwalseoCard } from '@/components/features';
 import { ProxiedImage } from '@/components/ui';
 import { getElderById, getHwalseoByElderId } from '@/lib/notion';
-import { processNotionText } from '@/lib/utils';
+import { getBioIcon, processNotionText } from '@/lib/utils';
 
 export const revalidate = 60;
 
@@ -124,10 +124,16 @@ export default async function ElderDetailPage({
 
                 {/* Bio */}
                 {elder.bio && (
-                  <div className="text-base text-muted-foreground leading-relaxed space-y-2">
-                    {elder.bio.split('\n').map((line, idx) => (
-                      <p key={idx}>{line}</p>
-                    ))}
+                  <div className="bg-background rounded-2xl p-6 border border-border">
+                    <h3 className="text-lg font-bold text-text mb-4">프로필</h3>
+                    <ul className="space-y-3">
+                      {elder.bio.split('\n').filter(line => line.trim()).map((line, index) => (
+                        <li key={index} className="flex items-start gap-3">
+                          <span className="text-xl flex-shrink-0 w-7">{getBioIcon(line)}</span>
+                          <span className="text-text leading-relaxed">{line}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 )}
               </div>
