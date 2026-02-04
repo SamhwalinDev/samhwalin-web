@@ -36,15 +36,18 @@ export default async function TestypePage() {
             
             <div className="flex flex-col md:flex-row items-center gap-12">
               
-              {/* Left: Character Image Placeholder */}
+              {/* Left: Character Image */}
               <ScrollAnimationWrapper animation="scale" delay={300} duration={1000}>
                 <div className="flex-shrink-0">
-                  <div className="w-64 h-64 md:w-80 md:h-80 rounded-full bg-gray-200 flex items-center justify-center border-4 border-white shadow-lg">
-                    {/* Placeholder for character image */}
-                    <div className="text-center text-gray-400">
-                      <span className="text-6xl">🧙‍♂️</span>
-                      <p className="mt-2 text-sm">캐릭터 이미지</p>
-                    </div>
+                  <div className="relative">
+                    <Image
+                      src="/images/testype-profile.png"
+                      alt="테스형"
+                      width={320}
+                      height={320}
+                      className="w-64 h-64 md:w-80 md:h-80 rounded-full object-cover border-4 border-white shadow-lg"
+                      priority
+                    />
                   </div>
                 </div>
               </ScrollAnimationWrapper>
@@ -111,6 +114,21 @@ export default async function TestypePage() {
       <ScrollAnimationWrapper animation="blur" duration={1200}>
         <section className="py-20 bg-white">
           <div className="max-w-3xl mx-auto px-6">
+            {/* 테스형 프로필 이미지 */}
+            <ScrollAnimationWrapper animation="scale" delay={100} duration={800}>
+              <div className="flex justify-center mb-8">
+                <div className="relative">
+                  <Image
+                    src="/images/testype-profile.png"
+                    alt="테스형"
+                    width={128}
+                    height={128}
+                    className="w-20 h-20 md:w-32 md:h-32 rounded-full object-cover shadow-lg border-4 border-white"
+                  />
+                </div>
+              </div>
+            </ScrollAnimationWrapper>
+
             <ScrollAnimationWrapper animation="fade-up" delay={200} duration={800}>
               <h2 className="text-3xl font-bold text-center mb-12">테스형이 누구야?</h2>
             </ScrollAnimationWrapper>
